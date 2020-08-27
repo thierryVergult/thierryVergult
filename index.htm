@@ -1,0 +1,206 @@
+
+<!doctype html> <html lang=en>
+  <head> <meta charset=utf-8>
+    
+    <title>opayra</title>
+    
+    <meta name="description" content="opayra thierry vergult popay">
+    
+    <meta name="viewport" content="width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
+    <style>
+      /* global css variable */
+      :root {
+        --popay-blue: #009FC2;
+      }
+      
+      .container {
+        display: grid;
+        grid-gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-rows: repeat( 1, minmax(200px, 1fr));
+        
+        font-family: QuicksandBook, Arial, sans-serif;
+      }
+      
+      .card > .header {
+        color: white;
+        font-weight: bold;
+        background-color: var( --popay-blue);
+        padding: 20px;
+      }
+      
+      .card .article {
+        color: var( --popay-blue);
+        padding: 20px;
+      }
+      
+      .card a {
+        color: var( --popay-blue);
+        font-weight: bold;
+        text-decoration: inherit;
+      }
+      
+      .card .right {
+        text-align: right;
+        float: right;
+      }
+      
+      .grow {
+        transition: all .2s ease-in-out;
+      }
+      
+      .grow:hover {
+        transform: scale(2);
+      }
+      
+      .colcol {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+    </style>
+  </head>
+  
+  <body>
+    <div class='container'>
+      <div class='card'>
+        <div class='header'>welcome</div>
+        <div class='article'>
+          <div>Opayra is the company behind Thierry Vergult, a Popay founding partner.</div>
+          <p>HR &amp; Payroll expertise since 1998. Project management - technical development - functional design.</p>
+          <p>And rolling out projects in Europe and Africa since.</p>
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>admin</div>
+        <div class='article'>
+          <i class="fa fa-pencil fa-2x"></i>
+          <div class='right'>
+            <div>opayra bvba</div>
+            <div>dok noord 17</div>
+            <div>9000 gent</div>
+            <p>BE0864.183.787</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>popay</div>
+        <div class='article'>
+          <div>
+            <a href="http://www.popay.com" target="_blank">Popay</a> 
+            delivers hr and payroll solutions in Europe and Africa.
+          </div>
+          <p> We master Oracle eBS, Oracle HCM Cloud, Hr Access and popay.net.</p>
+        </div>
+        <img src="./assets/popay_beaver.jpg" width="100%">
+      </div>
+      
+      <div class='card'>
+        <div class='header'>documentool</div>
+        <div class='article'>
+          <a href="http://www.documentool.com" target="_blank">Documentool</a> generates your Oracle eBS Hr and Payroll setup documentation.
+          <p>Also used internally for HR Access and popay.net.</p>
+          <img src="./assets/documentoolLoop.gif" width="100%">
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>now</div>
+        <div class='article'>
+          <i class="fa fa-calculator fa-2x"></i>
+          <div style="padding-top: 10px; padding-bottom: 20px;">
+            Actual focus is on payroll and data visualisations.
+          </div>
+          <div style="text-align: right;">
+            <i class="fa fa-line-chart fa-2x"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>blog</div>
+        <div class='article'>
+          From the time before social networks, here some <a href="http://oraclehrms.blogspot.com" target="_blank">blog posts</a>.
+          <div id="idBlogTitles"></div>
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>visualisations</div>
+        <div class='article colcol'>
+          <div>
+            <img src="./assets/payBurst.jpg" style="width:100%;" class="grow">
+          </div>
+          
+          <div>
+            <img src="./assets/in_out.jpeg" style="width:100%;" class="grow">
+          </div>
+        
+          <div>
+            <img src="./assets/barStacked.jpg" style="width:100%;" class="grow">
+          </div>
+          
+          <div>
+            <img src="./assets/TeamboxTeams.png" style="width:100%;" class="grow">
+          </div>
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>popay.net</div>
+        <div class='article'>
+          Popay's own Hr and Payroll solution, <a href="http://www.popay.net" target="_blank">popay.net</a>.
+          <p>Payroll services for Africa, supporting 15 legislations.</p>
+          <p>Modern personnel administration.</p>
+          <p>With integrated training and talent management on top.</p>
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>popay.net in africa</div>
+        <div class='article'>
+          <img src="./assets/africa_live.jpg" width="100%">
+        </div>
+      </div>
+      
+      <div class='card'>
+        <div class='header'>apex on apps</div>
+        <div class='article'>
+          <a href="http://sites.google.com/a/popay.be/apex-on-apps/integration" target="_blank">More info</a>
+          to integrate apex, aka
+          <a href="http://apex.oracle.com" target="_blank">Oracle application express</a>, with Oracle's eBusiness suite.
+        </div>
+      </div>
+      
+    </div>
+    
+    <script>
+      function handleBloggerResponse(response) {
+        
+        var feed = response.items;
+        console.log( feed.length);
+        
+        // create a top 3 list.
+        
+        document.getElementById("idBlogTitles").innerHTML = '<ul>';
+        
+        for ( i = 0 ; i < 3; i++) {
+          document.getElementById("idBlogTitles").innerHTML += "<li>" + feed[i].title;
+        }
+        
+        document.getElementById("idBlogTitles").innerHTML += '</ul>';
+        
+      }
+    </script>
+    
+    <!-- my blog id is 5750484 (log in into blogger, and see the id in the url ) 
+         the api key is generated in console.developers.google.com -->
+    <script src="https://www.googleapis.com/blogger/v3/blogs/5750484/posts?callback=handleBloggerResponse&key=AIzaSyDqfppxCtpfDu-e8RVkcR4KF6Nt_6SU548"></script>
+  </body>
+</html>
