@@ -1,0 +1,4 @@
+ africa : scale svg, upgrade d3
+- add mail adres (alias)
+- payslip sunburst interactive
+- tax nl webservice
