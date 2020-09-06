@@ -1,8 +1,7 @@
-#mapX {
+#map {
     margin: 0 auto;
     margin-top: 25px;
     position: relative;
-    border: 4px solid steelblue;
   }
   .border {
     fill: none;
