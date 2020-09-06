@@ -1,0 +1,65 @@
+#mapX {
+    margin: 0 auto;
+    margin-top: 25px;
+    position: relative;
+    border: 4px solid steelblue;
+  }
+  .border {
+    fill: none;
+    stroke: #000;
+    stroke-width: .5px;
+    pointer-events: none;
+  }
+  .graticule {
+    fill: none;
+    stroke-width: .25px;
+    stroke-opacity: .5;
+    stroke: #333;
+    pointer-events: none;
+  }
+  .land-glow {
+    fill: #000;
+    fill-opacity: .5;
+    filter: url(#glow);
+  }
+  .country {
+    fill: #f0f0f0;
+  }
+
+  .country.hover {
+    fill: lightblue;
+    /*stroke: #000;
+    stroke-width: 1.5px; */
+  }
+  .island {
+    fill: none;
+    stroke: #333;
+    stroke-opacity: .5;
+    stroke-width: .5px;
+    pointer-events: all;
+  }
+  .supported {
+    fill: #0094b3;
+  }
+
+  /* Tooltip. */
+  .tooltip {
+    position: absolute;
+    display: none;
+    border: solid #000 1px;
+    border-radius: 5px;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, .5);
+    pointer-events: none;
+    max-width: 400px;
+  }
+
+  .tooltip h3 {
+    margin: 0;
+    font-size: 1em;
+  }
+
+  .tooltip p {
+    margin: 0;
+    font-size: .8em;
+  }
