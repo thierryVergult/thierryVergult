@@ -22,7 +22,7 @@
         display: grid;
         grid-gap: 30px;
         grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        grid-template-rows: repeat( 1, minmax(360px, 1fr));
+        grid-template-rows: repeat( 1, minmax(200px, 1fr));
         font-family: QuicksandBook, Arial, sans-serif;
       }
       
@@ -47,19 +47,6 @@
       .card .right {
         text-align: right;
         float: right;
-      }
-      
-      .grow {
-        transition: all .2s ease-in-out;
-      }
-      
-      .grow:hover {
-        transform: scale(2);
-      }
-      
-      .colcol {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
       }
 
     </style>
@@ -111,16 +98,21 @@
       </div>
       
       <div class='card'>
-        <div class='header'>visualisations</div>
-        <div class='article colcol'>
+        <div class='header'>visualisation - turn over</div>
+        <div class='article'>
           <div>
-            <img src="./assets/payBurst.jpg" style="width:100%;" class="grow">
-          </div>
-          
-          <div>
-            <img src="./assets/in_out.jpeg" style="width:100%;" class="grow">
+            <img src="./assets/in_out.jpeg" style="width:100%;">
           </div>
         
+        </div>
+      </div>
+
+      <div class='card'>
+        <div class='header'>visualisation - payslip</div>
+        <div class='article'>
+          <div>
+            <img src="./assets/payBurst.jpg" style="width:100%;">
+          </div>
         </div>
       </div>
 
