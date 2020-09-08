@@ -108,12 +108,37 @@
       </div>
 
       <div class='card'>
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
         <div class='header'>payslip visualisation</div>
         <div class='article'>
-          <div>
-            <img src="./assets/payBurst.jpg" style="width:100%;">
-          </div>
+          <div id='payBurst'></div>
         </div>
+
+        <script>
+          var data = [{
+            type: "sunburst",
+            labels: [ "Vergoedingen", "Inhoudingen", "netto", "Maandloon", "Feestdagen<br>uitkering", "loonheffing", "zvw"],
+            parents: [ "", "", "", "Vergoedingen", "Vergoedingen", "Inhoudingen", "Inhoudingen"],
+            values:  [1200, 700, 500, 1000, 200, 600, 100],
+            outsidetextfont: {size: 20, color: "#377eb8"},
+            leaf: {opacity: 0.4},
+            marker: {
+                      line: {width: 6},
+                      colors: [ "rgb(136,189,230)","rgb(240,126,110)","rgb(96,189,104)"]
+                    },
+            branchvalues: 'total'
+          }];
+          
+          var layout = {
+            margin: {l: 0, r: 0, b: 0, t: 0},
+            width: 400,
+            height: 400
+          };
+          
+          Plotly.newPlot( 'payBurst', data, layout);
+
+        </script>
       </div>
 
       <div class='card'>
