@@ -1,8 +1,6 @@
 var width = 360,
     height = 300;
 
-document.getElementById('map').setAttribute( "style", "width:" + width + "px");
-
 /*
    made the r attribute of the island circles relative on the height (3%)
 	 set scale manually for the moment when resizing.
@@ -19,8 +17,9 @@ var path = d3.geo.path().
     projection(projection);
 
 var svg = d3.select("#map").append("svg")
-    .attr("width", width)
-    .attr("height", height)
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr( "viewBox", "0 0 " + width + " " + height)
     ;
 
 svg.append("filter")
