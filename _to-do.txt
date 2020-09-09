@@ -1,4 +1,3 @@
 - scale svg plotly sunBurst
-- africa map: upgrade d3
 - add mail adres (alias)
 - tax nl webservice - knaak
