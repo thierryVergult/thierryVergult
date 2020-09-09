@@ -112,20 +112,20 @@
 
         <div class='header'>payslip visualisation</div>
         <div class='article'>
-          <div id='payBurst'></div>
+          <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
         </div>
 
         <script>
           var data = [{
             type: "sunburst",
-            labels: [ "Vergoedingen", "Inhoudingen", "netto", "Maandloon", "Feestdagen<br>uitkering", "loonheffing", "zvw"],
-            parents: [ "", "", "", "Vergoedingen", "Vergoedingen", "Inhoudingen", "Inhoudingen"],
-            values:  [1200, 700, 500, 1000, 200, 600, 100],
+            labels: [ "Vergoedingen", "Inhoudingen", "netto", "Maandloon", "Feestdagen<br>uitkering", "loonheffing", "zvw", "netto loon"],
+            parents: [ "", "", "", "Vergoedingen", "Vergoedingen", "Inhoudingen", "Inhoudingen", "netto"],
+            values:  [1200, 700, 500, 1000, 200, 600, 100, 0],
             outsidetextfont: {size: 20, color: "#377eb8"},
-            leaf: {opacity: 0.4},
+            leaf: {opacity: 0.6},
             marker: {
                       line: {width: 6},
-                      colors: [ "rgb(136,189,230)","rgb(240,126,110)","rgb(96,189,104)"]
+                      colors: [ "#009FC2","#f25752","#91cd97"]
                     },
             branchvalues: 'total'
           }];
