@@ -7,13 +7,13 @@ var width = 360,
 	 eventually change the em size of the tooltip text via the css
 */
 	
-var projection = d3.geo.azimuthalEqualArea()
+var projection = d3.geoAzimuthalEqualArea()
     .rotate([-20, 0])
     .translate([width / 2, height / 2])
     .scale(225)
     .precision(.1);
 
-var path = d3.geo.path().
+var path = d3.geoPath().
     projection(projection);
 
 var svg = d3.select("#map").append("svg")
@@ -28,25 +28,32 @@ svg.append("filter")
     .attr("stdDeviation", 4);
 
 svg.append("path")
-    .datum(d3.geo.graticule().extent([[-40, -40], [80 + 1e-6, 40 + 1e-6]]).step([10, 10]))
+    .datum(d3.geoGraticule().extent([[-40, -40], [80 + 1e-6, 40 + 1e-6]]).step([10, 10]))
     .attr("class", "graticule")
     .attr("d", path);
 
 var tooltip = d3.select("#map").append("div").attr("class", "tooltip");
 
-queue()
-    .defer(d3.json, "./assets/africa.json?2")
-    .defer(d3.tsv, "./assets/world-country-names.tsv")
-    .defer(d3.csv, "./assets/supported-countries.csv?1")
-    .await(function(error, africa, names, supported) {
-      var idByName = {},
-          nameById = {},
-          supportedById = {};
-      names.forEach(function(d) { nameById[idByName[d.name] = +d.id] = d.name; });
-      supported.forEach(function(d) {
-        var id = idByName[d.country];
-        if (id) supportedById[id] = d;
-      });
+var promises = [];
+
+promises.push( d3.json("./assets/africa.json"));
+promises.push( d3.tsv("./assets/world-country-names.tsv"));
+promises.push( d3.csv("./assets/supported-countries.csv?1"));
+
+Promise.all(promises).then(function( values) {
+  
+  africa = values[0];
+  names = values[1];
+  supported = values[2];
+  
+  var idByName = {},
+      nameById = {},
+      supportedById = {};
+  names.forEach(function(d) { nameById[idByName[d.name] = +d.id] = d.name; });
+  supported.forEach(function(d) {
+    var id = idByName[d.country];
+    if (id) supportedById[id] = d;
+  });
 
       // Land "glow" effect.
       svg.insert("path", ".graticule")
