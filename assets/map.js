@@ -125,11 +125,11 @@ Promise.all(promises).then(function( values) {
       function ringIsland(d) { return d.length === 1 && useCount[d[0]] === 1; }
 
       // Display tooltip and highlight of relevant country.
-      function mouseenter(d) {
+      function mouseenter(d, i) {
         country.classed("hover", false);
         d3.select(this).classed("hover", true);
-        var centroid = path.centroid(d),
-            supported = supportedById[d.id];
+        var centroid = path.centroid(i),
+            country_supported = supportedById[i.id];
         
         if (centroid[0] > width / 2 ) tooltip.style("right", width - centroid[0] + "px").style("left", null);
         else tooltip.style("left", centroid[0]  + "px").style("right", null);
@@ -138,8 +138,8 @@ Promise.all(promises).then(function( values) {
 
         tooltip.style("display", "block").selectAll("*").remove();
         
-        tooltip.append("h3").text(nameById[d.id]);
-        //if (supported) tooltip.append("p").text(supported.tooltip);
+        tooltip.append("h3").text(nameById[i.id]);
+        if (country_supported) tooltip.append("p").text( country_supported.tooltip);
 		
       }
       // Turn off tooltip and highlight.

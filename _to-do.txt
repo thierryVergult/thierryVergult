@@ -1,3 +1,7 @@
-- scale svg plotly sunBurst
 - add mail adres (alias)
+- plotly sunBurst
+  - viewBox ? (scaling)
+  - no sorting
+  - extra angle (+90gr)
 - tax nl webservice - knaak
+- move blogger javascrip to article
