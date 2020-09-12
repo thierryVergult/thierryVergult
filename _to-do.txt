@@ -1,7 +1,6 @@
-- add mail adres (alias)
 - plotly sunBurst
   - viewBox ? (scaling)
   - no sorting
   - extra angle (+90gr)
+  - opacity bug when no 2nd level
 - tax nl webservice - knaak
-- move blogger javascrip to article
