@@ -136,21 +136,21 @@
           input[type='radio']:checked:after {
             width: 15px;
             height: 15px;
-            top: -3px;
-            left: -4px;
+            top: -6px;
+            left: -8px;
             position: relative;
             background-color: var( --popay-blue);
             content: '';
             display: inline-block;
             visibility: visible;
-            border: 2px solid white;
+            border: 4px solid white;
           }
 
-          input[value='sunburst']:checked:after {
+          input[value='sunburst']:after {
             border-radius: 15px;
           }
         </style>
-        
+
         <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
         <div class='header'>payslip visualisation</div>
@@ -163,7 +163,7 @@
 
         <script>
           function show_payslip( traceType) {
-            console.log( traceType);
+            //console.log( traceType);
             data[0].type = traceType;
             Plotly.newPlot( 'payBurst', data, layout, config);
           }
