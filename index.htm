@@ -246,13 +246,24 @@
       <div class='card'>
         <div class='header'>nl tax</div>
         <div class='article'>
-          <p>test google sheet webservice</p>
+          <p>Bereken loonheffing</p>
+          <ul>
+            <li>witte maandtabel
+            <li>2020
+            <li>jonger dan de AOW leeftijd
+            <li>woonland Nederland
+          </ul>
+          <br>
           <p>bruto loon
             <input type="number" id="brutoLoon" name="brutoLoon" min="0" max="999999" onchange="nlTax(value)">
             <br><br>
-            <span>loonheffing zonder loonheffingskorting: <div id="tax01"></div></span>
-            <span>loonheffing met loonheffingskorting: <div id="tax02"></div></span>
+            <div style="margin-bottom: 10px;">inhouding loonheffing</div>
+            <div id="tax01" style="margin-left: 20px;"><i class="fa fa-question"></i></div>
+            <div id="tax02" style="margin-left: 20px;"><i class="fa fa-question"></i></div>
           </p>
+
+          <br>
+          <p>sql-webservice on a public google sheet.</p>
           
           <script>
             function nlTax( brutoLoon) {
@@ -260,21 +271,21 @@
               var queryString = encodeURIComponent('SELECT C, D where A <= ' + brutoLoon + ' and B >= ' + brutoLoon);
               var url = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:csv&range=A2:D4000&tq=' + queryString;
       
-              console.log( url);
+              console.log( 'url to google sheet with sql:'+ url);
       
               fetch( url)
               .then( response => response.text())
               .then( function (data) {
       
-                console.log(data);
+                console.log( '1 line csv from google sheet: ' + data);
                 var taxValues = data.split(',');
                 
                 var tax_zonder_lhk = parseInt(taxValues[0].replace( /"/g, ''));
                 var tax_met_lhk = parseInt(taxValues[1].replace( /"/g, ''));
-                console.log( tax_zonder_lhk + ' - ' + tax_met_lhk + ' : delta=' + (tax_zonder_lhk - tax_met_lhk));
+                //console.log( tax_zonder_lhk + ' - ' + tax_met_lhk + ' : delta=' + (tax_zonder_lhk - tax_met_lhk));
       
-                document.getElementById("tax01").innerHTML=tax_zonder_lhk;
-                document.getElementById("tax02").innerHTML=tax_met_lhk; 
+                document.getElementById("tax01").innerHTML = 'zonder loonheffingskorting : ' + tax_zonder_lhk;
+                document.getElementById("tax02").innerHTML = 'met loonheffingskorting : ' + tax_met_lhk; 
       
               });
       
