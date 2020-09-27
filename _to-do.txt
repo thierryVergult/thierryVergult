@@ -1,6 +1,9 @@
-- plotly sunBurst
-  - viewBox ? (scaling)
-  - no sorting
-  - extra angle (+90gr)
-  - opacity bug when no 2nd level
-- tax nl webservice - knaak
+* plotly sunBurst
+  - no sorting : pull request pending
+  - extra angle (+90gr) : propose pull request
+  - opacity bug when no 2nd level : log issue
+  - real 2020 figures
+* knaak
+  - tax nl
+    1. google sheet sql layer
+    2. postgres rest service

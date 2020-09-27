@@ -132,14 +132,42 @@
       </div>
 
       <div class='card'>
+        <style>
+          input[type='radio']:checked:after {
+            width: 15px;
+            height: 15px;
+            top: -3px;
+            left: -4px;
+            position: relative;
+            background-color: var( --popay-blue);
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid white;
+          }
+
+          input[value='sunburst']:checked:after {
+            border-radius: 15px;
+          }
+        </style>
+        
         <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
         <div class='header'>payslip visualisation</div>
         <div class='article'>
+          <label for="sunburst"></label><input type="radio" name="trace" value="sunburst" onclick="show_payslip(value);" checked="checked">sunburst</label>
+          <label for="treemap"></label><input type="radio" name="trace" value="treemap"  onclick="show_payslip(value);">treemap</label>
+
           <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
         </div>
 
         <script>
+          function show_payslip( traceType) {
+            console.log( traceType);
+            data[0].type = traceType;
+            Plotly.newPlot( 'payBurst', data, layout, config);
+          }
+
           var data = [{
             type: "sunburst",
             labels: [ "Vergoedingen", "Inhoudingen", "netto", "Maandloon", "Feestdagen<br>uitkering", "loonheffing", "zvw", "netto loon"],
@@ -164,7 +192,8 @@
             modeBarButtonsToRemove: [ 'toggleHover']
           }
           
-          Plotly.newPlot( 'payBurst', data, layout, config);
+          var traceType = document.querySelector('input[name="trace"]:checked').value;
+          show_payslip( traceType);
 
         </script>
       </div>
