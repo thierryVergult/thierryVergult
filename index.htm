@@ -262,7 +262,7 @@
                   // 3. Initialize and make the API request.
                   
                   var queryString = encodeURIComponent('SELECT A where B > 2');
-                  var query = '//docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:json&range=A1:B2';
+                  var query = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:json&range=A1:B2';
                   console.log( query);
 
                   return gapi.client.request({
