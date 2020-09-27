@@ -247,38 +247,41 @@
         <div class='header'>nl tax</div>
         <div class='article'>
           <p>test google sheet webservice</p>
-
-          <script src="https://apis.google.com/js/api.js"></script>
+          <p>bruto loon
+            <input type="number" id="brutoLoon" name="brutoLoon" min="0" max="999999" onchange="nlTax(value)">
+            <br><br>
+            <span>loonheffing zonder loonheffingskorting: <div id="tax01"></div></span>
+            <span>loonheffing met loonheffingskorting: <div id="tax02"></div></span>
+          </p>
+          
           <script>
-            function start() {
-              // 2. Initialize the JavaScript client library.
-              gapi.client.init({
-                  'apiKey': 'AIzaSyDCM_RspAhFgPJfzPAorBsYxo-Nr1_tigI',
-                  // clientId and scope are optional if auth is not required.
-                  //'clientId': 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
-                  //'scope': 'profile',
-              }).then(function() {
-                console.log('== step 3 ==');
-                  // 3. Initialize and make the API request.
-                  
-                  var queryString = encodeURIComponent('SELECT A where B > 2');
-                  var query = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:json&range=A1:B2&tq=' + queryString;
-
-                  return gapi.client.request({
-                  'path': query
-                  })
-              }).then(function(response) {
-                  console.log(response.result);
-                  //console.log('mooi poc echo ... ' + response.result.values[0][0]);
-              }, function(reason) {
-                  console.log(reason);
-                  //console.log('Error: ' + reason.result.error.message);
+            function nlTax( brutoLoon) {
+              //var brutoLoon = 3400;
+              var queryString = encodeURIComponent('SELECT C, D where A <= ' + brutoLoon + ' and B >= ' + brutoLoon);
+              var url = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:csv&range=A2:D4000&tq=' + queryString;
+      
+              console.log( url);
+      
+              fetch( url)
+              .then( response => response.text())
+              .then( function (data) {
+      
+                console.log(data);
+                var taxValues = data.split(',');
+                
+                var tax_zonder_lhk = parseInt(taxValues[0].replace( /"/g, ''));
+                var tax_met_lhk = parseInt(taxValues[1].replace( /"/g, ''));
+                console.log( tax_zonder_lhk + ' - ' + tax_met_lhk + ' : delta=' + (tax_zonder_lhk - tax_met_lhk));
+      
+                document.getElementById("tax01").innerHTML=tax_zonder_lhk;
+                document.getElementById("tax02").innerHTML=tax_met_lhk; 
+      
               });
-              };
-
-          // 1. Load the JavaScript client library.
-          gapi.load('client', start);
+      
+            }
+      
           </script>
+
         </div>
       </div>
       
