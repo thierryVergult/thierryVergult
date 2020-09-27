@@ -242,6 +242,45 @@
           </ul>
         </div>
       </div>
+
+      <div class='card'>
+        <div class='header'>nl tax</div>
+        <div class='article'>
+          <p>test google sheet webservice</p>
+
+          <script src="https://apis.google.com/js/api.js"></script>
+          <script>
+            function start() {
+              // 2. Initialize the JavaScript client library.
+              gapi.client.init({
+                  'apiKey': 'AIzaSyDCM_RspAhFgPJfzPAorBsYxo-Nr1_tigI',
+                  // clientId and scope are optional if auth is not required.
+                  //'clientId': 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+                  //'scope': 'profile',
+              }).then(function() {
+                console.log('== step 3 ==');
+                  // 3. Initialize and make the API request.
+                  
+                  var queryString = encodeURIComponent('SELECT A where B > 2');
+                  var query = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:json&range=A1:B2&tq=' + queryString;
+
+                  return gapi.client.request({
+                  'path': query
+                  })
+              }).then(function(response) {
+                  console.log(response.result);
+                  //console.log('mooi poc echo ... ' + response.result.values[0][0]);
+              }, function(reason) {
+                  console.log(reason);
+                  //console.log('Error: ' + reason.result.error.message);
+              });
+              };
+
+          // 1. Load the JavaScript client library.
+          gapi.load('client', start);
+          </script>
+        </div>
+      </div>
       
     </div>
     
