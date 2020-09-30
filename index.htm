@@ -246,7 +246,7 @@
       <div class='card'>
         <div class='header'>nl tax - knaak</div>
         <div class='article'>
-          <p>Bereken loonheffing</p>
+          <p>Bereken loonheffing &amp; sv premies</p>
           <ul>
             <li>witte maandtabel
             <li>2020
@@ -257,12 +257,21 @@
           <p>uniform loon
             <input type="number" id="brutoLoon" name="brutoLoon" min="0" max="999999" onchange="nlTax(value)">
             <br><br>
-            <ul style="margin-bottom: 10px;">
-              <li id="tax01" style="margin-left: 20px;"><i class="fa fa-question"></i>
-              <li id="tax02" style="margin-left: 20px;"><i class="fa fa-question"></i>
-              <li id="zvwl" style="margin-left: 20px;"><i class="fa fa-question"></i>
-              <li id="wgl" style="margin-left: 20px;"><i class="fa fa-question"></i>
-              <li id="wgl-wab-laag" style="margin-left: 20px;"><i class="fa fa-question"></i>
+            <ul>
+              <li>loonheffing</li>
+              <ul>
+                <li id="tax01" style="margin-left: 20px;"><i class="fa fa-question"></i>
+                <li id="tax02" style="margin-left: 20px;"><i class="fa fa-question"></i>
+              </ul>
+              <li>sv bedragen</li>
+              <ul>
+                <li id="zvwl" style="margin-left: 20px;"><i class="fa fa-question"></i>
+                <li>werkgeverslasten</li>
+                <ul>
+                  <li id="wgl-wab-laag" style="margin-left: 20px;"><i class="fa fa-question"></i>
+                  <li id="wgl" style="margin-left: 20px;"><i class="fa fa-question"></i>
+                  </ul>
+                </ul>
             </ul>
           </p>
 
@@ -291,11 +300,11 @@
                 var wgl_wabLaag = (Math.round( brutoLoon * ( 0.2322 - 0.05) * 100) / 100).toFixed(2);
                 //console.log( tax_zonder_lhk + ' - ' + tax_met_lhk + ' : delta=' + (tax_zonder_lhk - tax_met_lhk));
       
-                document.getElementById("tax01").innerHTML = 'loonheffing, zonder loonheffingskorting : ' + '&euro;' + tax_zonder_lhk;
-                document.getElementById("tax02").innerHTML = 'loonheffing, met loonheffingskorting : ' + '&euro;' + tax_met_lhk;
+                document.getElementById("tax01").innerHTML = 'geen loonheffingskorting : ' + '&euro;' + tax_zonder_lhk;
+                document.getElementById("tax02").innerHTML = 'met loonheffingskorting : ' + '&euro;' + tax_met_lhk;
                 document.getElementById("zvwl").innerHTML = 'inhouding zvw : ' + '&euro;' + zvwl;
-                document.getElementById("wgl").innerHTML = 'werkgeverslasten : ' + '&euro;' + wgl;
-                document.getElementById("wgl-wab-laag").innerHTML = 'werkgeverslasten - wab laag : ' + '&euro;' + wgl_wabLaag;
+                document.getElementById("wgl-wab-laag").innerHTML = 'wab laag : ' + '&euro;' + wgl_wabLaag;
+                document.getElementById("wgl").innerHTML = 'wab hoog : ' + '&euro;' + wgl + '&nbsp; (23.22%)';
       
               });
       
