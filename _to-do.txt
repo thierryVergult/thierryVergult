@@ -1,9 +1,5 @@
 * plotly sunBurst
-  - no sorting : pull request pending
-  - extra angle (+90gr) : propose pull request
+  - no sorting : wait for new release
+  - extra angle (+90gr) : pull request pending
   - opacity bug when no 2nd level : log issue
   - real 2020 figures
-* knaak
-  - tax nl
-    1. google sheet sql layer
-    2. postgres rest service

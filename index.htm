@@ -244,7 +244,7 @@
       </div>
 
       <div class='card'>
-        <div class='header'>nl tax</div>
+        <div class='header'>nl tax - knaak</div>
         <div class='article'>
           <p>Bereken loonheffing</p>
           <ul>
@@ -254,12 +254,16 @@
             <li>woonland Nederland
           </ul>
           <br>
-          <p>bruto loon
+          <p>uniform loon
             <input type="number" id="brutoLoon" name="brutoLoon" min="0" max="999999" onchange="nlTax(value)">
             <br><br>
-            <div style="margin-bottom: 10px;">inhouding loonheffing</div>
-            <div id="tax01" style="margin-left: 20px;"><i class="fa fa-question"></i></div>
-            <div id="tax02" style="margin-left: 20px;"><i class="fa fa-question"></i></div>
+            <ul style="margin-bottom: 10px;">
+              <li id="tax01" style="margin-left: 20px;"><i class="fa fa-question"></i>
+              <li id="tax02" style="margin-left: 20px;"><i class="fa fa-question"></i>
+              <li id="zvwl" style="margin-left: 20px;"><i class="fa fa-question"></i>
+              <li id="wgl" style="margin-left: 20px;"><i class="fa fa-question"></i>
+              <li id="wgl-wab-laag" style="margin-left: 20px;"><i class="fa fa-question"></i>
+            </ul>
           </p>
 
           <br>
@@ -280,12 +284,18 @@
                 console.log( '1 line csv from google sheet: ' + data);
                 var taxValues = data.split(',');
                 
-                var tax_zonder_lhk = parseInt(taxValues[0].replace( /"/g, ''));
-                var tax_met_lhk = parseInt(taxValues[1].replace( /"/g, ''));
+                var tax_zonder_lhk = taxValues[0].replace( /"/g, '');
+                var tax_met_lhk = taxValues[1].replace( /"/g, '');
+                var zvwl = (Math.round( brutoLoon * 0.0545 * 100) / 100).toFixed(2);
+                var wgl = (Math.round( brutoLoon * 0.2322 * 100) / 100).toFixed(2);
+                var wgl_wabLaag = (Math.round( brutoLoon * ( 0.2322 - 0.05) * 100) / 100).toFixed(2);
                 //console.log( tax_zonder_lhk + ' - ' + tax_met_lhk + ' : delta=' + (tax_zonder_lhk - tax_met_lhk));
       
-                document.getElementById("tax01").innerHTML = 'zonder loonheffingskorting : ' + tax_zonder_lhk;
-                document.getElementById("tax02").innerHTML = 'met loonheffingskorting : ' + tax_met_lhk; 
+                document.getElementById("tax01").innerHTML = 'loonheffing, zonder loonheffingskorting : ' + '&euro;' + tax_zonder_lhk;
+                document.getElementById("tax02").innerHTML = 'loonheffing, met loonheffingskorting : ' + '&euro;' + tax_met_lhk;
+                document.getElementById("zvwl").innerHTML = 'inhouding zvw : ' + '&euro;' + zvwl;
+                document.getElementById("wgl").innerHTML = 'werkgeverslasten : ' + '&euro;' + wgl;
+                document.getElementById("wgl-wab-laag").innerHTML = 'werkgeverslasten - wab laag : ' + '&euro;' + wgl_wabLaag;
       
               });
       
