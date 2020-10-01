@@ -1,5 +1,3 @@
 * plotly sunBurst
-  - no sorting : wait for new release
   - extra angle (+90gr) : pull request pending
   - opacity bug when no 2nd level : log issue
-  - real 2020 figures
