@@ -54,7 +54,7 @@
   
   <body>
     <div class='container'>
-      <div class='card'>
+      <div class='card'  id='welcome'>
         <div class='header'>welcome</div>
         <div class='article'>
           <div>Opayra is the company behind Thierry Vergult.</div>
@@ -63,7 +63,7 @@
         </div>
       </div>
       
-      <div class='card'>
+      <div class='card' id='admin'>
         <div class='header'>admin</div>
         <div class='article'>
           <i class="fa fa-pencil fa-2x"></i>
@@ -77,7 +77,7 @@
         </div>
       </div>
       
-      <div class='card'>
+      <div class='card' id='now'>
         <div class='header'>now</div>
         <div class='article'>
           <i class="fa fa-calculator fa-2x"></i>
@@ -90,7 +90,7 @@
         </div>
       </div>
       
-      <div class='card'>
+      <div class='card' id='blog'>
         <script>
           function handleBloggerResponse(response) {
             
@@ -121,7 +121,7 @@
         <script src="https://www.googleapis.com/blogger/v3/blogs/5750484/posts?callback=handleBloggerResponse&key=AIzaSyDqfppxCtpfDu-e8RVkcR4KF6Nt_6SU548"></script>
       </div>
       
-      <div class='card'>
+      <div class='card' id='headcount'>
         <div class='header'>headcount visualisation</div>
         <div class='article'>
           <div>
@@ -131,7 +131,7 @@
         </div>
       </div>
 
-      <div class='card'>
+      <div class='card' id='payslip'>
         <style>
           input[type='radio']:checked:after {
             width: 15px;
@@ -180,7 +180,7 @@
                       colors: [ "#009FC2","#91cd97","#f25752"]
                     },
             branchvalues: 'total',
-            sort: false
+            sort: false // hey hey, this is mine
           }];
           
           var layout = {
@@ -199,7 +199,7 @@
         </script>
       </div>
 
-      <div class='card'>
+      <div class='card' id='africa'>
           <link rel="stylesheet" href="./assets/map.css">
   
           <script src="//cdnjs.cloudflare.com/ajax/libs/d3/6.1.1/d3.min.js"></script>
@@ -212,7 +212,7 @@
         </div>
       </div>
       
-      <div class='card'>
+      <div class='card' id='apex'>
         <div class='header'>apex on apps</div>
         <div class='article'>
           <a href="http://sites.google.com/a/popay.be/apex-on-apps/integration" target="_blank">More info</a>
@@ -230,7 +230,7 @@
         </div>
       </div>
 
-      <div class='card'>
+      <div class='card' id='techno'>
         <div class='header'>techno</div>
         <div class='article'>
           <ul class="fa-ul">
@@ -244,7 +244,7 @@
         </div>
       </div>
 
-      <div class='card'>
+      <div class='card' id='knaak'>
         <div class='header'>nl tax - knaak</div>
         <div class='article'>
           <p>Bereken loonheffing &amp; sv premies</p>
