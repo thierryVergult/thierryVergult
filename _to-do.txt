@@ -1,6 +1,4 @@
 * plotly sunBurst
   - extra angle (+90gr) : pull request pending
-  - chck sort animation bug?
-  - opacity bug when no 2nd level : log issue
   - many treemap thingies
 
