@@ -1,4 +1,4 @@
-* plotly sunBurst
+* plotly
   - extra angle (+90gr) : pull request pending
   - many treemap thingies
 

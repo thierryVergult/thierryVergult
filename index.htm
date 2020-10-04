@@ -1,10 +1,9 @@
-
 <!doctype html> <html lang=en>
   <head> <meta charset=utf-8>
     
     <title>opayra</title>
     
-    <meta name="description" content="opayra thierry vergult popay">
+    <meta name="description" content="opayra thierry vergult popay ebs oracle ebusiness suite">
     
     <meta name="viewport" content="width=device-width">
     <meta name="mobile-web-app-capable" content="yes">
@@ -15,7 +14,7 @@
     <style>
       /* global css variable */
       :root {
-        --popay-blue: #009FC2;
+        --main-color: #009FC2;
       }
       
       .container {
@@ -29,17 +28,17 @@
       .card > .header {
         color: white;
         font-weight: bold;
-        background-color: var( --popay-blue);
+        background-color: var( --main-color);
         padding: 20px;
       }
       
       .card .article {
-        color: var( --popay-blue);
+        color: var( --main-color);
         padding: 20px;
       }
       
       .card a {
-        color: var( --popay-blue);
+        color: var( --main-color);
         font-weight: bold;
         text-decoration: inherit;
       }
@@ -58,8 +57,13 @@
         <div class='header'>welcome</div>
         <div class='article'>
           <div>Opayra is the company behind Thierry Vergult.</div>
-          <p>HR &amp; Payroll expertise since 1998. Project management - technical development - functional design.</p>
-          <p>And rolling out projects in Europe and Africa since.</p>
+          <p>HR &amp; Payroll expertise since 1998.
+          <ul class="fa-ul">
+            <li><i class="fa-li fa fa-check-square-o"></i>project management</li>
+            <li><i class="fa-li fa fa-check-square-o"></i>technical development</li>
+            <li><i class="fa-li fa fa-check-square-o"></i>functional design</li>
+          </ul>
+          <p>And rolling out projects in Europe and <a href="#africa">Africa</a> since.</p>
         </div>
       </div>
       
@@ -139,7 +143,7 @@
             top: -6px;
             left: -8px;
             position: relative;
-            background-color: var( --popay-blue);
+            background-color: var( --main-color);
             content: '';
             display: inline-block;
             visibility: visible;
