@@ -1,4 +1,10 @@
 * plotly
-  - extra angle (+90gr) : pull request pending
-  - many treemap thingies
+  - sunburst
+    - extra angle (+90gr) : pull request pending
+  - treemap
+    - on browser : hover - stroke
+    - sort ?
+    - zvw text orientation
+    - opacity not going down, cf sunburst
+  - move headcount picture to plotly.js
 
