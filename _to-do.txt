@@ -1,10 +1,9 @@
 * plotly
-  - sunburst
-    - extra angle (+90gr) : pull request pending
   - treemap
     - on browser : hover - stroke
-    - sort ?
+    - sort (cf. sunburst)
     - zvw text orientation
     - opacity not going down, cf sunburst
+    - disable drill down on latest level (cf sunburst)
   - move headcount picture to plotly.js
 

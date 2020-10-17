@@ -169,15 +169,19 @@
           function show_payslip( traceType) {
             //console.log( traceType);
             data[0].type = traceType;
+
+            if (traceType == 'treemap') {
+              data[0].labels[0] = 'Uniform loon';
+            }
             Plotly.newPlot( 'payBurst', data, layout, config);
           }
 
           var data = [{
             type: "sunburst",
             ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
-            labels: [ "Vergoedingen", "netto", "Inhoudingen", "Gewerkte<br>uren", "Maandloon", "zvw", "loonheffing", " "],
+            labels: [ "Uniform<br>loon", "netto", "Inhoudingen", "Maandloon", "Gewerkte<br>uren", "zvw", "loonheffing", " "],
             parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
-            values:  [2000, 1144.83, 855.17, 500, 1500, 109.00, 746.17, 1144.83],
+            values:  [2000, 1144.83, 855.17, 1500, 500, 109.00, 746.17, 1144.83],
             outsidetextfont: {size: 20, color: "#377eb8"},
             leaf: {opacity: 0.7},
             marker: {
@@ -186,7 +190,8 @@
                     },
             branchvalues: 'total',
             textposition: 'middle center',
-            sort: false // hey hey, this is mine
+            sort: false, // hey hey, this is mine
+            rotation: 90 // hey hey
           }];
           
           var layout = {
