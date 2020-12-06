@@ -31,6 +31,19 @@
         background-color: var( --main-color);
         padding: 20px;
       }
+
+      .card > .header > .note-right {
+        float: right;
+        color: var( --main-color);
+        font-weight: bold;
+        background-color: white;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 4px;
+        padding-bottom: 2px;
+        margin-top: -4px;
+        border-radius: 10px;
+      }
       
       .card .article {
         color: var( --main-color);
@@ -257,12 +270,13 @@
       </div>
 
       <div class='card' id='knaak'>
-        <div class='header'>nl tax - knaak</div>
+        <div class='header'>nl tax - knaak
+          <span id="taxYear" class="note-right" onclick="flipYear()">2020</span>
+        </div>
         <div class='article'>
           <p>Bereken loonheffing &amp; sv premies</p>
           <ul>
             <li>witte maandtabel
-            <li>2020
             <li>jonger dan de AOW leeftijd
             <li>woonland Nederland
           </ul>
@@ -292,6 +306,18 @@
           <i>sql-webservice on a public google sheet.</i>
           
           <script>
+
+            function flipYear() {
+              var taxY = Number( document.getElementById("taxYear").innerText);
+              
+              if (taxY == 2020) {
+                taxY = 2021;
+              } else {
+                taxY = 2020;
+              }
+              document.getElementById("taxYear").innerHTML = taxY;
+            }
+
             function euro2id( id, txt, amount, plus) {
               var extra = '';
               if (plus) {
