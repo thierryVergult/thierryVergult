@@ -8,7 +8,5 @@
   - move headcount picture to plotly.js
 
 * knaak
-  - guess year from note
   - sv percentages : add year logic
   - sql : fill year table at google sheet
-  - sql : make year dynamic (sheet)
