@@ -293,7 +293,7 @@
               <li>sv bedragen
               <ul>
                 <li id="zvwl"><i class="fa fa-question"></i>
-                <li>werkgeverslasten &nbsp; &nbsp; <small><small>23.22%</small></small>
+                <li>werkgeverslasten &nbsp; &nbsp; <small><small id="id-sv-er-pct"></small></small>
                 <ul>
                   <li id="wgl-wab-laag"><i class="fa fa-question"></i>
                   <li id="wgl"><i class="fa fa-question"></i>
@@ -308,6 +308,47 @@
           <script>
             // set tax year, based upon current year
             document.getElementById("taxYear").innerHTML = new Date().getFullYear();
+
+            // query the nl calc year values
+
+            opayra = {};
+
+            var queryString = encodeURIComponent('SELECT A, B, C, D, E, F, G ');
+            var url = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:csv&range=A2:G3' 
+                    + '&sheet=param' 
+                    + '&tq=' + queryString;
+      
+            console.log( 'url to google sheet with param sql:'+ url);
+      
+            fetch( url)
+            .then( response => response.text())
+            .then( function (csvData) {
+              console.log( 'param data from google sheet below');
+              console.log( csvData);
+              
+              opayra.csvParam = csvData.split("\n");
+
+              opayra.y = [];
+
+              for (i=0 ; i < opayra.csvParam.length; i++) {
+                var oneYear = opayra.csvParam[i].split(',');
+                //console.log( oneYear);
+
+                var y0 = parseInt( oneYear[0].replace( /"/g, ''));
+                //console.log( y0);
+
+                opayra.y[y0] = {};
+
+                opayra.y[y0].zvw_ee = parseFloat( oneYear[1].replace( /"/g, ''));
+                opayra.y[y0].sv_er = parseFloat( oneYear[2].replace( /"/g, ''));
+                opayra.y[y0].sv_max = parseFloat( oneYear[3].replace( /"/g, ''));
+                opayra.y[y0].delta_wab = parseInt( oneYear[4].replace( /"/g, ''));
+                opayra.y[y0].tax_max_in_tab = parseInt( oneYear[5].replace( /"/g, ''));
+                opayra.y[y0].pct_tax_over_max = parseFloat( oneYear[6].replace( /"/g, ''));
+
+              }
+
+            });
             
             function flipYear() {
               var taxY = Number( document.getElementById("taxYear").innerText);
@@ -359,8 +400,8 @@
 
                 var taxPlus = false;
 
-                const taxMax = 8235;
-                const taxPctOverMax = 49.5 / 100;
+                const taxMax = opayra.y[year].tax_max_in_tab;
+                const taxPctOverMax = opayra.y[year].pct_tax_over_max / 100;
 
                 if ( brutoLoon > taxMax) {
                   tax_zonder_lhk = tax_zonder_lhk + (brutoLoon - taxMax) * taxPctOverMax;
@@ -371,10 +412,10 @@
                 euro2id( 'tax01', 'geen loonheffingskorting', tax_zonder_lhk, taxPlus);
                 euro2id( 'tax02', 'met loonheffingskorting', tax_met_lhk, taxPlus);
 
-                const svMaxMonthBase = 4769.33;
-                const pctZvwl = 5.45 / 100;
-                const pctWgl = 23.22 / 100;
-                const deltaWabLaag = 5 / 100;
+                const svMaxMonthBase = opayra.y[year].sv_max;
+                const pctZvwl = opayra.y[year].zvw_ee / 100;
+                const pctWgl = opayra.y[year].sv_er / 100;
+                const deltaWabLaag = opayra.y[year].delta_wab / 100;
 
                 svLoon = brutoLoon;
                 svPlus = false;
@@ -390,6 +431,8 @@
                 euro2id( 'zvwl', 'inhouding zvw', zvwl, svPlus);
                 euro2id( 'wgl-wab-laag', 'wab laag', wgl_wabLaag, svPlus);
                 euro2id( 'wgl', 'wab hoog', wgl, svPlus);
+
+                document.getElementById('id-sv-er-pct').innerHTML = opayra.y[year].sv_er + "%"
       
               });
       

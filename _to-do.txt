@@ -7,6 +7,3 @@
     - disable drill down on latest level (cf sunburst)
   - move headcount picture to plotly.js
 
-* knaak
-  - sv percentages : add year logic
-  - sql : fill year table at google sheet
