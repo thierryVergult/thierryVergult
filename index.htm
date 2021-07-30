@@ -432,7 +432,7 @@
                 euro2id( 'wgl-wab-laag', 'wab laag', wgl_wabLaag, svPlus);
                 euro2id( 'wgl', 'wab hoog', wgl, svPlus);
 
-                document.getElementById('id-sv-er-pct').innerHTML = opayra.y[year].sv_er + "%"
+                document.getElementById('id-sv-er-pct').innerHTML = opayra.y[year].sv_er + "%" + ( year == 2021 ? " (aug)" : "");
       
               });
       
