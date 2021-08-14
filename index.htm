@@ -476,14 +476,14 @@
             /* border: 1px white solid; */
           }
     
-          .sketchy {
+          .sketchyX {
             /* thanks, https://webartdevelopers.com/blog/sketchy-border/ */
             border: 2px solid grey;
             font-size: 2.5rem;
             border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
           }
     
-          .sketchy::before {
+          .sketchyX::before {
                 content: '';
                 border: 2px solid grey;
                 display: block;
@@ -550,9 +550,9 @@
           @keyframes aniBack {
             0%   { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
             10%  { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            25%  { width:24px; transform: translateX(60px) rotateY(180deg) skewY(30deg) translateY( 86px); } /**/
-            50%  { width:26px; transform: translateX(62px) rotateY(180deg) skewY( 0deg) translateY( 84px); } /**/
-            75%  { width:24px; transform: translateX(60px) rotateY(180deg) skewY(30deg) translateY( 86px); } /**/
+            25%  { width:24px; transform: translateX(60px) rotateY(180deg) skewY(30deg) translateY( 86px); }
+            50%  { width:30px; transform: translateX(54px) rotateY(180deg) skewY( 0deg) translateY( 86px); }
+            75%  { width:24px; transform: translateX(60px) rotateY(180deg) skewY(30deg) translateY( 86px); }
             90%  { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
             100% { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
           }
