@@ -15,6 +15,7 @@
       /* global css variable */
       :root {
         --main-color: #009FC2;
+        --opposite-color: white;
       }
       
       .container {
@@ -577,6 +578,117 @@
               <div class= "Cright face h2 sketchy"></div>
             </section>
           </div>
+        </div>
+      </div>
+
+      <div class='card' id='techno'>
+        <link rel="stylesheet" href="./assets/candy-bar.css"/>
+        <div class='header'>candy bar</div>
+        <div class='article'>
+          <script src="https://cdn.babylonjs.com/babylon.js"></script>
+          <script src="./assets/meshwriter.min.js"></script>
+          <script src="./assets/opayra.babylon.js"></script>
+          <script src="./assets/candy-bar.js"></script>
+          <script>
+            // opayra = {};
+            opayra.in = {};
+      
+            opayra.algo = {};
+            opayra.algo.yMax = 4;  // to do: fix usage in camera bullseye
+            opayra.algo.X = 0; // to do, including camera, changing this one is now doing nothing. Need to understand, but is potentially very nice
+            opayra.algo.facesMax = 3;
+      
+            opayra.config = {}
+            opayra.config.debug = false;
+            opayra.config.debugTextureBarNr = 2;
+            opayra.config.tooltipPosition = 'pointerNo';
+            
+            opayra.in.title = 'SA employees by group';
+            opayra.in.barLabel = ['zvw', 'wmo', 'jw', 'wlz'];
+            opayra.in.barLabelLong = ['zvw', 'wmo', 'jeugdwet', 'wlz'];
+      
+            opayra.in.face = {};
+            opayra.in.face.color = [];
+            opayra.in.face.color[2] = [ 'grey', 'white', 'blue'];
+      
+            opayra.in.face.catLabel = [];
+            opayra.in.face.catLabel[0] = ['ao', 'ovo'];
+            opayra.in.face.catLabel[1] = ['1.0', '2.0'];
+            opayra.in.face.catLabel[2] = ['maandloon', 'uurloon'];
+            opayra.in.face.catLabel[3] = ['ao bn', 'opting in'];
+      
+            opayra.in.face.category = [];
+            opayra.in.face.category[0] = 'oveeenkomst';  // used in tooltip text
+            opayra.in.face.category[1] = 'systeem';  // used in tooltip text
+            opayra.in.face.category[2] = 'loon';  // used in tooltip text
+            opayra.in.face.category[3] = 'regime';  // used in tooltip text
+      
+            opayra.in.yAxValues = [ 100, 200, 300]; // see if the d3 scale library can do things here
+      
+            opayra.val = {};
+            opayra.val = [];
+      
+            opayra.val[0] = [];
+            opayra.val[0][0] = [40, 170];
+            opayra.val[0][1] = [210];
+            opayra.val[0][2] = [100, 110];
+            opayra.val[0][3] = [150, 60];
+            opayra.val[0][4] = [150, 60];
+      
+            opayra.val[1] = [];
+            opayra.val[1][0] = [100, 100];
+            opayra.val[1][1] = [150, 50];
+            opayra.val[1][2] = [20, 180];
+            opayra.val[1][3] = [150, 50];
+            opayra.val[1][4] = [150, 50];
+      
+            opayra.val[2] = [];
+            opayra.val[2][0] = [60, 260];
+            opayra.val[2][1] = [210,110];
+            opayra.val[2][2] = [150, 170];
+            opayra.val[2][3] = [50, 50, 100, 120];
+            opayra.val[2][4] = [50, 50, 100, 120];
+            
+            opayra.val[3] = [];
+            opayra.val[3][0] = [100, 200];
+            opayra.val[3][1] = [180, 120];
+            opayra.val[3][2] = [100, 250];
+            opayra.val[3][3] = [50, 50, 100, 100];
+            opayra.val[3][4] = [50, 50, 100, 100];
+            
+            opayra.col = ['steelblue', 'red', 'green', 'orange', 'yellow'];
+            
+          </script>
+    
+          <div class="cat-bar-graph">
+            <div class="cat-bar-graph-header">
+              <button type="button" onclick="opayra.rotateBars( { clockwise: false});"><i class="fa fa-lg fa-undo"></i></button>
+              <button type="button" onclick="opayra.rotateBars( { clockwise: true});"><i class="fa fa-lg fa-repeat"></i></button>
+              <span id="candy-bar-graph-header-title">title</span>
+            </div>
+
+            <div class='candy-bar'>
+              <canvas id="opayra-caty-bar-chart"></canvas>
+            </div>
+            
+          </div>
+
+          <script>
+      
+            var canvas = document.getElementById("opayra-caty-bar-chart");
+            var engine = new BABYLON.Engine( canvas, true);
+      
+            var scene = createScene(canvas, engine);
+      
+            engine.runRenderLoop(function () {
+              scene.render();
+            });
+      
+            window.addEventListener("resize", function () {
+              engine.resize();
+            });
+            
+          </script>
         </div>
       </div>
       
