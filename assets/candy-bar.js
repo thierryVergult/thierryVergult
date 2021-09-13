@@ -194,7 +194,7 @@ function oneBar(b, scene) {
   bar.edgesWidth = 4;
   bar.edgesColor = new BABYLON.Color4(1, 1, 1, 0.5);
 
-  // on click / pick : sets the brPicked state
+  // on click / pick : sets the barPicked state
   
   const onpickAction = new BABYLON.ExecuteCodeAction(
     BABYLON.ActionManager.OnPickTrigger,
@@ -304,6 +304,7 @@ function createScene( canvas, engine) {
   opayra.bgColor = new BABYLON.Color3(0.85, 0.85, 0.85); // lightgrey
   
   opayra.barPicked = false;
+  opayra.tooltipBarFaceCat = 0;
 
   const scene = new BABYLON.Scene(engine);
   scene.clearColor = opayra.bgColor;
@@ -352,12 +353,19 @@ function createScene( canvas, engine) {
             faceLabel = opayra.in.face.catLabel[faceNr][rectangleNr] || ( 'face ' + faceNr ),
             value = opayra.val[barNr][faceNr][rectangleNr];
 
-        tooltip.innerHTML = ( opayra.in.barLabelLong[barNr] || opayra.in.barLabel[barNr] )
-                          + '<br>'
-                          + opayra.in.face.category[faceNr] + ': ' + faceLabel
-                          + '<br>' 
-                          + value.toFixed(2);  // make the 2 positions to fixed maybe dynamic, 0, or 2, can be decided when scanning the input numbers
-      
+        if (opayra.tooltipBarFaceCat == (barNr* 100) + (faceNr*10) + rectangleNr) {
+          opayra.tooltipBarFaceCat = 0;
+          opayra.barPicked = false;
+
+        } else {
+          opayra.tooltipBarFaceCat = (barNr* 100) + (faceNr*10) + rectangleNr;
+
+          tooltip.innerHTML = ( opayra.in.barLabelLong[barNr] || opayra.in.barLabel[barNr] )
+                            + '<br>'
+                            + opayra.in.face.category[faceNr] + ': ' + faceLabel
+                            + '<br>' 
+                            + value.toFixed(2);  // make the 2 positions to fixed maybe dynamic, 0, or 2, can be decided when scanning the input numbers
+        }
       }
     }
   }
@@ -398,7 +406,7 @@ function createScene( canvas, engine) {
     }
     // to do: when clicking one again in the same "region", hide the tooltip
 
-    if (opayra.barPicked) {
+    if (opayra.barPicked && opayra.tooltipBarFaceCat > 0) {
       tooltip.style.visibility= 'visible';
       opayra.barPicked = false;
     }
