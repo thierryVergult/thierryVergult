@@ -194,7 +194,7 @@ function oneBar(b, scene) {
   bar.edgesWidth = 4;
   bar.edgesColor = new BABYLON.Color4(1, 1, 1, 0.5);
 
-  // on click / pick : adds the hand pointer symbol to the bar. Later used to identify if the click on the canvas is on a bar
+  // on click / pick : sets the brPicked state
   
   const onpickAction = new BABYLON.ExecuteCodeAction(
     BABYLON.ActionManager.OnPickTrigger,
@@ -203,10 +203,8 @@ function oneBar(b, scene) {
         
         if (boxClick) {
           console.log( 'action picked: ' + boxClick.name);
+          opayra.barPicked = true;
         }
-        /* console.log( evt); */
-        
-        /* console.log( 'action:' + picked.faceId); */
       }
     );
   
@@ -304,6 +302,8 @@ function createScene( canvas, engine) {
   //console.log( opayra.max);
 
   opayra.bgColor = new BABYLON.Color3(0.85, 0.85, 0.85); // lightgrey
+  
+  opayra.barPicked = false;
 
   const scene = new BABYLON.Scene(engine);
   scene.clearColor = opayra.bgColor;
@@ -334,8 +334,10 @@ function createScene( canvas, engine) {
     xStart : opayra.algo.X
   });
 
-  scene.onPointerPick = function(e, picked){
-    if(picked.hit ){
+  scene.onPointerPick = function(e, picked) {
+
+    if(picked.hit ) {
+      
       if ( (picked.pickedMesh.name.substr(0,3) == 'bar') && ( picked.faceId < ( opayra.faces * 2)) ) {
         //console.log(picked);
         console.log( 'pointer picked:' + picked.pickedMesh.name + ':' 
@@ -396,8 +398,9 @@ function createScene( canvas, engine) {
     }
     // to do: when clicking one again in the same "region", hide the tooltip
 
-    if (canvas.style.cursor == 'pointer') {
+    if (opayra.barPicked) {
       tooltip.style.visibility= 'visible';
+      opayra.barPicked = false;
     }
     else {
       tooltip.style.visibility= 'hidden';
