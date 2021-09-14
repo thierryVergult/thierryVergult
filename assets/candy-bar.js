@@ -211,7 +211,7 @@ function oneBar(b, scene) {
   bar.actionManager = new BABYLON.ActionManager(scene);
   bar.actionManager.registerAction(onpickAction);  
   
-  // bar primary category label
+  // show primary category label under the bar
   let Writer = BABYLON.MeshWriter(scene, {scale: 1});
   
   let catLabel = new Writer(
@@ -222,7 +222,7 @@ function oneBar(b, scene) {
       "letter-thickness": 0.02,
       "color": "#808080", // grey  // "#FFFFFF" : white
       "position": {
-        "x": opayra.algo.X -.25 + b + ( (b+1) * 0.1),
+        "x": opayra.algo.X - 0.0 + b + ( (b+1) * 0.00),  // to do: find better algo, or other solution (vertical?) in case of longer labels
         "y": -0.25,
         "z": -0.75
       }
@@ -304,7 +304,7 @@ function createScene( canvas, engine) {
   opayra.bgColor = new BABYLON.Color3(0.85, 0.85, 0.85); // lightgrey
   
   opayra.barPicked = false;
-  opayra.tooltipBarFaceCat = 0;
+  opayra.tooltipBarFaceCat = -1;
 
   const scene = new BABYLON.Scene(engine);
   scene.clearColor = opayra.bgColor;
@@ -354,7 +354,7 @@ function createScene( canvas, engine) {
             value = opayra.val[barNr][faceNr][rectangleNr];
 
         if (opayra.tooltipBarFaceCat == (barNr* 100) + (faceNr*10) + rectangleNr) {
-          opayra.tooltipBarFaceCat = 0;
+          opayra.tooltipBarFaceCat = -1;
           opayra.barPicked = false;
 
         } else {
@@ -406,7 +406,7 @@ function createScene( canvas, engine) {
     }
     // to do: when clicking one again in the same "region", hide the tooltip
 
-    if (opayra.barPicked && opayra.tooltipBarFaceCat > 0) {
+    if (opayra.barPicked && opayra.tooltipBarFaceCat >= 0) {
       tooltip.style.visibility= 'visible';
       opayra.barPicked = false;
     }

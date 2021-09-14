@@ -603,24 +603,24 @@
             opayra.config.debugTextureBarNr = 2;
             opayra.config.tooltipPosition = 'pointerNo';
             
-            opayra.in.title = 'SA employees by law';
-            opayra.in.barLabel = ['zvw', 'wmo', 'jw', 'wlz'];
-            opayra.in.barLabelLong = ['zvw', 'wmo', 'jeugdwet', 'wlz'];
+            opayra.in.title = 'employees by department';
+            opayra.in.barLabel = ['sal', 'off', 'r&d', 'prd'];
+            opayra.in.barLabelLong = ['sales', 'back office', 'r&d', 'production'];
       
             opayra.in.face = {};
             opayra.in.face.color = [];
             opayra.in.face.color[2] = [ 'lightgreen', 'lightblue'];
       
             opayra.in.face.catLabel = [];
-            opayra.in.face.catLabel[0] = ['ao', 'ovo'];
-            opayra.in.face.catLabel[1] = ['1.0', '2.0'];
-            opayra.in.face.catLabel[2] = ['maandloon', 'uurloon'];
+            opayra.in.face.catLabel[0] = ['male', 'female'];
+            opayra.in.face.catLabel[1] = ['home', 'office'];
+            opayra.in.face.catLabel[2] = ['-30', '30+'];
             opayra.in.face.catLabel[3] = ['ao bn', 'opting in'];
       
             opayra.in.face.category = [];
-            opayra.in.face.category[0] = 'oveeenkomst';  // used in tooltip text
-            opayra.in.face.category[1] = 'systeem';  // used in tooltip text
-            opayra.in.face.category[2] = 'loon';  // used in tooltip text
+            opayra.in.face.category[0] = 'gender';  // used in tooltip text
+            opayra.in.face.category[1] = 'works from';  // used in tooltip text
+            opayra.in.face.category[2] = 'age group';  // used in tooltip text
             opayra.in.face.category[3] = 'regime';  // used in tooltip text
       
             opayra.in.yAxValues = [ 100, 200, 300]; // see if the d3 scale library can do things here
