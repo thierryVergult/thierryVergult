@@ -174,7 +174,7 @@
         <div class='header'>payslip visualisation</div>
         <div class='article'>
           <label for="sunburst"></label><input type="radio" name="trace" value="sunburst" onclick="show_payslip(value);" checked="checked">sunburst</label>
-          <label for="treemap"></label><input type="radio" name="trace" value="treemap"  onclick="show_payslip(value);">treemap</label>
+          <label for="treemap"> </label><input type="radio" name="trace" value="treemap"  onclick="show_payslip(value);">treemap</label>
 
           <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
         </div>
@@ -581,8 +581,17 @@
         </div>
       </div>
 
-      <div class='card' id='techno'>
+      <div class='card' id='candy-bar'>
         <link rel="stylesheet" href="./assets/candy-bar.css"/>
+        <style>
+          .cat-bar-graph-header input[name='candy-sub-cat']:after {
+            left: -5px;
+          }
+          .cat-bar-graph-header label {
+            margin-left: 5px;
+          }
+        </style>
+
         <div class='header'>candy bar</div>
         <div class='article'>
           <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -619,7 +628,7 @@
       
             opayra.in.face.category = [];
             opayra.in.face.category[0] = 'gender';  // used in tooltip text
-            opayra.in.face.category[1] = 'works from';  // used in tooltip text
+            opayra.in.face.category[1] = 'workplace';  // used in tooltip text
             opayra.in.face.category[2] = 'age group';  // used in tooltip text
             opayra.in.face.category[3] = 'regime';  // used in tooltip text
       
@@ -665,6 +674,13 @@
               <button type="button" onclick="opayra.rotateBars( { clockwise: false});"><i class="fa fa-lg fa-undo"></i></button>
               <button type="button" onclick="opayra.rotateBars( { clockwise: true});"><i class="fa fa-lg fa-repeat"></i></button>
               <span id="candy-bar-graph-header-title">title</span>
+              
+              <div style='margin-left: 25%;'>
+                <div><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" checked><label for="candy-sub-cat1">by gender   </label></div>
+                <div><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2"><label for="candy-sub-cat2">by workplace</label></div>
+                <div><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat"><label for="candy-sub-cat3">by age group</label></div>
+              </div>
+              
             </div>
 
             <div class='candy-bar'>
