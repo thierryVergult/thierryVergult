@@ -60,7 +60,12 @@ opayra.recreateScene = function( nrOfFaces) {
   scene.dispose();
   opayra.algo.facesMax = nrOfFaces;
   scene = createScene(canvas, engine);
+
+  opayra.FaceNrInFront = 0;
   // console.log('recreate scene for faces=' + nrOfFaces);
+
+  // redo later
+  document.getElementById('candy-sub-cat4').parentNode.style.display = ( nrOfFaces == 4 ? 'inline' : 'none' );
 };
 
 opayra.rotateBarsRadio = function(p) {
