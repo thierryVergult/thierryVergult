@@ -151,7 +151,7 @@
 
       <div class='card' id='payslip'>
         <style>
-          input[type='radio']:checked:after {
+          input[name='trace']:checked:after {
             width: 15px;
             height: 15px;
             top: -6px;
@@ -584,6 +584,36 @@
       <div class='card' id='candy-bar'>
         <link rel="stylesheet" href="./assets/candy-bar.css"/>
 
+        <style>
+          input[name='candy-sub-cat']:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -2px;
+            left: -4px;
+            position: relative;
+            background-color: #d1d3d1;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid white;
+          }
+
+          input[name='candy-sub-cat']:checked:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 5px;
+            top: -2px;
+            left: -4px;
+            position: relative;
+            background-color: var(--main-color);
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid white;
+          }
+        </style>
+
         <div class='header'>candy bar</div>
         <div class='article'>
           <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -602,7 +632,7 @@
             opayra.config = {}
             opayra.config.debug = false;
             opayra.config.debugTextureBarNr = 2;
-            opayra.config.tooltipPosition = 'pointerNo';
+            opayra.config.tooltipPosition = 'pointer';
             
             opayra.in.title = 'employees by department';
             opayra.in.barLabel = ['sal', 'off', 'r&d', 'prd'];
@@ -666,9 +696,9 @@
               <span id="candy-bar-graph-header-title">title</span>
               
               <div class="cat-bar-graph-header-subcategories">
-                <label for="candy-sub-cat1"></label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { barNr: 0});">by gender</label>
-                <label for="candy-sub-cat2"></label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { barNr: 1});">by workplace</label>
-                <label for="candy-sub-cat3"></label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { barNr: 2});">by age group</label>
+                <label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { barNr: 0});">by gender</label>
+                <label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { barNr: 1});">by workplace</label>
+                <label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { barNr: 2});">by age group</label>
               </div>
               
             </div>
