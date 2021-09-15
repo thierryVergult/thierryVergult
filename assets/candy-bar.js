@@ -36,14 +36,14 @@ function setCamera(scene) {
 
 function defineAnimation() {
 
-  // define an animation to rotate the caty bars
+  // define an animation to rotate the candy bars around the Y axis
   opayra.animBox = new BABYLON.Animation(
-    "boxAnimation", 
-    "rotation.y", 
-    30, 
-    BABYLON.Animation.ANIMATIONTYPE_FLOAT, 
-    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
-    );
+    "boxAnimation", // name
+    "rotation.y", // property to animate
+    30, // frames per second
+    BABYLON.Animation.ANIMATIONTYPE_FLOAT, // datatype
+    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE // loopmode
+  );
 
   opayra.animKeys = [];
 
@@ -56,13 +56,48 @@ function defineAnimation() {
 }
 
 opayra.rotateBars = function(p) {
-  const gradians = 2 * Math.PI / opayra.faces;
+  const radiansDelta = 2 * Math.PI / opayra.faces;
 
   opayra.animKeys[0].value = opayra.bar[0].rotation.y;
-  opayra.animKeys[1].value = opayra.bar[0].rotation.y + (gradians * ( p.clockwise ? 1 : -1));
+  opayra.animKeys[1].value = opayra.bar[0].rotation.y + (radiansDelta * ( p.clockwise ? 1 : -1));
 
   for ( i = 0; i < opayra.in.bar.length; i++){
-    scene.beginAnimation( opayra.bar[i], 0, 30, false);
+    // beginAnimation parameters : target, theBabylon.js object to be animated ; from, number, the frame at which to start the animation ; to : the frame at which to end the animation
+    // so animation of one second, since frames per second is set to 30
+    scene.beginAnimation( opayra.bar[i], 0, 30);
+  }
+
+};
+
+opayra.rotateBarsRadio = function(p) {
+
+  var turns = p.barNr - ( opayra.FaceNrInFront || 0);
+  
+  // when the number of turns are less than half the number of faces, just do these turns
+  // if not, turn the other way
+  //   number of turns in the opposite side = number of faces - turns
+  //   and flip the sign (direction)
+
+  if (Math.abs(turns) > opayra.faces / 2) {
+    turns = ( opayra.faces - Math.abs(turns)) * Math.sign(turns) * -1;
+  }
+
+  console.log('radio ' + p.barNr + ' ; turns : ' + turns);
+  
+  // Delta for one turn is a full circle divided by the number of angles of the polygon
+  // multiply then by the number of turns of faces
+  const radiansDelta = 2 * Math.PI / opayra.faces * turns;  
+
+  opayra.FaceNrInFront = p.barNr;
+  
+  // set the animation key values : start from the actual position of the rotation along the Y axis, and add the just calculated delta
+  opayra.animKeys[0].value = opayra.bar[0].rotation.y;
+  opayra.animKeys[1].value = opayra.bar[0].rotation.y + radiansDelta;
+
+  for ( i = 0; i < opayra.in.bar.length; i++){
+    // beginAnimation parameters : target, theBabylon.js object to be animated ; from, number, the frame at which to start the animation ; to : the frame at which to end the animation
+    // so animation of one second, since frames per second is set to 30 in the definition of this animation
+    scene.beginAnimation( opayra.bar[i], 0, 30);
   }
 
 };
@@ -290,6 +325,8 @@ function createScene( canvas, engine) {
   }
 
   opayra.faces = opayra.in.bar[0].length;
+
+  document.getElementById('candy-sub-cat1').checked = true;
 
 
   opayra.total = [];

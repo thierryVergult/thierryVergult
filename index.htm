@@ -583,14 +583,6 @@
 
       <div class='card' id='candy-bar'>
         <link rel="stylesheet" href="./assets/candy-bar.css"/>
-        <style>
-          .cat-bar-graph-header input[name='candy-sub-cat']:after {
-            left: -5px;
-          }
-          .cat-bar-graph-header label {
-            margin-left: 5px;
-          }
-        </style>
 
         <div class='header'>candy bar</div>
         <div class='article'>
@@ -671,14 +663,12 @@
     
           <div class="cat-bar-graph">
             <div class="cat-bar-graph-header">
-              <button type="button" onclick="opayra.rotateBars( { clockwise: false});"><i class="fa fa-lg fa-undo"></i></button>
-              <button type="button" onclick="opayra.rotateBars( { clockwise: true});"><i class="fa fa-lg fa-repeat"></i></button>
               <span id="candy-bar-graph-header-title">title</span>
               
-              <div style='margin-left: 25%;'>
-                <div><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" checked><label for="candy-sub-cat1">by gender   </label></div>
-                <div><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2"><label for="candy-sub-cat2">by workplace</label></div>
-                <div><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat"><label for="candy-sub-cat3">by age group</label></div>
+              <div class="cat-bar-graph-header-subcategories">
+                <label for="candy-sub-cat1"></label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { barNr: 0});">by gender</label>
+                <label for="candy-sub-cat2"></label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { barNr: 1});">by workplace</label>
+                <label for="candy-sub-cat3"></label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { barNr: 2});">by age group</label>
               </div>
               
             </div>

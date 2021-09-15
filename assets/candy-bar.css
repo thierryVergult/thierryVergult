@@ -1,9 +1,7 @@
-.cat-bar-graph {
-}
-
 .cat-bar-graph-header {
-  margin-bottom: 10px;
   position: relative;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 .cat-bar-graph-header button {
@@ -15,9 +13,12 @@
 }
 
 #candy-bar-graph-header-title {
-  padding-left: 10px;
   color: var(--main-color);
   font-weight: bold;
+}
+
+.cat-bar-graph-header-subcategories {
+  margin-top: 10px;
 }
 
 #opayra-caty-bar-chart {
