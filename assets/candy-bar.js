@@ -62,9 +62,14 @@ opayra.recreateScene = function( nrOfFaces) {
   scene = createScene(canvas, engine);
 
   opayra.FaceNrInFront = 0;
-  // console.log('recreate scene for faces=' + nrOfFaces);
 
-  // redo later
+  opayra.tooltipBarFaceCat = -1;
+  opayra.barPicked = false;
+  
+  var tooltipElement = document.getElementById('candy-bar-tooltip');
+  tooltipElement.remove();
+
+  // redo later, since not generic at all
   document.getElementById('candy-sub-cat4').parentNode.style.display = ( nrOfFaces == 4 ? 'inline' : 'none' );
 };
 
@@ -437,10 +442,7 @@ function createScene( canvas, engine) {
       
       tooltip.style.left = (x-20) + 'px';
       tooltip.style.top  = (y-80) + 'px';
-    } else {
-      console.log( 'tooltip no pointer, fixed dus');
     }
-    // to do: when clicking one again in the same "region", hide the tooltip
 
     if (opayra.barPicked && opayra.tooltipBarFaceCat >= 0) {
       tooltip.style.visibility= 'visible';
