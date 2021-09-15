@@ -614,7 +614,14 @@
           }
         </style>
 
-        <div class='header'>candy bar</div>
+        <div class='header'>candy bar
+          <div style='float:right;'>
+            <span>sub-categories &nbsp;</span>
+            <label><input type="radio" id="candy-face3" name="candy-faces" value="3" onclick="opayra.recreateScene(3);">3</label>
+            <label><input type="radio" id="candy-face3" name="candy-faces" value="4" onclick="opayra.recreateScene(4);" checked>4</label>
+            <label><input type="radio" id="candy-face3" name="candy-faces" value="4" onclick="opayra.recreateScene(5);">5</label>
+          </div>
+        </div>
         <div class='article'>
           <script src="https://cdn.babylonjs.com/babylon.js"></script>
           <script src="./assets/meshwriter.min.js"></script>
@@ -627,7 +634,7 @@
             opayra.algo = {};
             opayra.algo.yMax = 4;  // to do: fix usage in camera bullseye
             opayra.algo.X = 0; // to do, including camera, changing this one is now doing nothing. Need to understand, but is potentially very nice
-            opayra.algo.facesMax = 3;
+            opayra.algo.facesMax = 4;
       
             opayra.config = {}
             opayra.config.debug = false;
@@ -699,6 +706,8 @@
                 <label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { barNr: 0});">&nbsp;by gender</label>
                 <label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { barNr: 1});">&nbsp;by workplace</label>
                 <label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { barNr: 2});">&nbsp;by age group</label>
+                <label><input type="radio" id="candy-sub-cat4" name="candy-sub-cat" value="candy-sub-cat4" onclick="opayra.rotateBarsRadio( { barNr: 3});">&nbsp;by category</label>
+                <label><input type="radio" id="candy-sub-cat5" name="candy-sub-cat" value="candy-sub-cat5" onclick="opayra.rotateBarsRadio( { barNr: 4});">&nbsp;by thing</label>
               </div>
               
             </div>
@@ -712,7 +721,6 @@
       
             var canvas = document.getElementById("opayra-caty-bar-chart");
             var engine = new BABYLON.Engine( canvas, true);
-      
             var scene = createScene(canvas, engine);
       
             engine.runRenderLoop(function () {

@@ -55,18 +55,12 @@ function defineAnimation() {
   opayra.animBox.setKeys(opayra.animKeys);
 }
 
-opayra.rotateBars = function(p) {
-  const radiansDelta = 2 * Math.PI / opayra.faces;
-
-  opayra.animKeys[0].value = opayra.bar[0].rotation.y;
-  opayra.animKeys[1].value = opayra.bar[0].rotation.y + (radiansDelta * ( p.clockwise ? 1 : -1));
-
-  for ( i = 0; i < opayra.in.bar.length; i++){
-    // beginAnimation parameters : target, theBabylon.js object to be animated ; from, number, the frame at which to start the animation ; to : the frame at which to end the animation
-    // so animation of one second, since frames per second is set to 30
-    scene.beginAnimation( opayra.bar[i], 0, 30);
-  }
-
+opayra.recreateScene = function( nrOfFaces) {
+  // scene, canvas & engine are accessible
+  scene.dispose();
+  opayra.algo.facesMax = nrOfFaces;
+  scene = createScene(canvas, engine);
+  // console.log('recreate scene for faces=' + nrOfFaces);
 };
 
 opayra.rotateBarsRadio = function(p) {
