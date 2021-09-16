@@ -1,4 +1,5 @@
 opayra = {};
+opayra.firstTime = true;
 
 function setCamera(scene) {
     
@@ -58,19 +59,26 @@ function defineAnimation() {
 opayra.recreateScene = function( nrOfFaces) {
   // scene, canvas & engine are accessible
   scene.dispose();
+
   opayra.algo.facesMax = nrOfFaces;
-  scene = createScene(canvas, engine);
-
+  
   opayra.FaceNrInFront = 0;
-
+  
   opayra.tooltipBarFaceCat = -1;
   opayra.barPicked = false;
   
   var tooltipElement = document.getElementById('candy-bar-tooltip');
-  tooltipElement.remove();
+  console.log( 'reScene : ' + nrOfFaces + ' tooltip:' + tooltipElement.id);
+  //tooltipElement.style.visibility = 'none';
+  //tooltipElement.parentNode.removeChild(tooltipElement);
+  tooltipElement.remove(); // seems not to work from within a function
+  
+  //console.log( 'reScene : ' + nrOfFaces + ' tooltip:' + tooltipElement.id);
 
   // redo later, since not generic at all
   document.getElementById('candy-sub-cat4').parentNode.style.display = ( nrOfFaces == 4 ? 'inline' : 'none' );
+
+  scene = createScene(canvas, engine);
 };
 
 opayra.rotateBarsRadio = function(p) {
@@ -401,7 +409,7 @@ function createScene( canvas, engine) {
         } else {
           opayra.tooltipBarFaceCat = (barNr* 100) + (faceNr*10) + rectangleNr;
 
-          tooltip.innerHTML = ( opayra.in.barLabelLong[barNr] || opayra.in.barLabel[barNr] )
+          document.getElementById( 'candy-bar-tooltip').innerHTML = ( opayra.in.barLabelLong[barNr] || opayra.in.barLabel[barNr] )
                             + '<br>'
                             + opayra.in.face.category[faceNr] + ': ' + faceLabel
                             + '<br>' 
@@ -432,27 +440,35 @@ function createScene( canvas, engine) {
   var elemLeft = canvas.offsetLeft + canvas.clientLeft,
       elemTop  = canvas.offsetTop + canvas.clientTop;
   
-  canvas.addEventListener('click', function(event) {
-    if (opayra.config.tooltipPosition == 'pointer') {
+  // only add the click event listener on the canvas element the first time we build a scene
+  if (opayra.firstTime)
+  {
+    opayra.firstTime = false;
 
-      var x = event.pageX - elemLeft,
-          y = event.pageY - elemTop;
+    canvas.addEventListener('click', function() {  // removed the event parameter, and used this instead (check later on if this works good)
+      const tooltipInEvent = document.getElementById( 'candy-bar-tooltip');
 
-      console.log( 'canvas click: x: ' + x + ' - y:' + y);
-      
-      tooltip.style.left = (x-20) + 'px';
-      tooltip.style.top  = (y-80) + 'px';
-    }
+      if (opayra.config.tooltipPosition == 'pointer') {
 
-    if (opayra.barPicked && opayra.tooltipBarFaceCat >= 0) {
-      tooltip.style.visibility= 'visible';
-      opayra.barPicked = false;
-    }
-    else {
-      tooltip.style.visibility= 'hidden';
-    }
+        var x = this.pageX - elemLeft,
+            y = this.pageY - elemTop;
+
+        console.log( 'canvas click: x: ' + x + ' - y:' + y);
         
-  }, false);
+        tooltipInEvent.style.left = (x-20) + 'px';
+        tooltipInEvent.style.top  = (y-80) + 'px';
+      }
+      console.log( 'console click : bfc =' + opayra.tooltipBarFaceCat + '  barPicked=' + opayra.barPicked);
+      if (opayra.barPicked && opayra.tooltipBarFaceCat >= 0) {
+        tooltipInEvent.style.visibility= 'visible';
+        opayra.barPicked = false;
+      }
+      else {
+        tooltipInEvent.style.visibility= 'hidden';
+      }
+          
+    }, false);
+  }
 
 return scene;
 
