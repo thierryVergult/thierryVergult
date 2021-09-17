@@ -32,6 +32,16 @@ function setCamera(scene) {
 
   // no lights needed, since all emissive
 
+  // when doing a reScene, reposition the camera 
+  // cf. https://www.babylonjs-playground.com/#HH1U5#87
+
+  if ( opayra.camera) {
+    console.log('reposition camera: alfa: ' + opayra.camera.alpha + ' beta: ' + opayra.camera.beta + ' radius: ' + opayra.camera.radius);
+    camera.beta   = opayra.camera.beta;
+    camera.alpha   = opayra.camera.alpha;
+    camera.radius = opayra.camera.radius;
+  }
+
   opayra.camera = camera; // good for later exploration of 'undocumented' features
 }
 

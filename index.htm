@@ -651,13 +651,13 @@
             opayra.in.face.catLabel[0] = ['male', 'female'];
             opayra.in.face.catLabel[1] = ['home', 'office'];
             opayra.in.face.catLabel[2] = ['-30', '30+'];
-            opayra.in.face.catLabel[3] = ['ao bn', 'opting in'];
+            opayra.in.face.catLabel[3] = ['A', 'B', 'C', 'C+'];
       
             opayra.in.face.category = [];
             opayra.in.face.category[0] = 'gender';  // used in tooltip text
             opayra.in.face.category[1] = 'workplace';  // used in tooltip text
             opayra.in.face.category[2] = 'age group';  // used in tooltip text
-            opayra.in.face.category[3] = 'regime';  // used in tooltip text
+            opayra.in.face.category[3] = 'category';  // used in tooltip text
       
             opayra.in.yAxValues = [ 100, 200, 300]; // see if the d3 scale library can do things here
       
@@ -711,7 +711,13 @@
 
             <div class='candy-bar'>
               <canvas id="opayra-caty-bar-chart"></canvas>
-            </div>          
+            </div>
+
+            <ul>
+              <li>Choose if you want to see 3 or 4 sub-categories in the candy bar.
+              <li>Choose which sub-category you want to see in front
+              <li>click on the bar if you want to see the detail of a pane. Click twice in the pane to hide the tooltip, or click outside a candy bar.
+            </ul>
           </div>
 
           <script>
