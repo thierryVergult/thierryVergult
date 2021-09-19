@@ -597,6 +597,7 @@
             display: inline-block;
             visibility: visible;
             border: 2px solid white;
+            cursor: pointer;
           }
 
           input[name='candy-sub-cat']:checked:after {
@@ -638,6 +639,7 @@
             opayra.config.debug = false;
             opayra.config.debugTextureBarNr = 2;
             opayra.config.tooltipPosition = 'pointerNo';
+            opayra.config.tooltipShowTotalOfBar = true;
             
             opayra.in.title = 'employees by department';
             opayra.in.barLabel = ['sal', 'off', 'r&d', 'prd'];
@@ -701,10 +703,10 @@
               <span id="candy-bar-graph-header-title">title</span>
               
               <div class="cat-bar-graph-header-subcategories">
-                <label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { barNr: 0});">&nbsp;by gender</label>
-                <label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { barNr: 1});">&nbsp;by workplace</label>
-                <label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { barNr: 2});">&nbsp;by age group</label>
-                <label><input type="radio" id="candy-sub-cat4" name="candy-sub-cat" value="candy-sub-cat4" onclick="opayra.rotateBarsRadio( { barNr: 3});">&nbsp;by category</label>
+                <label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { faceNr: 0});">&nbsp;by gender</label>
+                <label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { faceNr: 1});">&nbsp;by workplace</label>
+                <label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { faceNr: 2});">&nbsp;by age group</label>
+                <label><input type="radio" id="candy-sub-cat4" name="candy-sub-cat" value="candy-sub-cat4" onclick="opayra.rotateBarsRadio( { faceNr: 3});">&nbsp;by category</label>
               </div>
               
             </div>
@@ -713,10 +715,10 @@
               <canvas id="opayra-caty-bar-chart"></canvas>
             </div>
 
-            <ul>
-              <li>Choose if you want to see 3 or 4 sub-categories in the candy bar.
-              <li>Choose which sub-category you want to see in front
-              <li>click on the bar if you want to see the detail of a pane. Click twice in the pane to hide the tooltip, or click outside a candy bar.
+            <ul style='font-size: smaller;'>
+              <li>You can choose to see 3 or 4 sub-categories on a candy bar
+              <li>You can choose the sub-category you want to see in front
+              <li>click on a pane to see the actual numbers
             </ul>
           </div>
 

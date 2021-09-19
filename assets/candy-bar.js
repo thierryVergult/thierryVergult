@@ -67,12 +67,10 @@ function defineAnimation() {
 }
 
 opayra.recreateScene = function( nrOfFaces) {
-  // scene, canvas & engine are accessible
+  // scene, canvas & engine variables are accessible
   scene.dispose();
 
   opayra.algo.facesMax = nrOfFaces;
-  
-  opayra.FaceNrInFront = 0;
   
   opayra.tooltipBarFaceCat = -1;
   opayra.barPicked = false;
@@ -93,7 +91,7 @@ opayra.recreateScene = function( nrOfFaces) {
 
 opayra.rotateBarsRadio = function(p) {
 
-  var turns = p.barNr - ( opayra.FaceNrInFront || 0);
+  var turns = p.faceNr - ( opayra.FaceNrInFront || 0);
   
   // when the number of turns are less than half the number of faces, just do these turns
   // if not, turn the other way
@@ -104,13 +102,13 @@ opayra.rotateBarsRadio = function(p) {
     turns = ( opayra.faces - Math.abs(turns)) * Math.sign(turns) * -1;
   }
 
-  console.log('radio ' + p.barNr + ' ; turns : ' + turns);
+  console.log('radio ' + p.faceNr + ' ; turns : ' + turns);
   
   // Delta for one turn is a full circle divided by the number of angles of the polygon
   // multiply then by the number of turns of faces
   const radiansDelta = 2 * Math.PI / opayra.faces * turns;  
 
-  opayra.FaceNrInFront = p.barNr;
+  opayra.FaceNrInFront = p.faceNr;
   
   // set the animation key values : start from the actual position of the rotation along the Y axis, and add the just calculated delta
   opayra.animKeys[0].value = opayra.bar[0].rotation.y;
@@ -233,6 +231,10 @@ function oneBar(b, scene) {
   
   // adjust bar so that the first face is shown first.
   bar.rotation.y = Math.PI * (n+2) / ( 2 * n);  // formule empirisch opgebouwd
+
+  if (opayra.FaceNrInFront > 0) {
+    bar.rotation.y = bar.rotation.y + ( 2*Math.PI ) / n * opayra.FaceNrInFront;
+  }
 
 
   bar.position.x = opayra.algo.X + b + ( (b+1) * 0.1);  // + b works, since the diameter of each bar (cylinder) is 1
@@ -357,9 +359,6 @@ function createScene( canvas, engine) {
     opayra.total[i] = opayra.in.bar[i][0].reduce((a,b) => a+b);
   }
 
-  opayra.max = opayra.total.reduce((a,b) => (a>b? a: b));  // wordt dit nog gebruikt, na al het gereschufle?
-  //console.log( opayra.max);
-
   opayra.bgColor = new BABYLON.Color3(0.85, 0.85, 0.85); // lightgrey
   
   opayra.barPicked = false;
@@ -419,11 +418,24 @@ function createScene( canvas, engine) {
         } else {
           opayra.tooltipBarFaceCat = (barNr* 100) + (faceNr*10) + rectangleNr;
 
-          document.getElementById( 'candy-bar-tooltip').innerHTML = ( opayra.in.barLabelLong[barNr] || opayra.in.barLabel[barNr] )
-                            + '<br>'
-                            + opayra.in.face.category[faceNr] + ': ' + faceLabel
-                            + '<br>' 
-                            + value.toFixed(2);  // make the 2 positions to fixed maybe dynamic, 0, or 2, can be decided when scanning the input numbers
+          var totalBar = 0,
+              panePct = 0;
+          if (opayra.config.tooltipShowTotalOfBar || false) {
+            for ( c = 0; c < opayra.val[barNr][0].length ; c++) {
+              totalBar = totalBar + opayra.val[barNr][0][c];
+            }
+            panePct = value / totalBar * 100;
+          }
+
+          const tooltipHtml = ( opayra.in.barLabelLong[barNr] || opayra.in.barLabel[barNr] )
+            + '<br>'
+            + opayra.in.face.category[faceNr] + ': ' + faceLabel
+            + '<br>' 
+            + value.toFixed(2)  // make the 2 positions to fixed maybe dynamic, 0, or 2, can be decided when scanning the input numbers
+            + ( totalBar > 0 ? '&nbsp; &nbsp;' + Math.round( panePct) + '%' : '')
+            + ( totalBar > 0 ? '<br>total: ' + totalBar : '');
+
+          document.getElementById( 'candy-bar-tooltip').innerHTML = tooltipHtml;
         }
       }
     }

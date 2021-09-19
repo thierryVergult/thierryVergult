@@ -19,6 +19,11 @@
 
 .cat-bar-graph-header-subcategories {
   margin-top: 10px;
+  font-size: smaller;
+}
+
+.cat-bar-graph-header-subcategories label {
+  cursor: pointer;
 }
 
 #opayra-caty-bar-chart {
