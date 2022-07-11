@@ -70,7 +70,7 @@
       <div class='card'  id='welcome'>
         <div class='header'>welcome</div>
         <div class='article'>
-          <div>Opayra is the company behind Thierry Vergult.</div>
+          <div>Opayra is the company behind Thierry Vergult, a seasoned freelance consultant.</div>
           <p>HR &amp; Payroll expertise since 1998.
           <ul class="fa-ul">
             <li><i class="fa-li fa fa-check-square-o"></i>project management</li>
@@ -446,142 +446,6 @@
         </div>
       </div>
 
-      <div class='card' id='caty-graph-css'>
-        <style>
-          #graph-css-id {
-            /* have to set all 4 borders, if not the sticks move, so make 2 of them transparent */
-            border-style: solid;
-            border-width: 1px 1px 4px 4px;
-            border-color: rgba(0,0,0,0) rgba(0,0,0,0) grey grey;
-            border-inline-end-style: solid;
-            margin-top: 50px;
-            height: 200px;
-          }
-    
-          #cube-container1 {
-            margin-top: -60px;
-            margin-left: 20px;
-            height: 150px; /* max height h1, h2 */
-            position: relative;
-          }
-    
-          #cube-container2 {
-            margin-top: -100px;
-            margin-left: 200px;
-            height: 150px; /* max height h1, h2 */
-            position: relative;
-          }
-    
-          .face {
-            position: absolute;
-            transform-origin: bottom left;
-            transition-timing-function: ease;
-            /* border: 1px white solid; */
-          }
-    
-          .sketchyX {
-            /* thanks, https://webartdevelopers.com/blog/sketchy-border/ */
-            border: 2px solid grey;
-            font-size: 2.5rem;
-            border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
-          }
-    
-          .sketchyX::before {
-                content: '';
-                border: 2px solid grey;
-                display: block;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate3d(-50%, -50%, 0) scale(1.015) rotate(0.5deg);
-                border-radius: 1% 1% 2% 4% / 2% 6% 5% 4%;
-            }
-    
-          .h1 {
-            height: 150px;
-          }
-    
-          .h2 {
-            height: 100px;
-          }
-    
-          .Cfront {
-            background-image: linear-gradient( plum 0% 20%, orange 20% 100%);
-          }
-    
-          .Cright {
-            background-image: linear-gradient(#e66465 0% 40%, #9198e5 40% 100%);
-            z-index: 3;
-            animation: aniRight 8s forwards infinite;
-          }
-    
-          .Cback {
-            background-image: linear-gradient( #9198e5 0% 40%, orange 40% 100%);
-            animation: aniBack 8s forwards infinite;
-            z-index: 2;
-            transform-origin: top right;
-          }
-    
-          .Cleft {
-            background-image: linear-gradient( yellow 0% 75%, lightgreen 75% 100%);
-            z-index: 1;
-            transform-origin: top right;
-            animation: aniLeft 8s forwards infinite;
-          }
-    
-          @keyframes aniRight {
-            0%   { width:30px; transform: translateX(90px) skewY(  0deg) translateY(100px); }
-            10%  { width:30px; transform: translateX(90px) skewY(  0deg) translateY(100px); }
-            25%  { width:24px; transform: translateX(90px) skewY(-30deg) translateY(100px); }
-            50%  { width:24px; transform: translateX(90px) skewY(-30deg) translateY(100px); }
-            75%  { width:30px; transform: translateX(90px) skewY(  0deg) translateY(100px); }
-            90%  { width:30px; transform: translateX(90px) skewY(  0deg) translateY(100px); }
-            100% { width:30px; transform: translateX(90px) skewY(  0deg) translateY(100px); }
-          }
-    
-          @keyframes aniLeft {
-            0%   { width:30px; transform: translateX(30px) rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            10%  { width:30px; transform: translateX(30px) rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            25%  { width:24px; transform: translateX(36px) rotateY(180deg) skewY(30deg) translateY(100px); }
-            75%  { width:24px; transform: translateX(36px) rotateY(180deg) skewY(30deg) translateY(100px); }
-            90%  { width:30px; transform: translateX(30px) rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            100% { width:30px; transform: translateX(30px) rotateY(  0deg) skewY( 0deg) translateY(100px); }
-          }
-    
-          @keyframes aniBack {
-            0%   { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            10%  { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            25%  { width:24px; transform: translateX(60px) rotateY(180deg) skewY(30deg) translateY( 86px); }
-            50%  { width:30px; transform: translateX(54px) rotateY(180deg) skewY( 0deg) translateY( 86px); }
-            75%  { width:24px; transform: translateX(60px) rotateY(180deg) skewY(30deg) translateY( 86px); }
-            90%  { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
-            100% { width:30px; transform: translateX(0px)  rotateY(  0deg) skewY( 0deg) translateY(100px); }
-          }
-        </style>
-
-        <div class='header'>multi-categorical bar chart</div>
-        <div class='article'>
-          <p>from 2d to 3d. fool around with css.</p>
-
-          <div id='graph-css-id'>
-            <section id="cube-container1">
-              <div class= "Cback  face h1 sketchy"></div>
-              <div class= "Cleft  face h1 sketchy"></div>
-              <div class= "Cfront face h1 sketchy" style="width:30px; transform: translateX(60px) skewY(0deg) translateY(100px); z-index: 4;"></div>
-              <div class= "Cright face h1 sketchy"></div>
-            </section>
-      
-            <section id="cube-container2">
-              <div class= "Cback  face h2 sketchy"></div>
-              <div class= "Cleft  face h2 sketchy"></div>
-              <div class= "Cfront face h2 sketchy" style="width:30px; transform: translateX(60px) skewY(0deg) translateY(100px); z-index: 4;"></div>
-              <div class= "Cright face h2 sketchy"></div>
-            </section>
-          </div>
-        </div>
-      </div>
 
       <div class='card' id='candy-bar'>
         <link rel="stylesheet" href="./assets/candy-bar.css"/>
@@ -699,7 +563,7 @@
             opayra.col = ['steelblue', 'red', 'green', 'orange', 'yellow'];
             
           </script>
-    
+          <p>An example of a 3d multi-categorical bar chart</p>
           <div class="cat-bar-graph">
             <div class="cat-bar-graph-header">
               <span id="candy-bar-graph-header-title">title</span>
