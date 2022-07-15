@@ -4,17 +4,16 @@
     configuration in the pie3d global variable (json)
 
     to do
-        
-    * nice to have *
-    - textcolor : dynamic black or white, for better contrast
-      1. convert to hex: via canvas function: https://stackoverflow.com/questions/1573053/javascript-function-to-convert-color-names-to-hex-codes
-      2. invert rgb, or black/white variant
+    
+    default all configuration options at the beginning, on one place, which also helps to document.
 
     redo : click, via a function, instead of a constant => remove double click : it needs to become a toggle.
 
     simplification: alpha 0, rotate over Z (in the xy-plane)
 
     font size : configurable
+
+    ** open source **
     
 */
 
@@ -23,7 +22,7 @@
 function colorHex(str){
   var ctx = document.createElement('canvas').getContext('2d');
   ctx.fillStyle = str;
-  console.log( str, ctx.fillStyle);
+  //console.log( str, ctx.fillStyle);
   return ctx.fillStyle;
 }
 
@@ -137,7 +136,7 @@ function pieChart (pie3d) {
 
       const txt_X_distance_from_left_hand_edge = 40;
       const txt_Y_distance_from_the_top = ( 60 * ( 1 + ( pie3d.labelFontFactor / 3 || 0))) + ( pie3d.labelExtraTopMargin || 0);
-      console.log( 'txt_Y_distance_from_the_top', txt_Y_distance_from_the_top);
+      //console.log( 'txt_Y_distance_from_the_top', txt_Y_distance_from_the_top);
 
       texture.drawText( textOnSlice, txt_X_distance_from_left_hand_edge, txt_Y_distance_from_the_top, font, textColor, color, textInvertY);
       
