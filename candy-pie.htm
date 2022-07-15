@@ -1,11 +1,147 @@
-<!doctype html>
-  <html lang=en>
+<!DOCTYPE html>
+<html>
   <head>
-    <meta charset=utf-8>
-    <title>opayra lab</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>opayra - candy pie - babylon</title>
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="./assets/candy-pie-babylon.js"></script>
+
+    <style>
+      :root {
+        --main-color: steelblue;
+        --opposite-color: white;
+      }
+
+      .candy-pie {
+        margin: 20px;
+        padding: 20px;
+        width: 75%;
+        border: 1px var(--main-color) solid;
+        color: var(--main-color);
+      }
+
+      .candy-pie .header {
+        margin-bottom: 20px;
+      }
+
+      .candy-pie .header button {
+        color: var(--main-color);
+        padding: 10px;
+      }
+
+      #candy-pie-title {
+        font-weight: bold;
+        font-size: large;
+      }
+
+      .candy-pie-babylon-canvas {
+        touch-action: none;
+        width: 100%;
+        outline: none; /* remove outline when clicking on canvas */
+      }
+      
+    </style>
+
   </head>
-  
+
   <body>
-    <p>candy pie</p>
-  </body>
+    <div class='candy-pie'>
+      <h3>candy pie: a 3d pie chart</h3>
+      <p>based upon babylon.js</p>
+
+      <span id='candy-pie-title'>1st candy pie</span>
+
+      <div>
+        <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="aspect-ratio: 16/9"></canvas>
+
+        <script>
+          let pie3d = {
+            'htmlCanvasId': 'candy-pie-babylon-canvas-id',
+            'slices': [
+              { 'value': 140, 'arcPct': 1/5 * 100, 'color': 'indianred', 'label': 'one'},
+              { 'value': 120, 'arcPct': 1/5 * 100, 'color': 'steelblue', 'label': 'two'},
+              { 'value': 100, 'arcPct': 1/5 * 100, 'color': 'olive',     'label': 'three'},
+              { 'value':  60, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
+              { 'value': 100, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+            ],
+            'spaceBetweenSlices': true,
+            'innerRadiusPct': 40, // use 0 to get rid of the donut hole
+            'showValue': true,
+            'showLabel': true,
+            'labelFontFactor': 1.5,
+            'backgroundColor': window.getComputedStyle( document.getElementById( 'candy-pie-title')).color,
+            'clickScalePct': 20,
+            'verticalFactor': 1.6 // increment this number in case you want higher vertical slices
+          };
+          
+          candy_pie_babylon( pie3d);
+        </script>
+
+      </div>
+
+      <div>
+        <canvas id='candy-pie-babylon-canvas-id2' class='candy-pie-babylon-canvas' style="width:400px; aspect-ratio: 1/1"></canvas>
+
+        <script>
+          let pie3d2 = {
+            'htmlCanvasId': 'candy-pie-babylon-canvas-id2',
+            'slices': [
+              { 'value': 100, 'arcPct': 1/5 * 100, 'color': 'indianred', 'label': 'one'},
+              { 'value':  80, 'arcPct': 1/5 * 100, 'color': 'steelblue', 'label': 'two'},
+              { 'value': 120, 'arcPct': 1/5 * 100, 'color': 'olive',     'label': 'three'},
+              { 'value':  80, 'arcPct': 1/5 * 100, 'color': 'aliceblue', 'label': 'four'},
+              { 'value': 120, 'arcPct': 1/5 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+            ],
+            'spaceBetweenSlices': true,
+            'innerRadiusPct': 40, // use 0 to get rid of the donut hole
+            'showValue': true,
+            'showLabel': true,
+            'labelFontFactor': 1.5,
+            'backgroundColor': 'rgb(155, 102, 102)',
+            'clickScalePct': 20,
+            'verticalFactor': 4
+          };
+          
+          candy_pie_babylon( pie3d2);
+        </script>
+
+      </div>
+
+      <div>
+        <canvas id='candy-pie-babylon-canvas-id3' class='candy-pie-babylon-canvas' style="width:400px; aspect-ratio: 5/3"></canvas>
+
+        <script>
+          candy_pie_babylon( {
+            'htmlCanvasId': 'candy-pie-babylon-canvas-id3',
+            'slices': [
+              { 'value': 1, 'arcPct': 1/4 * 100, 'color': 'lightblue', 'label': 'swimming'},
+              { 'value': 1, 'arcPct': 1/4 * 100, 'color': '#f8f6e1',   'label': 'ice cream'},
+              { 'value': 1, 'arcPct': 1/4 * 100, 'color': 'lightblue', 'label': 'cocktails'},
+              { 'value': 1, 'arcPct': 1/4 * 100, 'color': '#f8f6e1',   'label': 'relaxing'}
+            ],
+            'spaceBetweenSlices': true,
+            'innerRadiusPct': 25, // use 0 to get rid of the donut hole
+            'showLabel': true,
+            'labelFontFactor': 2.5,
+            'labelExtraTopMargin': 20,
+            'labelColor': 'rgb(155, 102, 102)',
+            'backgroundColor': 'rgba(196,238,216,255)', // green-ish
+            'clickScalePct': 0,
+            'verticalFactor': 2
+          });
+        </script>
+
+      </div>
+
+    </div>
+
+    <ul>
+      <li>canvas ratio: found finally a simple & okay-ish fov algo
+      <li>open source
+    </ul>
+
+    
+</body>
 </html>
