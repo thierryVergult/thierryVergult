@@ -243,6 +243,9 @@ var createPieChartScene = function (canvas, engine, pie3d) {
     const angleRad = Math.PI / 180 * pie3d.cameraDegreesY;
     camera.beta = Math.PI/2 - angleRad; // normally from top (Y) towards ZX-plane. Now vice versa, the camera goes up Y degrees
     
+    camera.lowerBetaLimit = BABYLON.Angle.FromDegrees(0).radians();
+    camera.upperBetaLimit = BABYLON.Angle.FromDegrees(90).radians();
+    
     //
     // set angle (field of view) of camera to fill the canvas as good as possible
     // simply take the angle (in 2d) between origin (0,0), the camera position and the highest / farest point on the pie ( diameter/2, verticalfactor/2)
@@ -260,12 +263,11 @@ var createPieChartScene = function (canvas, engine, pie3d) {
     camera.fov = Math.max( a_up, a_down) * pie3d.cameraFovFactor;
         
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    const light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0));
-    light1.intensity = .8;
+    const light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3( cameraRadius, cameraRadius * 2, cameraRadius * 1.2));
       
     // an extra point light, so also the bottom color (texture) shows
-    const light2 = new BABYLON.HemisphericLight("light2", new BABYLON.Vector3(0, -1, 0), scene);
-    light2.intensity = .4;
+    const light2 = new BABYLON.HemisphericLight("light2", new BABYLON.Vector3( cameraRadius * 0.2, - cameraRadius, cameraRadius * -.2), scene);
+    light2.intensity = .6;
   
     // increment the delay between two clicks to be recognised as one double click
     BABYLON.Scene.DoubleClickDelay = 500; // ms
