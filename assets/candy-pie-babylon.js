@@ -7,13 +7,13 @@
     
     default all configuration options at the beginning, on one place, which also helps to document.
 
-    redo : click, via a function, instead of a constant => remove double click : it needs to become a toggle.
-
     simplification: alpha 0, rotate over Z (in the xy-plane)
 
-    font size : configurable
-
     ** open source **
+    - pages : => pseudo cdn
+    - licence file cf babylon
+    - js file
+    - html test page
     
 */
 
@@ -175,18 +175,16 @@ function pieChart (pie3d) {
           donut, 
           "scaling", 
           new BABYLON.Vector3( clickScale, clickScale, clickScale), 
-          250
-          ));
-  
-      // and back to normal at double click
-      donut.actionManager.registerAction(
-          new BABYLON.InterpolateValueAction(
-          BABYLON.ActionManager.OnDoublePickTrigger, 
-          donut, 
-          "scaling", 
-          new BABYLON.Vector3(1, 1, 1), 
-          250
-          ));
+          250, // duration
+          undefined, // condition
+          undefined, // stopOtherAnimations
+          function(){ // onInterpolationDone: defines a callback raised once the interpolation animation has been done
+            //console.log('click: ', this.value);
+            this.value._x = ( this.value._x > 1 ? 1 : clickScale);
+            this.value._y = ( this.value._y > 1 ? 1 : clickScale);
+            this.value._z = ( this.value._z > 1 ? 1 : clickScale);
+          }
+      ));
   
       return donut;
     }
