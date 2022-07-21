@@ -7,7 +7,9 @@
     
     default all configuration options at the beginning, on one place, which also helps to document.
 
-    simplification: alpha 0, rotate over Z (in the xy-plane)
+      setPie3d : defaults for array (value, color, arc (1/n%))
+
+    ? simplification: alpha 0, rotate over Z (in the xy-plane)
 
     ** open source **
     - pages : => pseudo cdn
@@ -96,7 +98,7 @@ function pieChart (pie3d) {
       const pieCSG = BABYLON.CSG.FromMesh(pie);
   
       // inner cylinder
-      const donutHoleFraction = ( pie3d.innerRadiusPct || 0 ) / 100;
+      const donutHoleFraction = pie3d.innerRadiusPct / 100;
       const diameter = (pie3d.diameter * donutHoleFraction ) + 0.01; // value of 0 for hole fraction, gives a zero diameter, pushed to diameter 1 by babylon (surprise), so add 0.01 to avoid 0
       
       faceUV[1] = faceUV[0]; // clean the text on the extruded (inner) cylinder
@@ -221,10 +223,6 @@ function pieChart (pie3d) {
   
 var createPieChartScene = function (canvas, engine, pie3d) {
 
-    pie3d.diameter = 4;
-    pie3d.cameraDegreesY = 45;
-    pie3d.cameraFovFactor = 2.2;
-
     var scene = new BABYLON.Scene(engine);
   
     // define an arcrotate camera
@@ -241,8 +239,10 @@ var createPieChartScene = function (canvas, engine, pie3d) {
     const angleRad = Math.PI / 180 * pie3d.cameraDegreesY;
     camera.beta = Math.PI/2 - angleRad; // normally from top (Y) towards ZX-plane. Now vice versa, the camera goes up Y degrees
     
-    camera.lowerBetaLimit = BABYLON.Angle.FromDegrees(0).radians();
-    camera.upperBetaLimit = BABYLON.Angle.FromDegrees(90).radians();
+    // limit Beta rotation between 0 and 90 degrees, when allowVerticalRotation is on.
+    const cameraRadiansY = BABYLON.Angle.FromDegrees(pie3d.cameraDegreesY).radians();
+    camera.lowerBetaLimit = ( pie3d.allowVerticalRotation ? BABYLON.Angle.FromDegrees( 0).radians() : cameraRadiansY);
+    camera.upperBetaLimit = ( pie3d.allowVerticalRotation ? BABYLON.Angle.FromDegrees(90).radians() : cameraRadiansY);
     
     //
     // set angle (field of view) of camera to fill the canvas as good as possible
@@ -279,13 +279,34 @@ var createPieChartScene = function (canvas, engine, pie3d) {
     return scene;
 };
 
-function candy_pie_babylon ( pie3d) {
-  var canvas = document.getElementById( pie3d.htmlCanvasId);
-  var engine = new BABYLON.Engine( canvas, true);
+function setPie3d( pie3d) {
 
-  console.log( 'w', engine.getRenderWidth(), 'h', engine.getRenderHeight());
-   
-  // can move the create scene code here, and make functions (with specific parameters for the camera & the lights (parameter : list of vectors : make a light for each vector found))
+  let setDefault = function ( property, defaultValue) {
+    if (pie3d[property] == undefined) pie3d[property] = defaultValue;
+  }
+  
+  // configurqtion options
+  setDefault( 'verticalFactor', 1);
+  setDefault( 'cameraDegreesY', 45);
+  setDefault( 'allowVerticalRotation', true);
+  setDefault( 'spaceBetweenSlices', false);
+  setDefault( 'innerRadiusPct', 0);
+  
+  // internal values
+  pie3d.diameter = 4;
+  pie3d.cameraFovFactor = 2.2; // add this to the calculated FOV so there are some margins.
+  
+  console.log( 'pie3d defaulted', pie3d);
+}
+
+function candy_pie_babylon ( pie3d) {
+
+  var canvas = document.getElementById( pie3d.htmlCanvasId);
+  
+  var engine = new BABYLON.Engine( canvas, true);
+  
+  setPie3d( pie3d);
+
   var scene = createPieChartScene( canvas, engine, pie3d);
   
   engine.runRenderLoop(function () {

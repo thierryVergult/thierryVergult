@@ -45,7 +45,34 @@
   <body>
     <div class='candy-pie'>
       <h2>candy pie: a 3d pie chart</h2>
-      <p>based upon babylon.js</p>
+      <p style="margin-left: 10px;"><i>based upon <a href='https://www.babylonjs.com/'>Babylon.js</a></i></p>
+
+      <p>Part of the candy charts family.</p>
+      <p>Define a canvas element in your html, and call one single javascript function to place the 3d pie chart on that canvas element. 
+        All data and configuration options are defined in one record parameter.</p>
+
+      <span class='candy-pie-title'>default candy pie (no extra configuration)</span>
+
+      <p>A pie chart with 3 equal pies. All other options are defaulted, except the id of the canvas where one wants the 3d pie chart to show up.</p>
+
+      <div>
+        <canvas id='candy-pie-babylon-canvas-id-default' class='candy-pie-babylon-canvas'></canvas>
+
+        <script>
+          let pie3d_default = {
+            'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
+            'slices': [
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'indianred', 'label': 'one'},
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'steelblue', 'label': 'two'},
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'olive',     'label': 'three'}
+            ]
+          };
+          
+          candy_pie_babylon( pie3d_default);
+        </script>
+
+      </div>
+      
 
       <span id='title1' class='candy-pie-title'>1st candy pie</span>
 
@@ -134,7 +161,9 @@
             'labelColor': 'rgb(155, 102, 102)',
             'backgroundColor': 'rgba(196,238,216,255)', // green-ish
             'clickScalePct': 0,
-            'verticalFactor': 2
+            'verticalFactor': 2,
+            'allowVerticalRotation' : false,
+            'cameraDegreesY': 60
           });
         </script>
 
