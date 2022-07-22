@@ -4,8 +4,6 @@
     configuration in the pie3d global variable (json)
 
     to do
-    
-    default all configuration options at the beginning, on one place, which also helps to document.
 
       setPie3d : defaults for array (value, color, arc (1/n%))
 
@@ -122,7 +120,7 @@ function pieChart (pie3d) {
         height: 200 * Math.abs( height) // same for height
       });
       
-      const fontsize = 32 * ( pie3d.labelFontFactor || 1);
+      const fontsize = 32 * pie3d.labelFontFactor;
       const font = ['bold', fontsize + 'px', 'monospace'].join( ' ');
       const blackWhiteVariant = true;
       const textColor = pie3d.labelColor || invertColor( colorHex(color), blackWhiteVariant);
@@ -132,13 +130,14 @@ function pieChart (pie3d) {
       if ( pie3d.showLabel) {
         textOnSlice = label
       }
+
       if ( pie3d.showValue) {
         textOnSlice = textOnSlice + ( pie3d.showLabel ? ': ': '') + value
       }
 
       const txt_X_distance_from_left_hand_edge = 40;
-      const txt_Y_distance_from_the_top = ( 60 * ( 1 + ( pie3d.labelFontFactor / 3 || 0))) + ( pie3d.labelExtraTopMargin || 0);
-      //console.log( 'txt_Y_distance_from_the_top', txt_Y_distance_from_the_top);
+      const txt_Y_distance_from_the_top = ( 60 * ( 1 + ( pie3d.labelFontFactor / 3))) + pie3d.labelExtraTopMargin;
+      console.log( 'txt_Y_distance_from_the_top', txt_Y_distance_from_the_top);
 
       texture.drawText( textOnSlice, txt_X_distance_from_left_hand_edge, txt_Y_distance_from_the_top, font, textColor, color, textInvertY);
       
@@ -169,7 +168,7 @@ function pieChart (pie3d) {
       // make the donut x% larger on click
       donut.actionManager = new BABYLON.ActionManager();
       
-      const clickScale = 1 + ( (pie3d.clickScalePct || 0) / 100);
+      const clickScale = 1 + ( pie3d.clickScalePct / 100);
   
       donut.actionManager.registerAction(
           new BABYLON.InterpolateValueAction(
@@ -270,7 +269,7 @@ var createPieChartScene = function (canvas, engine, pie3d) {
     // increment the delay between two clicks to be recognised as one double click
     BABYLON.Scene.DoubleClickDelay = 500; // ms
     
-    let backgroundColor3 = new BABYLON.Color3.FromHexString( colorHex( pie3d.backgroundColor || '#808080'));
+    let backgroundColor3 = new BABYLON.Color3.FromHexString( colorHex( pie3d.backgroundColor));
     scene.clearColor = backgroundColor3;
     
     // the very pie chart
@@ -291,6 +290,13 @@ function setPie3d( pie3d) {
   setDefault( 'allowVerticalRotation', true);
   setDefault( 'spaceBetweenSlices', false);
   setDefault( 'innerRadiusPct', 0);
+  setDefault( 'showLabel', false);
+  setDefault( 'showValue', false);
+  setDefault( 'labelFontFactor', 1);
+  setDefault( 'labelExtraTopMargin', 0);
+  setDefault( 'backgroundColor', '#808080');
+  setDefault( 'clickScalePct', 0);
+  setDefault( 'labelColor', '');
   
   // internal values
   pie3d.diameter = 4;

@@ -27,7 +27,7 @@
       .candy-pie-title {
         font-weight: bold;
         font-size: large;
-        margin-top: 10px;
+        margin-top: 20px;
         margin-bottom: 20px;
       }
 
@@ -47,13 +47,20 @@
       <h2>candy pie: a 3d pie chart</h2>
       <p style="margin-left: 10px;"><i>based upon <a href='https://www.babylonjs.com/'>Babylon.js</a></i></p>
 
-      <p>Part of the candy charts family.</p>
+      <p style="margin-left: 10px;">Part of the candy charts family.</p>
       <p>Define a canvas element in your html, and call one single javascript function to place the 3d pie chart on that canvas element. 
         All data and configuration options are defined in one record parameter.</p>
 
-      <span class='candy-pie-title'>default candy pie (no extra configuration)</span>
+      <div class='candy-pie-title'>default candy pie (without extra configuration)</div>
 
-      <p>A pie chart with 3 equal pies. All other options are defaulted, except the id of the canvas where one wants the 3d pie chart to show up.</p>
+      <p>A pie chart with 3 equal slices. Each slice is specified by
+        <ul>
+          <li>a value, which maps to the relative height of each slice
+          <li>a percentage to specify the portion of the arc. In case the total matches 100%, all slices will make a full pie.
+          <li>a color, which can be specified in several formats (see later)
+        </ul>
+      </p>
+      <p>All other options are defaulted, except the id of the canvas where one wants the 3d pie chart to show up.</p>
 
       <div>
         <canvas id='candy-pie-babylon-canvas-id-default' class='candy-pie-babylon-canvas'></canvas>
@@ -62,21 +69,37 @@
           let pie3d_default = {
             'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
             'slices': [
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'indianred', 'label': 'one'},
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'steelblue', 'label': 'two'},
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'olive',     'label': 'three'}
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'indianred'},
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'steelblue'},
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'olive'}
             ]
           };
           
           candy_pie_babylon( pie3d_default);
         </script>
 
+        <pre style="margin-top: 20px;">
+          
+          let pie3d_default = {
+            'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
+            'slices': [
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'indianred'},
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'steelblue'},
+              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'olive'}
+            ]
+          };
+          
+          // call the 3d pie function with the above settings
+          candy_pie_babylon( pie3d_default);
+
+        </pre>
+
       </div>
       
 
-      <span id='title1' class='candy-pie-title'>1st candy pie</span>
+      <div id='title1' class='candy-pie-title'>candy pie with variable height and arc</div>
 
-      <p>A pie chart with 5 pies, variable height and a variable arc (pie 4 is smaller, applepie is larger than the others).</p>
+      <p>A pie chart with 5 slices, variable height and a variable arc (slice 4 is smaller, applepie is larger than the others).</p>
       <p>The background color is taken from the title above.</p>
 
       <div>
@@ -96,7 +119,6 @@
             'innerRadiusPct': 40, // use 0 to get rid of the donut hole
             'showLabel': true,
             'showValue': false,
-            'labelFontFactor': 1.5,
             'backgroundColor': window.getComputedStyle( document.getElementById( 'title1')).color,
             'clickScalePct': 20,
             'verticalFactor': 1.6 // increment this number in case you want higher vertical slices
@@ -107,8 +129,8 @@
 
       </div>
       
-      <span class='candy-pie-title'>an other candy pie</span>
-        <p>This pie chart has also 5 pies, but all with same width (arc), but the pies are made higher then in the previous pie chart. 
+      <div class='candy-pie-title'>candy pie with vertically stretched slices</div>
+        <p>This pie chart has also 5 slices, all with same width (arc), but the slices are made higher than in the previous pie chart. 
           This is done via the <i>verticalFactor</i> configuration option.</p>
 
       <div>
@@ -139,10 +161,10 @@
 
       </div>
       
-      <span class='candy-pie-title'>Pie chart number 3</span>
-        <p>This pie chart has 4 equal pieces and is shown in a canvas with an aspect ratio of 1 on 1. Some label-configuration options are used to position & color the labels on the pie.</p>
+      <div class='candy-pie-title'>holiday pie chart</div>
+        <p>This pie chart has 4 equal slices. Some label-configuration options are used to position & color the labels on the pie.</p>
       <div>
-        <canvas id='candy-pie-babylon-canvas-id3' class='candy-pie-babylon-canvas' style="width:50%; margin-left: 25%; aspect-ratio: 3/3"></canvas>
+        <canvas id='candy-pie-babylon-canvas-id3' class='candy-pie-babylon-canvas' style="width:50%; margin-left: 25%; aspect-ratio: 4/3"></canvas>
 
         <script>
           candy_pie_babylon( {
@@ -166,6 +188,19 @@
             'cameraDegreesY': 60
           });
         </script>
+
+        <pre style="width:50%; margin-left: 20%;">
+
+          'labelFontFactor': 2.5,
+          'labelExtraTopMargin': 20,
+          'labelColor': 'rgb(155, 102, 102)',
+          'backgroundColor': 'rgba(196,238,216,255)', // green-ish
+          'clickScalePct': 0,
+          'verticalFactor': 2,
+          'allowVerticalRotation' : false,
+          'cameraDegreesY': 60
+
+        </pre>
 
       </div>
 
