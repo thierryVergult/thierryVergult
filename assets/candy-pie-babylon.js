@@ -284,7 +284,7 @@ function setPie3d( pie3d) {
     if (pie3d[property] == undefined) pie3d[property] = defaultValue;
   }
   
-  // configurqtion options
+  // configuration options
   setDefault( 'verticalFactor', 1);
   setDefault( 'cameraDegreesY', 45);
   setDefault( 'allowVerticalRotation', true);
@@ -297,6 +297,11 @@ function setPie3d( pie3d) {
   setDefault( 'backgroundColor', '#808080');
   setDefault( 'clickScalePct', 0);
   setDefault( 'labelColor', '');
+
+  let slices = pie3d.slices.length;
+  for (let i = 0; i < slices; i++) {
+    if ( pie3d.slices[i].arcPct == undefined) pie3d.slices[i].arcPct = 1 / slices * 100;
+  }
   
   // internal values
   pie3d.diameter = 4;

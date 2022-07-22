@@ -56,7 +56,6 @@
       <p>A pie chart with 3 equal slices. Each slice is specified by
         <ul>
           <li>a value, which maps to the relative height of each slice
-          <li>a percentage to specify the portion of the arc. In case the total matches 100%, all slices will make a full pie.
           <li>a color, which can be specified in several formats (see later)
         </ul>
       </p>
@@ -69,9 +68,9 @@
           let pie3d_default = {
             'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
             'slices': [
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'indianred'},
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'steelblue'},
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'olive'}
+              { 'value': 100, 'color': 'indianred'},
+              { 'value': 100, 'color': 'steelblue'},
+              { 'value': 100, 'color': 'olive'}
             ]
           };
           
@@ -83,9 +82,9 @@
           let pie3d_default = {
             'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
             'slices': [
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'indianred'},
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'steelblue'},
-              { 'value': 100, 'arcPct': 1/3 * 100,  'color': 'olive'}
+              { 'value': 100, 'color': 'indianred'},
+              { 'value': 100, 'color': 'steelblue'},
+              { 'value': 100, 'color': 'olive'}
             ]
           };
           
@@ -100,6 +99,7 @@
       <div id='title1' class='candy-pie-title'>candy pie with variable height and arc</div>
 
       <p>A pie chart with 5 slices, variable height and a variable arc (slice 4 is smaller, applepie is larger than the others).</p>
+      <p>The portion of the arc of a slice is set via a percentage. In case the total matches 100%, all slices will make a full pie.</p>
       <p>The background color is taken from the title above.</p>
 
       <div>
@@ -170,10 +170,10 @@
           candy_pie_babylon( {
             'htmlCanvasId': 'candy-pie-babylon-canvas-id3',
             'slices': [
-              { 'value': 1, 'arcPct': 1/4 * 100, 'color': 'lightblue', 'label': 'swimming'},
-              { 'value': 1, 'arcPct': 1/4 * 100, 'color': '#f8f6e1',   'label': 'ice cream'},
-              { 'value': 1, 'arcPct': 1/4 * 100, 'color': 'lightblue', 'label': 'cocktails'},
-              { 'value': 1, 'arcPct': 1/4 * 100, 'color': '#f8f6e1',   'label': 'relaxing'}
+              { 'value': 1, 'color': 'lightblue', 'label': 'swimming'},
+              { 'value': 1, 'color': '#f8f6e1',   'label': 'ice cream'},
+              { 'value': 1, 'color': 'lightblue', 'label': 'cocktails'},
+              { 'value': 1, 'color': '#f8f6e1',   'label': 'relaxing'}
             ],
             'spaceBetweenSlices': true,
             'innerRadiusPct': 25, // use 0 to get rid of the donut hole
