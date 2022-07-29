@@ -1,6 +1,6 @@
-Hi, I’m @thierryVergult, a freelance consultant living in Belgium. I prefer to drive projects at the crossroad of Payroll and IT.
-I’m interested in data visualisations.
-I’m currently learning Babylon.js, to explore 3d options of data visualisations.
+Hi, I’m Thierry Vergult, a freelance consultant, living in Belgium. I prefer to drive projects at the crossroad of Payroll and IT. \
+I’m interested in data visualisations. \
+I’m currently learning Babylon.js, to explore 3d options of data visualisations. \
 You can reach me via email, thierry at opayra dot com
 
 <!---
