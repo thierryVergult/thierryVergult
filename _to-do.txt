@@ -1,9 +1,0 @@
-* plotly
-  - treemap
-    - on browser : hover - stroke
-    - sort (cf. sunburst)
-    - zvw text orientation
-    - opacity not going down, cf sunburst
-    - disable drill down on latest level (cf sunburst)
-  - move headcount picture to plotly.js
-
