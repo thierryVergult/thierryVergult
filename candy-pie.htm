@@ -65,14 +65,11 @@
         float: right;
       }
 
-      .candy-pieXXX {
-        margin-top: 20px;
-        margin-left: 15%;
-        margin-right: 15%;
-        width: 70%;
-        padding: 20px;
-        border: 1px var(--main-color) solid;
-        color: var(--main-color);
+      pre {
+        background-color: rgb(255, 247, 229);
+        padding: 10px;
+        white-space: pre-line;
+        overflow: auto;
       }
 
       .candy-pie-title {
@@ -102,15 +99,15 @@
           <p>Let's break down that sentence ..</p>
           <ul>
             <li>candy: don't take it that seriously. Pie charts are not always loved. One should not use 3d for charts. Negative times negative equals positive.
-            <li>pie: yes, a pie chart.
+            <li>pie: yes indeed, a pie chart.
             <li>configurable: all options are described later.
             <li>interactive: the result is not a static image, but a 3d object one can rotate. Or zoom into a slice.
-            <li>3d: standing on the shoulders of babylon.js
+            <li>3d: standing on the shoulders of
               <br> 
               <a href='https://www.babylonjs.com/' target="_blank">
                 <img src="./candy-pie/babylonidentity.svg" width="50%">
               </a>
-            <li>browser: works in the browser, desktop &amp; mobile.
+            <li>browser: works in a modern browser, desktop &amp; mobile.
           </ul>
         </div>
       </div>
@@ -120,8 +117,8 @@
         <div class='article'>
           <p>Load the babylon.js code into your page, and add the candy-pie JavaScript code</p>
           <pre>
-  &lt;script src="https://cdn.babylonjs.com/babylon.js"&gt;&lt;/script&gt;
-  &lt;script src="./candy-pie/candy-pie-babylon.js"&gt;&lt;/script&gt;
+            &lt;script src="https://cdn.babylonjs.com/babylon.js"&gt;&lt;/script&gt;
+            &lt;script src="./candy-pie/candy-pie-babylon.js"&gt;&lt;/script&gt;
           </pre>
 
           <p>
@@ -160,22 +157,20 @@
               candy_pie_babylon( pie3d_default);
             </script>
     
-            <pre style="margin-top: 20px; overflow: auto;">
-  &lt;canvas id='candy-pie-id00' 
-    class='candy-pie-babylon-canvas'&gt;&lt;/canvas&gt;
+            <pre>
+              &lt;canvas id='candy-pie-id00' class='candy-pie-babylon-canvas'&gt;&lt;/canvas&gt;
 
-  let pie3d_default = {
-    'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
-    'slices': [
-      { 'value': 100, 'color': 'indianred'},
-      { 'value': 100, 'color': 'steelblue'},
-      { 'value': 100, 'color': 'olive'}
-    ]
-  };
-              
-  // call the 3d pie function with the above settings
-  candy_pie_babylon( pie3d_default);
-    
+              let pie3d_default = {
+                'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
+                'slices': [
+                &nbsp;  { 'value': 100, 'color': 'indianred'},
+                &nbsp;  { 'value': 100, 'color': 'steelblue'},
+                &nbsp;  { 'value': 100, 'color': 'olive'}
+                ]
+              };
+                          
+              // call the 3d pie function with the above settings
+              candy_pie_babylon( pie3d_default);
             </pre>
     
           </div>
@@ -194,7 +189,6 @@
               <li><i>backgroundColor</i>: set the color of the background of the canvas
             </ul>
           </p>
-          <p>All other options are defaulted, except the id of the canvas where one wants the 3d pie chart to show up.</p>
 
           <div>
             <canvas id='candy-pie-id01' class='candy-pie-babylon-canvas'></canvas>
@@ -216,17 +210,17 @@
             </script>
     
             <pre style="margin-top: 20px; overflow: auto;">
-    let pie3d_2 = {
-      'htmlCanvasId': 'candy-pie-id01',
-      'slices': [
-        { 'value': 100, 'color': 'indianred'},
-        { 'value': 100, 'color': 'steelblue'},
-        { 'value': 100, 'color': 'olive'}
-      ],
-      'spaceBetweenSlices': true,
-      'innerRadiusPct': 40,
-      'backgroundColor': 'lightgrey'
-    };
+              let pie3d_2 = {
+                'htmlCanvasId': 'candy-pie-id01',
+                'slices': [
+                 &nbsp; { 'value': 100, 'color': 'indianred'},
+                 &nbsp; { 'value': 100, 'color': 'steelblue'},
+                 &nbsp; { 'value': 100, 'color': 'olive'}
+                ],
+                'spaceBetweenSlices': true,
+                'innerRadiusPct': 40,
+                'backgroundColor': 'lightgrey'
+              };
             </pre>
     
           </div>
@@ -234,8 +228,65 @@
         </div>
       </div>
 
-      <div class='card' id='install'>
-        <div class='header'>install</div>
+
+      <div class='card' id='options2'>
+        <div class='header'>some more options</div>
+        <div class='article'>
+            <p>The same pie chart, but without vertical rotation, the camera angle is a little higher, so the donut more flat, and when you click a slice, the slice extends a little:
+            <ul>
+              <li><i>allowVerticalRotation</i>: default true, now set to false. Only horizontal rotation is possible now.
+              <li><i>cameraDegreesY</i>: the camera position is set to 60 degrees, a little higher than the default 45 degrees. As such the donut is seen more flat.
+              <li><i>clickScalePct</i>: When clicking on a slice, the slice will grow a certain percentage, as been set here. Default 0%; so no zooming at all.
+            </ul>
+          </p>
+
+          <div>
+            <canvas id='candy-pie-id03' class='candy-pie-babylon-canvas'></canvas>
+    
+            <script>
+              let pie3d_3 = {
+                'htmlCanvasId': 'candy-pie-id03',
+                'slices': [
+                  { 'value': 100, 'color': 'indianred'},
+                  { 'value': 100, 'color': 'steelblue'},
+                  { 'value': 100, 'color': 'olive'}
+                ],
+                'spaceBetweenSlices': true,
+                'innerRadiusPct': 40,
+                'backgroundColor': 'lightgrey',
+                // 3 more options
+                'cameraDegreesY': 60,
+                'allowVerticalRotation': false,
+                'clickScalePct': 20
+              };
+              
+              candy_pie_babylon( pie3d_3);
+            </script>
+    
+            <pre style="margin-top: 20px; overflow: auto;">
+              
+              &nbsp; 'cameraDegreesY': 60,
+              &nbsp; 'allowVerticalRotation': false,
+              &nbsp; 'clickScalePct': 20
+              
+            </pre>
+    
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class='card' id='labels'>
+        <div class='header'>labels</div>
+        <div class='article'>
+          <p>Describe the 5 label options.</p>
+        </div>
+      </div>
+
+
+      <div class='card' id='pie04'>
+        <div class='header'>Variable</div>
         <div class='article'>
           <div id='title1' class='candy-pie-title'>candy pie with variable height and arc</div>
 
@@ -370,34 +421,17 @@
         <div class='header'>colors</div>
         <div class='article'>
           <p>Describe some options to define a color.</p>
+          <p>always a string</p>
+          <ul>
+            <li>named colors</li>
+            <li>hexadecimal value</li>
+            <li>rgb function call</li>
+            <li>javascript function returning a valid color string</li>
+          </ul>
         </div>
       </div>
 
     </div>
-
-    <div class='candy-pie'>
-      
-
-      
-
-      
-
-
-      
-
-      
-      
-      
-      
-      
-
-    </div>
-
-    <p>
-      <ul>
-        <li>
-      </ul>
-    </p>
     
 </body>
 </html>
