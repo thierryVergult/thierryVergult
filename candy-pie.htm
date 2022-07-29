@@ -145,13 +145,13 @@
           
           <p>some additional css can help</p>
           <pre>
-          .candy-pie-babylon-canvas {
-          &nbsp; /* Disables all pan and zoom interactions */
-          &nbsp; touch-action: none; 
-          &nbsp; /* remove outline when clicking on canvas */
-          &nbsp; outline: none; 
-          }
-        </pre>
+            .candy-pie-babylon-canvas {
+            &nbsp; /* Disables all pan and zoom interactions */
+            &nbsp; touch-action: none; 
+            &nbsp; /* remove outline when clicking on canvas */
+            &nbsp; outline: none; 
+            }
+          </pre>
 
         </div>
       </div>
@@ -235,7 +235,7 @@
               candy_pie_babylon( pie3d_2);
             </script>
     
-            <pre style="margin-top: 20px; overflow: auto;">
+            <pre>
               let pie3d_2 = {
                 'htmlCanvasId': 'candy-pie-id01',
                 'slices': [
@@ -258,16 +258,16 @@
       <div class='card' id='options2'>
         <div class='header'>some more options</div>
         <div class='article'>
-            <p>The same pie chart, but without vertical rotation, the camera angle is a little higher, so the donut more flat, and when you click a slice, the slice extends a little:
+            <p>The same pie chart, but now also with vertical rotation, the initial camera angle position is a little lower, so the donut shows more flat, and when you click a slice, the slice extends a little:
             <ul>
-              <li><i>allowVerticalRotation</i>: default true, now set to false. Only horizontal rotation is possible now.
+              <li><i>allowVerticalRotation</i>: default false, now set to true. So now horizontal &amp; vertical rotation is possible.
               <li><i>cameraDegreesY</i>: the camera position is set to 60 degrees, a little higher than the default 45 degrees. As such the donut is seen more flat.
               <li><i>clickScalePct</i>: When clicking on a slice, the slice will grow a certain percentage, as been set here. Default 0%; so no zooming at all. Click once again to return to the original state.
             </ul>
           </p>
 
           <div>
-            <canvas id='candy-pie-id03' class='candy-pie-babylon-canvas'></canvas>
+            <canvas id='candy-pie-id03' class='candy-pie-babylon-canvas' style="aspect-ratio: 3/2;"></canvas>
     
             <script>
               let pie3d_3 = {
@@ -281,18 +281,18 @@
                 'innerRadiusPct': 40,
                 'backgroundColor': 'lightgrey',
                 // 3 more options
-                'cameraDegreesY': 60,
-                'allowVerticalRotation': false,
+                'cameraDegreesY': 30,
+                'allowVerticalRotation': true,
                 'clickScalePct': 20
               };
               
               candy_pie_babylon( pie3d_3);
             </script>
     
-            <pre style="margin-top: 20px; overflow: auto;">
+            <pre>
               
-              &nbsp; 'cameraDegreesY': 60,
-              &nbsp; 'allowVerticalRotation': false,
+              &nbsp; 'cameraDegreesY': 30,
+              &nbsp; 'allowVerticalRotation': true,
               &nbsp; 'clickScalePct': 20
               
             </pre>
@@ -311,7 +311,7 @@
       </div>
 
 
-      <div class='card' id='pie04'>
+      <div class='card' id='variable'>
         <div class='header'>Variable</div>
         <div class='article'>
           <div id='title1' class='candy-pie-title'>candy pie with variable height and arc</div>
@@ -333,6 +333,7 @@
                   { 'value':  60, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
                   { 'value': 100, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
                 ],
+                'allowVerticalRotation': true,
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40, // use 0 to get rid of the donut hole
                 'showLabel': true,
@@ -359,7 +360,7 @@
             This is done via the <i>verticalFactor</i> configuration option.</p>
   
         <div>
-          <canvas id='candy-pie-babylon-canvas-id2' class='candy-pie-babylon-canvas' style="width:400px; aspect-ratio: 1/1"></canvas>
+          <canvas id='candy-pie-babylon-canvas-id2' class='candy-pie-babylon-canvas' style="width:80%; margin-left: 10%; aspect-ratio: 1/1"></canvas>
   
           <script>
             let pie3d2 = {
@@ -373,6 +374,7 @@
               ],
               'spaceBetweenSlices': true,
               'innerRadiusPct': 40, // use 0 to get rid of the donut hole
+              'allowVerticalRotation': true,
               'showValue': true,
               'showLabel': true,
               'labelFontFactor': 1.5,

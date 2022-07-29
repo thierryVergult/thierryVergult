@@ -287,7 +287,7 @@ function setPie3d( pie3d) {
   // configuration options
   setDefault( 'verticalFactor', 1);
   setDefault( 'cameraDegreesY', 45);
-  setDefault( 'allowVerticalRotation', true);
+  setDefault( 'allowVerticalRotation', false);
   setDefault( 'spaceBetweenSlices', false);
   setDefault( 'innerRadiusPct', 0);
   setDefault( 'showLabel', false);
