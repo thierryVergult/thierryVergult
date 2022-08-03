@@ -100,7 +100,7 @@
           <ul>
             <li>candy: don't take it that seriously. Pie charts are not always loved.. One should not use 3d for charts.. Negative times negative equals positive.
             <li>pie: yes indeed, a pie chart.
-            <li>configurable: all options are described later. Curious which other options will be requested later on.
+            <li>configurable: all options are described later. Curious which other options will prove to be interesting later on.
             <li>interactive: the result is not a static image, but a 3d object one can rotate. Or zoom into a slice.
             <li>3d: standing on the shoulders of
               <br> 
@@ -118,15 +118,15 @@
       <div class='card' id='install'>
         <div class='header'>usage</div>
         <div class='article'>
-          <p>Load the babylon.js code into your page, and add the candy-pie JavaScript code</p>
+          <p>Load the babylon.js code into your page, and add the candy-pie file.</p>
           <pre>
             &lt;script src="https://cdn.babylonjs.com/babylon.js"&gt;&lt;/script&gt;
             &lt;script src="./candy-pie/candy-pie-babylon.js"&gt;&lt;/script&gt;
           </pre>
 
           <p>
-            Define a canvas element in your html, and call one single javascript function to place the 3d pie chart on that canvas element. 
-            All data and configuration options are defined in one record parameter.
+            Define a canvas element in your html page, and call one single javascript function to place the 3d pie chart on that canvas element. 
+            All data and configuration options are defined in one single javascript object.
           </p>
           <pre>
             &lt;canvas id='candy-pie-canvas-id' class='candy-pie-babylon-canvas'&gt;&lt;/canvas&gt;
@@ -258,9 +258,9 @@
       <div class='card' id='options2'>
         <div class='header'>some more options</div>
         <div class='article'>
-            <p>The same pie chart, but now also with vertical rotation, the initial camera angle position is a little lower, so the donut shows more flat, and when you click a slice, the slice extends a little:
+            <p>The same pie chart, but now without vertical rotation, the initial camera angle position is a little lower, so the donut shows more flat, and when you click a slice, the slice extends a little:
             <ul>
-              <li><i>allowVerticalRotation</i>: default false, now set to true. So now horizontal &amp; vertical rotation is possible.
+              <li><i>allowVerticalRotation</i>: default true, now set to false. So now only horizontal rotation is possible.
               <li><i>cameraDegreesY</i>: the camera position is set to 60 degrees, a little higher than the default 45 degrees. As such the donut is seen more flat.
               <li><i>clickScalePct</i>: When clicking on a slice, the slice will grow a certain percentage, as been set here. Default 0%; so no zooming at all. Click once again to return to the original state.
             </ul>
@@ -282,7 +282,7 @@
                 'backgroundColor': 'lightgrey',
                 // 3 more options
                 'cameraDegreesY': 30,
-                'allowVerticalRotation': true,
+                'allowVerticalRotation': false,
                 'clickScalePct': 20
               };
               
@@ -292,7 +292,7 @@
             <pre>
               
               &nbsp; 'cameraDegreesY': 30,
-              &nbsp; 'allowVerticalRotation': true,
+              &nbsp; 'allowVerticalRotation': false,
               &nbsp; 'clickScalePct': 20
               
             </pre>
@@ -312,13 +312,24 @@
 
 
       <div class='card' id='variable'>
-        <div class='header'>Variable</div>
+        <div class='header'>Variable height & arc</div>
         <div class='article'>
           <div id='title1' class='candy-pie-title'>candy pie with variable height and arc</div>
 
-          <p>A pie chart with 5 slices, variable height and a variable arc (slice 4 is smaller, applepie is larger than the others).</p>
-          <p>The portion of the arc of a slice is set via a percentage. In case the total matches 100%, all slices will make a full pie.</p>
-          <p>The background color is taken from the title above.</p>
+          <p>Until now, all pie charts had slices with the same size. Changing the value of the slices changes the relative height. And setting the arc percentage drives the "width" of each slice.</p>
+          
+          <p>As an example, a pie chart with 5 slices, variable height and a variable arc (slice 4 is smaller, applepie is larger than the others).</p>
+
+          <pre>
+            'slices': [
+              { 'value': 140, 'arcPct': 20, 'color': 'indianred', ..},
+              { 'value': 120, 'arcPct': 20, 'color': 'steelblue', ..},
+              { 'value': 100, 'arcPct': 20, 'color': 'olive', ..},
+              { 'value': 60,  'arcPct': 10, 'color': 'aliceblue', ..},
+              { 'value': 100, 'arcPct': 30, 'color': '#F5DEB3', ..}
+          </pre>
+          <p>ps 1: in case the total matches 100%, all slices will make a full pie. So also a 3 quarter pie is doable.</p>
+          <p>ps 2: the background color is taken from the title above. Can be handy when you want to reuse colors of your site in the pie.</p>
 
           <div>
             <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="aspect-ratio: 16/9"></canvas>
@@ -333,7 +344,6 @@
                   { 'value':  60, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
                   { 'value': 100, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
                 ],
-                'allowVerticalRotation': true,
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40, // use 0 to get rid of the donut hole
                 'showLabel': true,
@@ -374,7 +384,6 @@
               ],
               'spaceBetweenSlices': true,
               'innerRadiusPct': 40, // use 0 to get rid of the donut hole
-              'allowVerticalRotation': true,
               'showValue': true,
               'showLabel': true,
               'labelFontFactor': 1.5,
@@ -420,7 +429,7 @@
                 'clickScalePct': 0,
                 'verticalFactor': 2,
                 'allowVerticalRotation' : false,
-                'cameraDegreesY': 60
+                'cameraDegreesY': 30
               });
             </script>
 

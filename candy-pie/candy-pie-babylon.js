@@ -239,7 +239,7 @@ var createPieChartScene = function (canvas, engine, pie3d) {
     camera.beta = Math.PI/2 - angleRad; // normally from top (Y) towards ZX-plane. Now vice versa, the camera goes up Y degrees
     
     // limit Beta rotation between 0 and 90 degrees, when allowVerticalRotation is on.
-    const cameraRadiansY = BABYLON.Angle.FromDegrees(pie3d.cameraDegreesY).radians();
+    const cameraRadiansY = Math.PI/2 - BABYLON.Angle.FromDegrees(pie3d.cameraDegreesY).radians();
     camera.lowerBetaLimit = ( pie3d.allowVerticalRotation ? BABYLON.Angle.FromDegrees( 0).radians() : cameraRadiansY);
     camera.upperBetaLimit = ( pie3d.allowVerticalRotation ? BABYLON.Angle.FromDegrees(90).radians() : cameraRadiansY);
     
@@ -287,7 +287,7 @@ function setPie3d( pie3d) {
   // configuration options
   setDefault( 'verticalFactor', 1);
   setDefault( 'cameraDegreesY', 45);
-  setDefault( 'allowVerticalRotation', false);
+  setDefault( 'allowVerticalRotation', true);
   setDefault( 'spaceBetweenSlices', false);
   setDefault( 'innerRadiusPct', 0);
   setDefault( 'showLabel', false);
