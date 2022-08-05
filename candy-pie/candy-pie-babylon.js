@@ -8,10 +8,11 @@
     ? simplification: alpha 0, rotate over Z (in the xy-plane)
 
     ** open source **
-    - pages : => pseudo cdn
+    - pages : => pseudo cdn for the js file
     - licence file cf babylon
-    - js file
-    - html test page
+    
+    way later:
+    - interactive candy pie builder.
     
 */
 
@@ -77,7 +78,6 @@ function pieChart (pie3d) {
   // CSG: Constructive Solid Geometry : pie (= cylinder with arc) - full cylinder for inner part to carve out
       
   // face UV is used to have the text on front. All other faces just get the background color
-  //const uniPiece = new BABYLON.Vector4(0.9, 0.9, 1, 1); // take a little piece from the right bottom
   const uniPiece = new BABYLON.Vector4(0, 0, 0.1, 0.1); // take a little piece from the left top
   let faceUV = new Array(6).fill( uniPiece);
   faceUV[1] = new BABYLON.Vector4(1, 0, 0, 1); // inverse the whole texture (w text), shown on negative Z
