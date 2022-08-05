@@ -5,8 +5,6 @@
 
     to do
 
-      setPie3d : defaults for array (value, color, arc (1/n%))
-
     ? simplification: alpha 0, rotate over Z (in the xy-plane)
 
     ** open source **

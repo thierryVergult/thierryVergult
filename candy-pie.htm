@@ -118,7 +118,7 @@
       <div class='card' id='install'>
         <div class='header'>usage</div>
         <div class='article'>
-          <p>Load the babylon.js code into your page, and add the candy-pie file.</p>
+          <p>Load the babylon.js code into your page, and add the candy-pie script.</p>
           <pre>
             &lt;script src="https://cdn.babylonjs.com/babylon.js"&gt;&lt;/script&gt;
             &lt;script src="./candy-pie/candy-pie-babylon.js"&gt;&lt;/script&gt;
@@ -261,7 +261,7 @@
             <p>The same pie chart, but now without vertical rotation, the initial camera angle position is a little lower, so the donut shows more flat, and when you click a slice, the slice extends a little:
             <ul>
               <li><i>allowVerticalRotation</i>: default true, now set to false. So now only horizontal rotation is possible.
-              <li><i>cameraDegreesY</i>: the camera position is set to 60 degrees, a little higher than the default 45 degrees. As such the donut is seen more flat.
+              <li><i>cameraDegreesY</i>: the camera position is set to 30 degrees, a little lower than the default of 45 degrees. As such the donut is seen more flat. Camera position starts at the ground plane
               <li><i>clickScalePct</i>: When clicking on a slice, the slice will grow a certain percentage, as been set here. Default 0%; so no zooming at all. Click once again to return to the original state.
             </ul>
           </p>
@@ -302,34 +302,88 @@
         </div>
       </div>
 
-
-      <div class='card' id='labels'>
-        <div class='header'>labels</div>
+      <div class='card' id='height-widt-arc'>
+        <div class='header'>variable height and width</div>
         <div class='article'>
-          <p>Describe the 5 label options.</p>
+          <p>
+            Until now, all pie charts had slices with the same size. 
+            Changing the value of the slices changes the relative height. 
+            And setting the arc percentage drives the "width" of each slice.
+          </p>
+          <p>The first slice takes 50%, the other 2 slices each 25%.</p>
+          <p>The value increases from 100, to 125, to 150. This influences the relative height of the slices.</p>
+
+          <div>
+            <canvas id='candy-pie-id04' class='candy-pie-babylon-canvas' style="aspect-ratio: 3/2;"></canvas>
+    
+            <script>
+              let pie3d_4 = {
+                'htmlCanvasId': 'candy-pie-id04',
+                'slices': [
+                  { 'value': 100, 'arcPct': 50, 'color': 'indianred'},
+                  { 'value': 125, 'arcPct': 25, 'color': 'steelblue'},
+                  { 'value': 150, 'arcPct': 25, 'color': 'olive'}
+                ],
+                'spaceBetweenSlices': true,
+                'innerRadiusPct': 40,
+                'backgroundColor': 'lightgrey',
+                'cameraDegreesY': 30
+              };
+              
+              candy_pie_babylon( pie3d_4);
+            </script>
+    
+            <pre>
+              
+              'slices': [
+                  { 'value': 100, 'arcPct': 50, ..},
+                  { 'value': 125, 'arcPct': 25, ..},
+                  { 'value': 150, 'arcPct': 25, ..}
+                ],
+              
+            </pre>
+    
+          </div>
+
         </div>
       </div>
 
 
-      <div class='card' id='variable'>
-        <div class='header'>Variable height & arc</div>
+      <div class='card' id='labels'>
+        <div class='header'>labels</div>
         <div class='article'>
-          <div id='title1' class='candy-pie-title'>candy pie with variable height and arc</div>
+          <p>A few options for the labels shown on the slice surface</p>
+          <ul>
+            <li>showLabel: boolean, default false
+            <li>showValue: boolean, default false
+            <li>labelFontFactor: default 1. In case a greater font is desired, increase here the font factor.
+            <li>labelExtraTopMargin: default 0. Increment this figure in case the labels should show up a little lower within the slice.
+            <li>labelColor: default empty. If so, the scripts uses black or white labels, depending of the color of the slice.
+          </ul>
+        </div>
+      </div>
 
-          <p>Until now, all pie charts had slices with the same size. Changing the value of the slices changes the relative height. And setting the arc percentage drives the "width" of each slice.</p>
-          
-          <p>As an example, a pie chart with 5 slices, variable height and a variable arc (slice 4 is smaller, applepie is larger than the others).</p>
 
-          <pre>
+      <div class='card' id='all-in'>
+        <div class='header'>Pie chart with labels</div>
+        <div class='article'>
+                   
+          <p>One more example, a pie chart with 5 slices, variable height and a variable arc (slice 4 is smaller, applepie is larger than the others), with labels.</p>
+
+          <pre id='id-pick-color'>
             'slices': [
-              { 'value': 140, 'arcPct': 20, 'color': 'indianred', ..},
-              { 'value': 120, 'arcPct': 20, 'color': 'steelblue', ..},
-              { 'value': 100, 'arcPct': 20, 'color': 'olive', ..},
-              { 'value': 60,  'arcPct': 10, 'color': 'aliceblue', ..},
-              { 'value': 100, 'arcPct': 30, 'color': '#F5DEB3', ..}
+            &nbsp; { 'value': 100, 'arcPct': 20, 'label': 'one'},
+            &nbsp; { 'value': 120, 'arcPct': 20, 'label': 'two'},
+            &nbsp; { 'value': 140, 'arcPct': 20, 'label': 'three'},
+            &nbsp; { 'value': 160, 'arcPct': 10, 'label': 'four'},
+            &nbsp; { 'value': 180, 'arcPct': 30, 'label': 'apples'}
+            ],
+            ..
+            'showLabel': true,
+            
           </pre>
-          <p>ps 1: in case the total matches 100%, all slices will make a full pie. So also a 3 quarter pie is doable.</p>
-          <p>ps 2: the background color is taken from the title above. Can be handy when you want to reuse colors of your site in the pie.</p>
+          
+          <p>ps: the background color of the pie chart is dynamically taken from the code snippet above. Can be handy when you want to reuse colors of your site in the pie.</p>
 
           <div>
             <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="aspect-ratio: 16/9"></canvas>
@@ -338,17 +392,17 @@
               let pie3d = {
                 'htmlCanvasId': 'candy-pie-babylon-canvas-id',
                 'slices': [
-                  { 'value': 140, 'arcPct': 1/5 * 100, 'color': 'indianred', 'label': 'one'},
-                  { 'value': 120, 'arcPct': 1/5 * 100, 'color': 'steelblue', 'label': 'two'},
-                  { 'value': 100, 'arcPct': 1/5 * 100, 'color': 'olive',     'label': 'three'},
-                  { 'value':  60, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
-                  { 'value': 100, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+                  { 'value': 100, 'arcPct': 1/5 * 100,  'color': 'indianred', 'label': 'one'},
+                  { 'value': 120, 'arcPct': 1/5 * 100,  'color': 'steelblue', 'label': 'two'},
+                  { 'value': 140, 'arcPct': 1/5 * 100,  'color': 'olive',     'label': 'three'},
+                  { 'value': 160, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
+                  { 'value': 180, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40, // use 0 to get rid of the donut hole
                 'showLabel': true,
                 'showValue': false,
-                'backgroundColor': window.getComputedStyle( document.getElementById( 'title1')).color,
+                'backgroundColor': window.getComputedStyle( document.getElementById( 'id-pick-color')).backgroundColor,
                 'clickScalePct': 20,
                 'verticalFactor': 1.6 // increment this number in case you want higher vertical slices
               };
@@ -365,9 +419,8 @@
       <div class='card' id='vertical'>
         <div class='header'>higher slices</div>
         <div class='article'>
-          <div class='candy-pie-title'>candy pie with vertically stretched slices</div>
           <p>This pie chart has also 5 slices, all with same width (arc), but the slices are made higher than in the previous pie chart. 
-            This is done via the <i>verticalFactor</i> configuration option.</p>
+            This is done via the <i>verticalFactor</i> configuration option, which stretches the slices vertically.</p>
   
         <div>
           <canvas id='candy-pie-babylon-canvas-id2' class='candy-pie-babylon-canvas' style="width:80%; margin-left: 10%; aspect-ratio: 1/1"></canvas>
@@ -394,6 +447,12 @@
             
             candy_pie_babylon( pie3d2);
           </script>
+
+          <pre>
+            
+            'verticalFactor': 4
+            
+          </pre>
   
         </div>    
         </div>
@@ -402,10 +461,9 @@
 
 
       <div class='card' id='holidays'>
-        <div class='header'>holiday chart</div>
+        <div class='header'>holiday pie chart</div>
         <div class='article'>
 
-          <div class='candy-pie-title'>holiday pie chart</div>
           <p>This pie chart has 4 equal slices. Some label-configuration options are used to position & color the labels on the pie.</p>
           <div>
             <canvas id='candy-pie-babylon-canvas-id3' class='candy-pie-babylon-canvas' style="width:75%; margin-left: 12%; aspect-ratio: 4/3"></canvas>
@@ -425,7 +483,7 @@
                 'labelFontFactor': 2.5,
                 'labelExtraTopMargin': 20,
                 'labelColor': 'rgb(155, 102, 102)',
-                'backgroundColor': 'rgba(196,238,216,255)', // green-ish
+                'backgroundColor': 'rgb(196,238,216)', // green-ish
                 'clickScalePct': 0,
                 'verticalFactor': 2,
                 'allowVerticalRotation' : false,
@@ -435,14 +493,14 @@
 
             <pre>
 
-  'labelFontFactor': 2.5,
-  'labelExtraTopMargin': 20,
-  'labelColor': 'rgb(155, 102, 102)',
-  'backgroundColor': 'rgba(196,238,216,255)', // green-ish
-  'clickScalePct': 0,
-  'verticalFactor': 2,
-  'allowVerticalRotation' : false,
-  'cameraDegreesY': 60
+              'labelFontFactor': 2.5,
+              'labelExtraTopMargin': 20,
+              'labelColor': 'rgb(155, 102, 102)',
+              'backgroundColor': 'rgb(196,238,216)', // green-ish
+              'clickScalePct': 0,
+              'verticalFactor': 2,
+              'allowVerticalRotation' : false,
+              'cameraDegreesY': 60
 
             </pre>
 
@@ -457,13 +515,13 @@
       <div class='card' id='colors'>
         <div class='header'>colors</div>
         <div class='article'>
-          <p>Describe some options to define a color.</p>
-          <p>always a string</p>
+          <p>Tle color of the slices and the canvas background are always set via a string.</p>
+          <p>Such string can be:</p>
           <ul>
-            <li>named colors</li>
-            <li>hexadecimal value</li>
-            <li>rgb function call</li>
-            <li>javascript function returning a valid color string</li>
+            <li>a named color, like 'red'. <a href='https://www.w3schools.com/colors/colors_names.asp' target='_blank' >Some more color names.</a></li>
+            <li>a hexadecimal value, like '#f8f6e1'</li>
+            <li>a rgb function call, like 'rgb(196,238,216)'</li>
+            <li>a javascript function returning a valid color string</li>
           </ul>
         </div>
       </div>
