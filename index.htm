@@ -10,6 +10,8 @@
     
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
     
     <style>
       /* global css variable */
@@ -451,6 +453,46 @@
         </div>
       </div>
 
+      <div class='card' id='candy-pie'>
+        <div class='header'>Candy pie</div>
+        <div class='article'>
+                   
+          <h3>a configurable, interactive 3d pie chart in your browser</h3>
+
+          <div>
+            <script src="./candy-pie/candy-pie-babylon.js"></script>
+
+            <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="width: 100%"></canvas>
+
+            <script>
+              let pie3d = {
+                'htmlCanvasId': 'candy-pie-babylon-canvas-id',
+                'slices': [
+                  { 'height': 10, 'arcPct': 1/5 * 100,  'color': 'indianred', 'label': 'one'},
+                  { 'height': 12, 'arcPct': 1/5 * 100,  'color': 'steelblue', 'label': 'two'},
+                  { 'height': 14, 'arcPct': 1/5 * 100,  'color': 'olive',     'label': 'three'},
+                  { 'height': 16, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
+                  { 'height': 18, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+                ],
+                'spaceBetweenSlices': true,
+                'innerRadiusPct': 40,
+                'showLabel': true,
+                'labelFontFactor': 1.5,
+                'backgroundColor': 'lightgrey',
+                'clickScalePct': 20,
+                'verticalFactor': 1.6 // increment this number in case you want higher vertical slices
+              };
+              
+              candy_pie_babylon( pie3d);
+            </script>
+
+          </div>
+
+          <p><a href="./candy-pie.htm"> &nbsp; <i class="fa fa-hand-pointer-o"></i> &nbsp; for more details</a></p>
+          
+        </div>
+      </div>
+
 
       <div class='card' id='candy-bar'>
         <link rel="stylesheet" href="./assets/candy-bar.css"/>
@@ -493,7 +535,6 @@
           </div>
         </div>
         <div class='article'>
-          <script src="https://cdn.babylonjs.com/babylon.js"></script>
           <script src="./assets/meshwriter.min.js"></script>
           <script src="./assets/opayra.babylon.js"></script>
           <script src="./assets/candy-bar.js"></script>

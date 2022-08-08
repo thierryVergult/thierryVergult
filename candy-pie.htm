@@ -163,7 +163,7 @@
 
           <p>A pie chart with 3 equal slices. Each slice is specified by
             <ul>
-              <li>a value, which maps to the relative height of each slice
+              <li>a height number, which maps to the relative height of each slice
               <li>a color, which can be specified in several formats (see later)
             </ul>
           </p>
@@ -176,9 +176,9 @@
               let pie3d_default = {
                 'htmlCanvasId': 'candy-pie-id00',
                 'slices': [
-                  { 'value': 100, 'color': 'indianred'},
-                  { 'value': 100, 'color': 'steelblue'},
-                  { 'value': 100, 'color': 'olive'}
+                  { 'height': 100, 'color': 'indianred'},
+                  { 'height': 100, 'color': 'steelblue'},
+                  { 'height': 100, 'color': 'olive'}
                 ]
               };
               
@@ -189,9 +189,9 @@
               let pie3d_default = {
                 'htmlCanvasId': 'candy-pie-babylon-canvas-id-default',
                 'slices': [
-                &nbsp;  { 'value': 100, 'color': 'indianred'},
-                &nbsp;  { 'value': 100, 'color': 'steelblue'},
-                &nbsp;  { 'value': 100, 'color': 'olive'}
+                &nbsp;  { 'height': 100, 'color': 'indianred'},
+                &nbsp;  { 'height': 100, 'color': 'steelblue'},
+                &nbsp;  { 'height': 100, 'color': 'olive'}
                 ]
               };
                           
@@ -223,9 +223,9 @@
               let pie3d_2 = {
                 'htmlCanvasId': 'candy-pie-id01',
                 'slices': [
-                  { 'value': 100, 'color': 'indianred'},
-                  { 'value': 100, 'color': 'steelblue'},
-                  { 'value': 100, 'color': 'olive'}
+                  { 'height': 100, 'color': 'indianred'},
+                  { 'height': 100, 'color': 'steelblue'},
+                  { 'height': 100, 'color': 'olive'}
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40,
@@ -239,9 +239,9 @@
               let pie3d_2 = {
                 'htmlCanvasId': 'candy-pie-id01',
                 'slices': [
-                 &nbsp; { 'value': 100, 'color': 'indianred'},
-                 &nbsp; { 'value': 100, 'color': 'steelblue'},
-                 &nbsp; { 'value': 100, 'color': 'olive'}
+                 &nbsp; { 'height': 100, 'color': 'indianred'},
+                 &nbsp; { 'height': 100, 'color': 'steelblue'},
+                 &nbsp; { 'height': 100, 'color': 'olive'}
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40,
@@ -273,9 +273,9 @@
               let pie3d_3 = {
                 'htmlCanvasId': 'candy-pie-id03',
                 'slices': [
-                  { 'value': 100, 'color': 'indianred'},
-                  { 'value': 100, 'color': 'steelblue'},
-                  { 'value': 100, 'color': 'olive'}
+                  { 'height': 100, 'color': 'indianred'},
+                  { 'height': 100, 'color': 'steelblue'},
+                  { 'height': 100, 'color': 'olive'}
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40,
@@ -307,11 +307,11 @@
         <div class='article'>
           <p>
             Until now, all pie charts had slices with the same size. 
-            Changing the value of the slices changes the relative height. 
+            Changing the height of the slices changes the relative height. 
             And setting the arc percentage drives the "width" of each slice.
           </p>
           <p>The first slice of this example below takes 50%, the other 2 slices take each 25%.</p>
-          <p>The value increases from 100, to 125, to 150. This influences the relative height of the slices.</p>
+          <p>The height increases from 100, to 125, to 150. This influences the relative height of the slices.</p>
 
           <div>
             <canvas id='candy-pie-id04' class='candy-pie-babylon-canvas' style="aspect-ratio: 3/2;"></canvas>
@@ -320,9 +320,9 @@
               let pie3d_4 = {
                 'htmlCanvasId': 'candy-pie-id04',
                 'slices': [
-                  { 'value': 100, 'arcPct': 50, 'color': 'indianred'},
-                  { 'value': 125, 'arcPct': 25, 'color': 'steelblue'},
-                  { 'value': 150, 'arcPct': 25, 'color': 'olive'}
+                  { 'height': 100, 'arcPct': 50, 'color': 'indianred'},
+                  { 'height': 125, 'arcPct': 25, 'color': 'steelblue'},
+                  { 'height': 150, 'arcPct': 25, 'color': 'olive'}
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40,
@@ -336,9 +336,9 @@
             <pre>
               
               'slices': [
-                  { 'value': 100, 'arcPct': 50, ..},
-                  { 'value': 125, 'arcPct': 25, ..},
-                  { 'value': 150, 'arcPct': 25, ..}
+                  { 'height': 100, 'arcPct': 50, ..},
+                  { 'height': 125, 'arcPct': 25, ..},
+                  { 'height': 150, 'arcPct': 25, ..}
                 ],
               
             </pre>
@@ -355,7 +355,7 @@
           <p>A few options for the labels shown on the slice surface:</p>
           <ul>
             <li>showLabel: boolean, default false.
-            <li>showValue: boolean, default false.
+            <li>showHeight: boolean, default false.
             <li>labelFontFactor: default 1. In case a greater font is desired, increase here the font factor.
             <li>labelExtraTopMargin: default 0. Increment this figure in case the labels should show up a little lower within each slice.
             <li>labelColor: default empty. If so, the scripts uses black or white labels, depending of the color of the slice. If not, this color is used for all slices.
@@ -372,11 +372,11 @@
 
           <pre id='id-pick-color'>
             'slices': [
-            &nbsp; { 'value': 10, 'arcPct': 20, 'label': 'one'},
-            &nbsp; { 'value': 12, 'arcPct': 20, 'label': 'two'},
-            &nbsp; { 'value': 14, 'arcPct': 20, 'label': 'three'},
-            &nbsp; { 'value': 16, 'arcPct': 10, 'label': 'four'},
-            &nbsp; { 'value': 18, 'arcPct': 30, 'label': 'apples'}
+            &nbsp; { 'height': 10, 'arcPct': 20, 'label': 'one'},
+            &nbsp; { 'height': 12, 'arcPct': 20, 'label': 'two'},
+            &nbsp; { 'height': 14, 'arcPct': 20, 'label': 'three'},
+            &nbsp; { 'height': 16, 'arcPct': 10, 'label': 'four'},
+            &nbsp; { 'height': 18, 'arcPct': 30, 'label': 'apples'}
             ],
             ..
             'showLabel': true,
@@ -393,11 +393,11 @@
               let pie3d = {
                 'htmlCanvasId': 'candy-pie-babylon-canvas-id',
                 'slices': [
-                  { 'value': 10, 'arcPct': 1/5 * 100,  'color': 'indianred', 'label': 'one'},
-                  { 'value': 12, 'arcPct': 1/5 * 100,  'color': 'steelblue', 'label': 'two'},
-                  { 'value': 14, 'arcPct': 1/5 * 100,  'color': 'olive',     'label': 'three'},
-                  { 'value': 16, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
-                  { 'value': 18, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+                  { 'height': 10, 'arcPct': 1/5 * 100,  'color': 'indianred', 'label': 'one'},
+                  { 'height': 12, 'arcPct': 1/5 * 100,  'color': 'steelblue', 'label': 'two'},
+                  { 'height': 14, 'arcPct': 1/5 * 100,  'color': 'olive',     'label': 'three'},
+                  { 'height': 16, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
+                  { 'height': 18, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 40,
@@ -430,15 +430,15 @@
             let pie3d2 = {
               'htmlCanvasId': 'candy-pie-babylon-canvas-id2',
               'slices': [
-                { 'value': 100, 'arcPct': 1/5 * 100, 'color': 'indianred', 'label': 'one'},
-                { 'value':  80, 'arcPct': 1/5 * 100, 'color': 'steelblue', 'label': 'two'},
-                { 'value': 120, 'arcPct': 1/5 * 100, 'color': 'olive',     'label': 'three'},
-                { 'value':  80, 'arcPct': 1/5 * 100, 'color': 'aliceblue', 'label': 'four'},
-                { 'value': 120, 'arcPct': 1/5 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+                { 'height': 100, 'arcPct': 1/5 * 100, 'color': 'indianred', 'label': 'one'},
+                { 'height':  80, 'arcPct': 1/5 * 100, 'color': 'steelblue', 'label': 'two'},
+                { 'height': 120, 'arcPct': 1/5 * 100, 'color': 'olive',     'label': 'three'},
+                { 'height':  80, 'arcPct': 1/5 * 100, 'color': 'aliceblue', 'label': 'four'},
+                { 'height': 120, 'arcPct': 1/5 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
               ],
               'spaceBetweenSlices': true,
               'innerRadiusPct': 40, // use 0 to get rid of the donut hole
-              'showValue': true,
+              'showHeight': true,
               'showLabel': true,
               'labelFontFactor': 1.5,
               'backgroundColor': 'rgb(155, 102, 102)',
@@ -473,10 +473,10 @@
               candy_pie_babylon( {
                 'htmlCanvasId': 'candy-pie-babylon-canvas-id3',
                 'slices': [
-                  { 'value': 1, 'color': 'lightblue', 'label': 'swimming'},
-                  { 'value': 1, 'color': '#f8f6e1',   'label': 'ice cream'},
-                  { 'value': 1, 'color': 'lightblue', 'label': 'cocktails'},
-                  { 'value': 1, 'color': '#f8f6e1',   'label': 'relaxing'}
+                  { 'height': 1, 'color': 'lightblue', 'label': 'swimming'},
+                  { 'height': 1, 'color': '#f8f6e1',   'label': 'ice cream'},
+                  { 'height': 1, 'color': 'lightblue', 'label': 'cocktails'},
+                  { 'height': 1, 'color': '#f8f6e1',   'label': 'relaxing'}
                 ],
                 'spaceBetweenSlices': true,
                 'innerRadiusPct': 25, // use 0 to get rid of the donut hole

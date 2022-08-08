@@ -4,9 +4,7 @@
     configuration in the pie3d global variable (json)
 
     to do
-    - make the idea of 2 datasets more explicit
-      - rename value to height
-      - an option to show the arc% on the label
+    - option to show the arc% on the label
     
     ? simplification: alpha 0, rotate over Z (in the xy-plane)
 
@@ -132,7 +130,7 @@ function pieChart (pie3d) {
         textOnSlice = label
       }
 
-      if ( pie3d.showValue) {
+      if ( pie3d.showHeight) {
         textOnSlice = textOnSlice + ( pie3d.showLabel ? ': ': '') + value
       }
 
@@ -195,8 +193,8 @@ function pieChart (pie3d) {
       
     let maxVal = 0;
     for ( let i = 0; i < slices.length ; i++) {
-      if (slices[i].value > maxVal) {
-        maxVal = slices[i].value;
+      if (slices[i].height > maxVal) {
+        maxVal = slices[i].height;
       }
     }
   
@@ -208,11 +206,11 @@ function pieChart (pie3d) {
     for ( let i = 0; i < slices.length; i++) {
         
       let p = slices[i],
-          h = p.value / maxVal * pie3d.verticalFactor;
+          h = p.height / maxVal * pie3d.verticalFactor;
       
       p.arcPct = p.arcPct / 100;
   
-      let slice = oneSlice( h, p.arcPct, p.color, p.label, p.value);
+      let slice = oneSlice( h, p.arcPct, p.color, p.label, p.height);
   
       // increment rotY for the next slice
       rotY = rotY + ( 2 * Math.PI * p.arcPct);
@@ -292,7 +290,7 @@ function setPie3d( pie3d) {
   setDefault( 'spaceBetweenSlices', false);
   setDefault( 'innerRadiusPct', 0);
   setDefault( 'showLabel', false);
-  setDefault( 'showValue', false);
+  setDefault( 'showHeight', false);
   setDefault( 'labelFontFactor', 1);
   setDefault( 'labelExtraTopMargin', 0);
   setDefault( 'backgroundColor', '#808080');
