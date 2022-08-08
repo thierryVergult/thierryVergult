@@ -4,7 +4,10 @@
     configuration in the pie3d global variable (json)
 
     to do
-
+    - make the idea of 2 datasets more explicit
+      - rename value to height
+      - an option to show the arc% on the label
+    
     ? simplification: alpha 0, rotate over Z (in the xy-plane)
 
     ** open source **
