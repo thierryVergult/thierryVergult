@@ -1,0 +1,165 @@
+<!doctype html>
+  <html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>opayra lab - wk svg</title>
+
+    <style>
+      svg text {display: none;}
+      svg g:hover text {display: block;}
+    </style>
+  </head>
+  
+  <body>
+    <svg
+      id="wk"
+      version="1.1"
+      baseProfile="full">
+      <rect width="100%" height="100%" id="wk-bg" fill="lightgrey"/>
+    </svg>
+
+    <script>
+      const gPoules = 8,
+            gTeamsInPoule = 4,
+            svgns = "http://www.w3.org/2000/svg",  // sets the namespace
+            bgColor = 'lightgrey',
+            size = 1000;
+
+      const teams = [ 
+        { name: 'Quatar'}, 
+        { name: 'Ecuador'}, 
+        { name: 'Senegal'}, 
+        { name: 'Netherlands'}, 
+        { name: 'England'}, 
+        { name: 'Iran'}, 
+        { name: 'USA'}, 
+        { name: 'Wales'}, 
+        { name: 'Argentina'}, 
+        { name: 'Saudi Arabia'}, 
+        { name: 'Mexico'}, 
+        { name: 'Poland'}, 
+        { name: 'eFrance'}, 
+        { name: 'Australia'}, 
+        { name: 'Denmark'}, 
+        { name: 'Tunisia'}, 
+        { name: 'Spain'}, 
+        { name: 'Costa Rica'}, 
+        { name: 'Germany'}, 
+        { name: 'Japan'}, 
+        { name: 'Belgium'}, 
+        { name: 'Canada'}, 
+        { name: 'Morocco'}, 
+        { name: 'Croatia'}, 
+        { name: 'Brazil'}, 
+        { name: 'Serbia'}, 
+        { name: 'Switzerland'}, 
+        { name: 'Cameroon'}, 
+        { name: 'Portugal'}, 
+        { name: 'Ghana'}, 
+        { name: 'Uruguay'}, 
+        { name: 'South Korea'}
+      ];
+
+      const center = size / 2;
+      
+      const svg = document.getElementById("wk");
+
+      svg.setAttribute( "width", size);
+      svg.setAttribute( "height", size);
+      svg.setAttribute( "xmlns", svgns);
+      
+      document.getElementById("wk-bg").setAttribute( "fill", bgColor);
+
+      function drawTeam ( p) {
+                
+        let circle = document.createElementNS( svgns, "circle");
+
+        circle.setAttribute( "cx", p.cx);
+        circle.setAttribute( "cy", p.cy);
+        circle.setAttribute( "r", p.r || 20);
+        circle.setAttribute( "fill", p.col || "#5cceee");
+
+        // https://stackoverflow.com/questions/10643426/how-to-add-a-tooltip-to-an-svg-graphic
+        let hover = document.createElementNS( svgns, "title");
+
+        let label = p.label || '';
+        if ( 'name' in ( teams[p.teamNr] || {}) ) {
+          label = teams[p.teamNr].name;
+        }
+
+        let hoverTxt = document.createTextNode( label);
+        
+        // append the tree to the svg
+        svg.appendChild(circle);
+        circle.appendChild(hover);
+        hover.appendChild(hoverTxt);
+      }
+
+      function drawRound (games, r, color, labelPrefix, teamRadius, startingAngle) {
+
+        console.log( 'round for ' + games + ' game(s).', 'r', r, 'teamRadius', teamRadius, 'color', color);
+
+        // for each game
+        for ( let i = 0; i < games; i++) {
+          let a = ( Math.PI * 2 / games * i ) + ( startingAngle || 0 ),
+              gameCenterX = center + (r * Math.cos(a)),
+              gameCenterY = center + (r * Math.sin(a));
+
+          drawTeam( { cx: gameCenterX, cy: gameCenterY, r: 2, col: color, label: labelPrefix + ' ' + (i+1)});
+
+          // draw two teams
+          for ( let j = 0; j < 2; j++) {
+            let r2 = teamRadius + 5,
+                a2 = ( Math.PI * 2 / 2 * j ) + a + Math.PI / 2,
+                gameX = gameCenterX + (r2 * Math.cos(a2)),
+                gameY = gameCenterY + (r2 * Math.sin(a2));
+            
+            drawTeam( { cx: gameX, cy: gameY, r: teamRadius, col: color, label: labelPrefix + ' ' + (i+1) + '/' + (j+1)});
+          }
+        }  
+      }
+
+      let teamNr = 0;
+      // 8 poules, 4 teams in a poule
+      for ( let i = 0; i < gPoules; i++) {
+
+        let factor = i%2 == 0 ? 1 : -1;  // wordt 1 voor de even poules, - 1 for de oneven poules
+
+        let r = center,
+            a = ( Math.PI * 2 / gPoules * i ) + Math.PI / gPoules + ( Math.PI / ( gPoules * 2) * factor),
+            pouleCenterX = center + (r * Math.cos(a)),
+            pouleCenterY = center + (r * Math.sin(a));
+
+        console.log( i, pouleCenterX, pouleCenterY);
+        drawTeam( { cx: pouleCenterX, cy: pouleCenterY, r: 2, col: 'yellow', label: 'Poule ' + (i+1)});
+
+        for ( let j = 0; j < gTeamsInPoule; j++) {
+          let r2 = 35,  // beweegt mee met de 800
+              a2 = ( Math.PI * 2 / gTeamsInPoule * j) + a,
+              pouleTeamX = pouleCenterX + (r2 * Math.cos(a2)),
+              pouleTeamY = pouleCenterY + (r2 * Math.sin(a2));
+          
+          drawTeam( { cx: pouleTeamX, cy: pouleTeamY, r: 20, col: 'yellow', teamNr: teamNr++});
+        }
+      }
+
+      
+
+      // round of 16: 8 wedstrijden
+      drawRound( 8, 320, 'lightgreen', 'r16', 25, Math.PI / 8);
+
+      // quarter-finals: 4 games
+      drawRound( 4, 230, 'steelblue', 'quarter', 30);
+
+      // half
+      drawRound( 2, 150, 'yellow', 'half', 35, Math.PI / 4 * 1);
+
+      drawRound( 1, 0, 'red', 'final', 40, - Math.PI / 4);
+
+      // world champion
+      //drawTeam( { cx: 400, cy: 400, label: 'Belgique!!', col: 'gold'});
+
+    </script>
+
+  </body>
+</html>
