@@ -11,11 +11,7 @@
   </head>
   
   <body>
-    <a href="https://stackoverflow.com/questions/29442833/svg-image-inside-circle">stack overflow: image inside circle</a>
-    <br>
-    <a href="https://github.com/lafeber/world-flags-sprite">32x+++ sprite of all country flags.</a>
-    <br>
-
+    <br><br>
     <svg
       id="wk"
       version="1.1"
@@ -25,6 +21,14 @@
 
       <rect width="100%" height="100%" id="wk-bg" fill="lightgrey"/>
     </svg>
+    
+    <br><br><br>
+    <a href="https://stackoverflow.com/questions/29442833/svg-image-inside-circle">stack overflow: image inside circle</a>
+    <br>
+    <a href="https://github.com/lafeber/world-flags-sprite">32x+++ sprite of all country flags.</a>
+    <br>
+    <a href="https://www.fifa.com/fifaplus/en/articles/qatar-2022-all-qualified-teams-groups-dates-match-schedule-tickets-more">fifa info</a>
+    <br>
 
     <script>
       const gPoules = 8,
@@ -34,38 +38,38 @@
             size = 1000;
 
       const teams = [ 
-        { name: 'Quatar'}, 
-        { name: 'Ecuador'}, 
-        { name: 'Senegal'}, 
-        { name: 'Netherlands'}, 
-        { name: 'England'}, 
-        { name: 'Iran'}, 
-        { name: 'USA'}, 
-        { name: 'Wales'}, 
-        { name: 'Argentina'}, 
-        { name: 'Saudi Arabia'}, 
-        { name: 'Mexico'}, 
-        { name: 'Poland'}, 
-        { name: 'France'}, 
-        { name: 'Australia'}, 
-        { name: 'Denmark'}, 
-        { name: 'Tunisia'}, 
-        { name: 'Spain'}, 
-        { name: 'Costa Rica'}, 
-        { name: 'Germany'}, 
-        { name: 'Japan'}, 
+        { name: 'Quatar', offset: 6080, shortName: "qa"}, 
+        { name: 'Ecuador', offset: 2496, shortName: "eq"}, 
+        { name: 'Senegal', offset: 6592, shortName: "sn"}, 
+        { name: 'Netherlands', offset: 5504, shortName: "nl"}, 
+        { name: 'England', offset: 224, shortName: "england"}, 
+        { name: 'Iran', offset: 3776, shortName: "ir"}, 
+        { name: 'USA', offset: 7328, shortName: "us"}, 
+        { name: 'Wales', offset: 672, shortName: "wales"}, 
+        { name: 'Argentina', offset: 992, shortName: "ar"}, 
+        { name: 'Saudi Arabia', offset: 6272, shortName: "sa"}, 
+        { name: 'Mexico', offset: 5248, shortName: "mx"}, 
+        { name: 'Poland', offset: 5888, shortName: "pl"}, 
+        { name: 'France', offset: 2848, shortName: "fr"}, 
+        { name: 'Australia', offset: 1088, shortName: "au"}, 
+        { name: 'Denmark', offset: 2368, shortName: "dk"}, 
+        { name: 'Tunisia', offset: 7040, shortName: "tn"}, 
+        { name: 'Spain', offset: 2656, shortName: "es"}, 
+        { name: 'Costa Rica', offset: 2144, shortName: "cr"}, 
+        { name: 'Germany', offset: 2304, shortName: "de"}, 
+        { name: 'Japan', offset: 3968, shortName: "jp"}, 
         { name: 'Belgium', offset: 1312, shortName: "be"}, 
         { name: 'Canada', offset: 1792, shortName: "ca"}, 
         { name: 'Morocco', offset: 4704, shortName: "ma"}, 
         { name: 'Croatia', offset: 3488, shortName: "hr"}, 
-        { name: 'Brazil'}, 
-        { name: 'Serbia'}, 
-        { name: 'Switzerland'}, 
-        { name: 'Cameroon'}, 
-        { name: 'Portugal'}, 
-        { name: 'Ghana'}, 
-        { name: 'Uruguay'}, 
-        { name: 'South Korea'}
+        { name: 'Brazil', offset: 1600, shortName: "br"}, 
+        { name: 'Serbia', offset: 6176, shortName: "srb"}, 
+        { name: 'Switzerland', offset: 1920, shortName: "ch"}, 
+        { name: 'Cameroon', offset: 2048, shortName: "cm"}, 
+        { name: 'Portugal', offset: 5984, shortName: "pt"}, 
+        { name: 'Ghana', offset: 3040, shortName: "gh"}, 
+        { name: 'Uruguay', offset: 7360, shortName: "uy"}, 
+        { name: 'South Korea', offset: 4224, shortName: "kr"}
       ];
 
       const center = size / 2;
