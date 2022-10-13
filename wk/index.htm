@@ -309,8 +309,9 @@
         groupPoule.setAttribute( "onclick", "showTooltip(evt, " + (i+1) + ");");  // onmousemove prev
         groupPoule.setAttribute( "onmouseout", "hideTooltip();");
 
-        //console.log( i, pouleCenterX, pouleCenterY);
-        drawTeam( { cx: pouleCenterX, cy: pouleCenterY, r: 2, col: 'yellow', label: 'Poule ' + (i+1), parent: groupPoule, idSuffix: 'mid'});
+        // r50, so the poule becomes easily clickable, also on mobile
+        // same color as background, to make it invisible
+        drawTeam( { cx: pouleCenterX, cy: pouleCenterY, r: 50, col: 'lightgrey', label: 'Poule ' + (i+1), parent: groupPoule, idSuffix: 'mid'});
 
         for ( let j = 0; j < gTeamsInPoule; j++) {
           let r2 = 35,  // beweegt mee met de 800
