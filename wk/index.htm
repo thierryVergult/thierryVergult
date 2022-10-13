@@ -5,12 +5,13 @@
     <title>opayra lab - wk svg</title>
 
     <style>
-      svg text {display: none;}
-      svg g:hover text {display: block;}
+      
     </style>
   </head>
   
   <body>
+    <div id="tooltip" display="none" style="position: absolute; display: none;"></div>
+
     <br><br>
     <svg
       id="wk"
@@ -20,6 +21,7 @@
       <defs id="wk-defs"></defs>
 
       <rect width="100%" height="100%" id="wk-bg" fill="lightgrey"/>
+      <g id="id-games"></g>
     </svg>
     
     <br><br><br>
@@ -29,6 +31,7 @@
     <br>
     <a href="https://www.fifa.com/fifaplus/en/articles/qatar-2022-all-qualified-teams-groups-dates-match-schedule-tickets-more">fifa info</a>
     <br>
+    <a href="https://stackoverflow.com/questions/44531794/how-to-show-a-tooltip-after-clicking-an-svg">so: add tooltip</a>
 
     <script>
       const gPoules = 8,
@@ -59,9 +62,9 @@
         { name: 'Germany', offset: 2304, shortName: "de"}, 
         { name: 'Japan', offset: 3968, shortName: "jp"}, 
         { name: 'Belgium', offset: 1312, shortName: "be"}, 
-        { name: 'Canada', offset: 1792, shortName: "ca"}, 
-        { name: 'Morocco', offset: 4704, shortName: "ma"}, 
-        { name: 'Croatia', offset: 3488, shortName: "hr"}, 
+        { name: 'Canada', offset: 1792, shortName: "ca"},
+        { name: 'Morocco', offset: 4704, shortName: "ma"},
+        { name: 'Croatia', offset: 3488, shortName: "hr"},
         { name: 'Brazil', offset: 1600, shortName: "br"}, 
         { name: 'Serbia', offset: 6176, shortName: "srb"}, 
         { name: 'Switzerland', offset: 1920, shortName: "ch"}, 
@@ -86,19 +89,38 @@
         return Math.floor(Math.random() * (max - min + 1) + min)
       }
 
-      function drawTeam ( p) {
-                
+      function showTooltip(evt, text) {
+        let tooltip = document.getElementById("tooltip");
+        tooltip.innerHTML = text;
+        tooltip.style.display = "block";
+        tooltip.style.left = evt.pageX + 10 + 'px';
+        tooltip.style.top = evt.pageY + 10 + 'px';
+      }
+
+      function hideTooltip() {
+        var tooltip = document.getElementById("tooltip");
+        tooltip.style.display = "none";
+      }
+
+      function createGroupUnder( parentId, id) {
+        let parent = document.getElementById(parentId),
+            group = document.createElementNS( svgns, "g");
+        
+        group.setAttribute( "id", id);
+        parent.appendChild(group);
+
+        return group;
+      }
+
+      function drawTeam(p) {
+        
         let circle = document.createElementNS( svgns, "circle");
 
         circle.setAttribute( "cx", p.cx);
         circle.setAttribute( "cy", p.cy);
         circle.setAttribute( "r", p.r || 20);
         circle.setAttribute( "fill", p.col || "#5cceee");
-
-        let label = p.label || '';
-        if ( 'name' in ( teams[p.teamNr] || {}) ) {
-          label = teams[p.teamNr].name;
-        }
+        circle.setAttribute( "id", p.parent.id);
 
         if ( 'offset' in ( teams[p.teamNr] || {}) ) {
           let idImage = "url(#flag-" + teams[p.teamNr].shortName + ")";
@@ -107,10 +129,15 @@
           circle.setAttribute( "stroke-width", "0.2%");
           
           circle.setAttribute( "transform", "rotate(" + randomIntFromInterval(-15, 15) + "," + p.cx + ',' + p.cy + ")");
+
+          circle.setAttribute( "id", circle.getAttribute("id") + '-' + teams[p.teamNr].shortName);
         }
-        
-        // append the tree to the svg
-        svg.appendChild(circle);
+
+        if (p.idSuffix) {
+          circle.setAttribute( "id", circle.getAttribute("id") + '-' + p.idSuffix);
+        }
+
+        p.parent.appendChild(circle);
 
         // tooltip on mobile: https://stackoverflow.com/questions/46384057/how-to-display-a-tooltip-div-when-an-svg-element-is-hovered
 
@@ -120,13 +147,17 @@
 
         console.log( 'round for ' + games + ' game(s).', 'r', r, 'teamRadius', teamRadius, 'color', color);
 
+        let groupRound = createGroupUnder( "id-games", "round-" + games);
+
         // for each game
         for ( let i = 0; i < games; i++) {
           let a = ( Math.PI * 2 / games * i ) + ( startingAngle || 0 ),
               gameCenterX = center + (r * Math.cos(a)),
               gameCenterY = center + (r * Math.sin(a));
 
-          drawTeam( { cx: gameCenterX, cy: gameCenterY, r: 2, col: color, label: labelPrefix + ' ' + (i+1)});
+          let groupRoundMatch = createGroupUnder( "round-" + games, "round-" + (games*2) + '-' + (i+1));
+
+          drawTeam( { cx: gameCenterX, cy: gameCenterY, r: 2, col: color, label: labelPrefix + ' ' + (i+1), parent: groupRoundMatch});
 
           // draw two teams
           for ( let j = 0; j < 2; j++) {
@@ -135,22 +166,25 @@
                 gameX = gameCenterX + (r2 * Math.cos(a2)),
                 gameY = gameCenterY + (r2 * Math.sin(a2));
             
-            drawTeam( { cx: gameX, cy: gameY, r: teamRadius, col: color, label: labelPrefix + ' ' + (i+1) + '/' + (j+1)});
+            drawTeam( { cx: gameX, cy: gameY, r: teamRadius, col: color, label: labelPrefix + ' ' + (i+1) + '/' + (j+1), parent: groupRoundMatch});
           }
         }  
       }
 
       /*
-        <pattern id="flag-be" x="0%" y="10%" width="100%" height="80%" viewBox="1 1320 30 16">
-          <image x="0" y="0" width="32" height="7936" xlink:href="./flags32.png"></image>
-        </pattern>
+      
+        Generate all images, encapsulated within a pattern.
+
+          <pattern id="flag-be" x="0%" y="10%" width="100%" height="80%" viewBox="1 1320 30 16">
+            <image x="0" y="0" width="32" height="7936" xlink:href="./flags32.png"></image>
+          </pattern>
       */
 
       for ( let i = 0; i < teams.length; i++) {
         let team = teams[i];
         if (team.offset > 0) {
 
-          console.log( 'team w offset', team.name);
+          // console.log( 'team w offset', team.name);
           let defs = document.getElementById("wk-defs");
                 
           let pattern = document.createElementNS( svgns, "pattern");
@@ -175,7 +209,9 @@
         }
       }
       
-
+      
+      let group1 = createGroupUnder( "id-games", "round-all");
+      
       let teamNr = 0;
       // 8 poules, 4 teams in a poule
       for ( let i = 0; i < gPoules; i++) {
@@ -187,8 +223,12 @@
             pouleCenterX = center + (r * Math.cos(a)),
             pouleCenterY = center + (r * Math.sin(a));
 
-        console.log( i, pouleCenterX, pouleCenterY);
-        drawTeam( { cx: pouleCenterX, cy: pouleCenterY, r: 2, col: 'yellow', label: 'Poule ' + (i+1)});
+        let groupPoule = createGroupUnder( "round-all", "poule-" + (i+1));
+        groupPoule.setAttribute( "onmousemove", "showTooltip(evt, 'Poule ' + " + (i+1) + ");"); // onmousemove="showTooltip(evt, 'This is blue');" onmouseout="hideTooltip();"
+        groupPoule.setAttribute( "onmouseout", "hideTooltip();");
+
+        //console.log( i, pouleCenterX, pouleCenterY);
+        drawTeam( { cx: pouleCenterX, cy: pouleCenterY, r: 2, col: 'yellow', label: 'Poule ' + (i+1), parent: groupPoule, idSuffix: 'mid'});
 
         for ( let j = 0; j < gTeamsInPoule; j++) {
           let r2 = 35,  // beweegt mee met de 800
@@ -196,7 +236,7 @@
               pouleTeamX = pouleCenterX + (r2 * Math.cos(a2)),
               pouleTeamY = pouleCenterY + (r2 * Math.sin(a2));
           
-          drawTeam( { cx: pouleTeamX, cy: pouleTeamY, r: 20, col: 'yellow', teamNr: teamNr++});
+          drawTeam( { cx: pouleTeamX, cy: pouleTeamY, r: 20, col: 'yellow', teamNr: teamNr++, parent: groupPoule});
         }
       }
 
