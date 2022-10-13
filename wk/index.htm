@@ -306,7 +306,7 @@
             pouleCenterY = center + (r * Math.sin(a));
 
         let groupPoule = createGroupUnder( "round-all", "poule-" + (i+1));
-        groupPoule.setAttribute( "onmousemove", "showTooltip(evt, " + (i+1) + ");");
+        groupPoule.setAttribute( "onclick", "showTooltip(evt, " + (i+1) + ");");
         groupPoule.setAttribute( "onmouseout", "hideTooltip();");
 
         //console.log( i, pouleCenterX, pouleCenterY);
