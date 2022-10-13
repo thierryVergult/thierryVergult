@@ -39,7 +39,7 @@
         background-color: #f3f3f3;
       }
 
-      #tooltip table tbody tr:last-of-type {
+      #tooltip table tbody tr:nth-child(4n) {
         border-bottom: 2px solid #009879;
       }
 
@@ -92,7 +92,7 @@
         { name: 'Quatar', offset: 6080, shortName: "qa", poule: 1}, 
         { name: 'Ecuador', offset: 2496, shortName: "eq", poule: 1}, 
         { name: 'Senegal', offset: 6592, shortName: "sn", poule: 1, games: 1, points: 3}, 
-        { name: 'Netherlands', offset: 5504, shortName: "nl", poule: 1}, 
+        { name: 'Netherlands', offset: 5504, shortName: "nl", poule: 1, games:1, points: 0}, 
         { name: 'England', offset: 224, shortName: "england", poule: 2}, 
         { name: 'Iran', offset: 3776, shortName: "ir", poule: 2}, 
         { name: 'USA', offset: 7328, shortName: "us", poule: 2}, 
@@ -306,7 +306,7 @@
             pouleCenterY = center + (r * Math.sin(a));
 
         let groupPoule = createGroupUnder( "round-all", "poule-" + (i+1));
-        groupPoule.setAttribute( "onclick", "showTooltip(evt, " + (i+1) + ");");
+        groupPoule.setAttribute( "onclick", "showTooltip(evt, " + (i+1) + ");");  // onmousemove prev
         groupPoule.setAttribute( "onmouseout", "hideTooltip();");
 
         //console.log( i, pouleCenterX, pouleCenterY);
