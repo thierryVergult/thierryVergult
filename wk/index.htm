@@ -5,12 +5,60 @@
     <title>opayra lab - wk svg</title>
 
     <style>
-      
+      #tooltip {
+        background: cornsilk;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+      }
+
+      #tooltip table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      }
+
+      #tooltip table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+      }
+
+      #tooltip table th, #tooltip table td {
+        padding: 12px 15px;
+      }
+
+      #tooltip table tbody tr {
+        border-bottom: 1px solid #dddddd;
+      }
+
+      #tooltip table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+      }
+
+      #tooltip table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+      }
+
     </style>
   </head>
   
   <body>
-    <div id="tooltip" display="none" style="position: absolute; display: none;"></div>
+    <div id="tooltip" display="none" style="position: absolute; display: none;">
+      <table id="tooltip-table">
+        <thead>
+          <tr>
+            <th>team</th>
+            <th>points</th>
+            <th>games</th>
+          </tr>
+        </thead>
+        <tbody id="tooltip-tbody"></tbody>
+      </table>
+    </div>
 
     <br><br>
     <svg
@@ -41,38 +89,38 @@
             size = 1000;
 
       const teams = [ 
-        { name: 'Quatar', offset: 6080, shortName: "qa"}, 
-        { name: 'Ecuador', offset: 2496, shortName: "eq"}, 
-        { name: 'Senegal', offset: 6592, shortName: "sn"}, 
-        { name: 'Netherlands', offset: 5504, shortName: "nl"}, 
-        { name: 'England', offset: 224, shortName: "england"}, 
-        { name: 'Iran', offset: 3776, shortName: "ir"}, 
-        { name: 'USA', offset: 7328, shortName: "us"}, 
-        { name: 'Wales', offset: 672, shortName: "wales"}, 
-        { name: 'Argentina', offset: 992, shortName: "ar"}, 
-        { name: 'Saudi Arabia', offset: 6272, shortName: "sa"}, 
-        { name: 'Mexico', offset: 5248, shortName: "mx"}, 
-        { name: 'Poland', offset: 5888, shortName: "pl"}, 
-        { name: 'France', offset: 2848, shortName: "fr"}, 
-        { name: 'Australia', offset: 1088, shortName: "au"}, 
-        { name: 'Denmark', offset: 2368, shortName: "dk"}, 
-        { name: 'Tunisia', offset: 7040, shortName: "tn"}, 
-        { name: 'Spain', offset: 2656, shortName: "es"}, 
-        { name: 'Costa Rica', offset: 2144, shortName: "cr"}, 
-        { name: 'Germany', offset: 2304, shortName: "de"}, 
-        { name: 'Japan', offset: 3968, shortName: "jp"}, 
-        { name: 'Belgium', offset: 1312, shortName: "be"}, 
-        { name: 'Canada', offset: 1792, shortName: "ca"},
-        { name: 'Morocco', offset: 4704, shortName: "ma"},
-        { name: 'Croatia', offset: 3488, shortName: "hr"},
-        { name: 'Brazil', offset: 1600, shortName: "br"}, 
-        { name: 'Serbia', offset: 6176, shortName: "srb"}, 
-        { name: 'Switzerland', offset: 1920, shortName: "ch"}, 
-        { name: 'Cameroon', offset: 2048, shortName: "cm"}, 
-        { name: 'Portugal', offset: 5984, shortName: "pt"}, 
-        { name: 'Ghana', offset: 3040, shortName: "gh"}, 
-        { name: 'Uruguay', offset: 7360, shortName: "uy"}, 
-        { name: 'South Korea', offset: 4224, shortName: "kr"}
+        { name: 'Quatar', offset: 6080, shortName: "qa", poule: 1}, 
+        { name: 'Ecuador', offset: 2496, shortName: "eq", poule: 1}, 
+        { name: 'Senegal', offset: 6592, shortName: "sn", poule: 1, games: 1, points: 3}, 
+        { name: 'Netherlands', offset: 5504, shortName: "nl", poule: 1}, 
+        { name: 'England', offset: 224, shortName: "england", poule: 2}, 
+        { name: 'Iran', offset: 3776, shortName: "ir", poule: 2}, 
+        { name: 'USA', offset: 7328, shortName: "us", poule: 2}, 
+        { name: 'Wales', offset: 672, shortName: "wales", poule: 2}, 
+        { name: 'Argentina', offset: 992, shortName: "ar", poule: 3}, 
+        { name: 'Saudi Arabia', offset: 6272, shortName: "sa", poule: 3}, 
+        { name: 'Mexico', offset: 5248, shortName: "mx", poule: 3}, 
+        { name: 'Poland', offset: 5888, shortName: "pl", poule: 3}, 
+        { name: 'France', offset: 2848, shortName: "fr", poule: 4}, 
+        { name: 'Australia', offset: 1088, shortName: "au", poule: 4}, 
+        { name: 'Denmark', offset: 2368, shortName: "dk", poule: 4}, 
+        { name: 'Tunisia', offset: 7040, shortName: "tn", poule: 4}, 
+        { name: 'Spain', offset: 2656, shortName: "es", poule: 5}, 
+        { name: 'Costa Rica', offset: 2144, shortName: "cr", poule: 5}, 
+        { name: 'Germany', offset: 2304, shortName: "de", poule: 5}, 
+        { name: 'Japan', offset: 3968, shortName: "jp", poule: 5}, 
+        { name: 'Belgium', offset: 1312, shortName: "be", poule: 6}, 
+        { name: 'Canada', offset: 1792, shortName: "ca", poule: 6},
+        { name: 'Morocco', offset: 4704, shortName: "ma", poule: 6},
+        { name: 'Croatia', offset: 3488, shortName: "hr", poule: 6},
+        { name: 'Brazil', offset: 1600, shortName: "br", poule: 7}, 
+        { name: 'Serbia', offset: 6176, shortName: "srb", poule: 7}, 
+        { name: 'Switzerland', offset: 1920, shortName: "ch", poule: 7}, 
+        { name: 'Cameroon', offset: 2048, shortName: "cm", poule: 7}, 
+        { name: 'Portugal', offset: 5984, shortName: "pt", poule: 8}, 
+        { name: 'Ghana', offset: 3040, shortName: "gh", poule: 8}, 
+        { name: 'Uruguay', offset: 7360, shortName: "uy", poule: 8}, 
+        { name: 'South Korea', offset: 4224, shortName: "kr", poule: 8}
       ];
 
       const center = size / 2;
@@ -89,12 +137,35 @@
         return Math.floor(Math.random() * (max - min + 1) + min)
       }
 
-      function showTooltip(evt, text) {
+      function showTooltip(evt, pouleNr) {
         let tooltip = document.getElementById("tooltip");
-        tooltip.innerHTML = text;
+
+        let rows = document.querySelectorAll("#tooltip tbody tr");
+        console.log(pouleNr, rows);
+        for ( var i=0 ; i < rows.length ; i++) {
+          
+          if ( teams[i].poule == pouleNr) {
+            rows[i].style.display = "";
+          }
+          else {
+            rows[i].style.display = "none";
+          }
+        }
+
         tooltip.style.display = "block";
-        tooltip.style.left = evt.pageX + 10 + 'px';
-        tooltip.style.top = evt.pageY + 10 + 'px';
+
+        let deltaX = 0;
+        if (pouleNr < 3 || pouleNr > 6 ) {
+          deltaX = 400;
+        }
+
+        let deltaY = 0;
+        if (pouleNr < 5 ) {
+          deltaY = 200;
+        }
+
+        tooltip.style.left = evt.pageX + ( 10 - deltaX) + 'px';
+        tooltip.style.top = evt.pageY + ( 10 - deltaY) + 'px';
       }
 
       function hideTooltip() {
@@ -179,6 +250,8 @@
             <image x="0" y="0" width="32" height="7936" xlink:href="./flags32.png"></image>
           </pattern>
       */
+      let tableBody = document.getElementById("tooltip-tbody");
+      console.log( tableBody);
 
       for ( let i = 0; i < teams.length; i++) {
         let team = teams[i];
@@ -207,6 +280,15 @@
           pattern.appendChild(image);
 
         }
+
+        let row = tableBody.insertRow();
+        let cell0 = row.insertCell(0);
+        cell0.innerHTML = team.name;
+        let cell1 = row.insertCell(1);
+        cell1.innerHTML = team.points || 0;
+        let cell2 = row.insertCell(2);
+        cell2.innerHTML = team.games || 0;
+        
       }
       
       
@@ -224,7 +306,7 @@
             pouleCenterY = center + (r * Math.sin(a));
 
         let groupPoule = createGroupUnder( "round-all", "poule-" + (i+1));
-        groupPoule.setAttribute( "onmousemove", "showTooltip(evt, 'Poule ' + " + (i+1) + ");"); // onmousemove="showTooltip(evt, 'This is blue');" onmouseout="hideTooltip();"
+        groupPoule.setAttribute( "onmousemove", "showTooltip(evt, " + (i+1) + ");");
         groupPoule.setAttribute( "onmouseout", "hideTooltip();");
 
         //console.log( i, pouleCenterX, pouleCenterY);
