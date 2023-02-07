@@ -1,0 +1,192 @@
+<html>
+  <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js"></script>
+    <style>
+      #L-sdc-payroll-0:hover {
+        stroke: green!important;
+        stroke-width:5px!important;
+      }
+    </style>
+  </head>
+  <body>
+
+    <p>Please select the type of offering:</p>
+      <input type="radio" name="offering" id="gro" value="gro">
+      <label for="gro">local solution</label><br>
+      <input type="radio" name="offering" id="flo_old" value="flo_old">
+      <label for="flo-old">FLO, old style</label><br>
+      <input type="radio" name="offering" id="flo_new" value="flo_new">
+      <label for="flo-new">FLO (with data enrichment)</label><br>
+      <input type="radio" name="offering" id="pro" value="pro" checked>
+      <label for="pro">PRO</label><br>
+    
+    <p>Include Protime :
+      <input type="radio" name="protime" id="y" value="y">
+      <label for="gro">Yes</label>
+      <input type="radio" name="protime" id="n" value="n" checked>
+      <label for="flo-old">No</label>
+    </p>
+
+    <p>country &nbsp; <input type="text" id="country" name="country"></p>
+    
+
+    <br>
+    <ul>
+      <li>styling in general
+      <li>hoover & click behavior</li>
+      <li>payroll output mapping
+      <li>save svg</li>
+      <li>country flag?</li>
+      <li>lpe name?</li>
+    </ul>
+
+    <br>
+    <button style="margin: 10px; color: white; background-color: silver;" onclick="plop();">render</button>
+
+    <div id="mm-02" style = "border:3px solid silver"></div>
+
+    <br>
+    <a href="https://stackoverflow.com/questions/65212332/how-to-render-a-mermaid-flowchart-dynamically" target="_blank">thanks, stackoverflow</a>
+
+    <script>
+      mmLinks = [
+        { "from": "hr", "to": "erp", "link": "-.->" , "gro": 0, "flo_old":1, "flo_new": 1, "pro" :0},
+        { "from": "hr", "to": "sdwp", "link": "-->" , "gro": 0, "flo_old":0, "flo_new": 1, "pro" :1},
+        { "from": "hr", "to": "protime", "link": "-->" , "gro": 0, "flo_old":0, "flo_new": 0, "pro" :0},
+        { "from": "hr", "to": "unstruct", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "erp", "to": "sdc", "link": "==>" , "gro": 0, "flo_old":1, "flo_new": 1, "pro" :0},
+        { "from": "sdwp", "to": "sdc", "link": "-->" , "gro": 0, "flo_old":0, "flo_new": 1, "pro" :1},
+        { "from": "protime", "to": "sdc", "link": "-- T&A -->" , "gro": -1, "flo_old":0, "flo_new": 0, "pro" :0},
+        { "from": "unstruct", "to": "payroll", "link": "-...->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "sdc", "to": "payroll", "link": "==>" , "gro": 0, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "payroll", "to": "gl", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "payroll", "to": "sepa", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "payroll", "to": "reporting", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "payroll", "to": "payslips", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "payroll", "to": "calc", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "gl", "to": "mft", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "sepa", "to": "mft", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "reporting", "to": "mysp2", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "payslips", "to": "mysd", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1},
+        { "from": "calc", "to": "mysp2", "link": "-->" , "gro": 1, "flo_old":1, "flo_new": 1, "pro" :1}   
+      ];
+
+      mmNodes = [];
+      mmNodes['hr'] = "(fa:fa-user hr<br/>input)";
+      mmNodes['sdc'] = "((sd connect<br>fa:fa-plug<br>))";
+      mmNodes['payroll'] = "{payroll}";
+      mmNodes['unstruct'] = "(fa:fa-table<br>unstructured<br/>data)";
+      mmNodes['calc'] = "(calculated<br/>data)";
+      mmNodes['erp'] = "((workday))";
+      mmNodes['sdwp'] = "[[SD Worx<br/>People<br>fa:fa-users]]";
+      mmNodes['protime'] = "{protime<br>fa:fa-calendar-check}";
+      mmNodes['cases'] = "(fa:fa-headphones case<br/>handling)";
+      mmNodes['mysp2'] = "(fa:fa-file<br>my<br>ServicePoint)";
+      mmNodes['mysd'] = "(fa:fa-mobile<br>mySdWorx<br>portal)";
+      mmNodes['mft'] = "(fa:fa-external-link<br>mft)";
+      mmNodes['gl'] = "{<img src='https://iconscout.com/ms-icon-310x310.png' width='40' height='40'><br>GL}";
+      
+      function sdMarkdown (pOffering, pProtime, pCountry) {
+
+        let mmMarkdown = '';
+        
+        mmMarkdown += '--- \n ';
+        mmMarkdown += 'title: ' + pOffering + ' for ' + pCountry + ' \n'; // no space after the new line, to avoid syntax error
+        mmMarkdown += '--- \n\n ';
+        
+        mmMarkdown += 'flowchart LR \n ';
+
+        let nodes = {};
+        
+        // add all links for the offering
+        for ( let i = 0; i < mmLinks.length; i++) {
+          let li = mmLinks[i];
+          if ( li[pOffering] > 0) {
+            mmMarkdown =  mmMarkdown + li.from + ' ' + li.link + ' ' + li.to + ' \n ';
+
+            // add to the nodes dictionary, and increment if key already exists.
+            nodes[li.from] = (nodes[li.from] + 1) || 1;
+            nodes[li.to] = (nodes[li.to] + 1) || 1;
+          }
+        }
+        console.log( nodes);
+
+        // add fixed subgraph for payroll output
+        mmMarkdown += 'subgraph out ["payroll output"]\n mysd \n mysp2 \n mft \n end \n';
+
+        // add subgraph of hr input systems, with subgraph in subgraph (fixed) for myServicePoint
+        mmMarkdown += 'subgraph hris ["  "]\n subgraph mysp ["my ServicePoint  "]\n cases \n unstruct \n end \n';
+        if (pOffering.substr(0, 3) == 'flo') { 
+          mmMarkdown += 'erp \n ';
+        }
+        
+        if (pOffering == 'flo_new' || pOffering == 'pro' ) {
+          mmMarkdown += 'sdwp \n '
+        }
+
+        if (pProtime) { 
+          mmMarkdown += 'protime \n ';
+        }
+        console.log(pProtime);
+
+        mmMarkdown += 'end \n ';
+
+        // add node make up to the graph, when a link for it exists
+        for (const [key, value] of Object.entries(nodes)) {
+          console.log(key, value);
+          if (mmNodes[key]) {
+            console.log('**********', key);
+            //console.log(key, value);
+            //console.log(mmNodes[key]);
+            mmMarkdown += key + mmNodes[key] + '\n';
+          }
+        }
+
+        mmMarkdown += 'click hr "https://www.opayra.com" "appelboom" _blank\n';
+        mmMarkdown += 'click sdc "https://www.opayra.com" "appelboom2" _blank\n';
+
+        console.log( mmMarkdown);
+
+        return mmMarkdown;
+      }
+
+
+      function plop () {
+        let dia = document.getElementById("mm-02");
+        
+        // make the target empty in case it runs several times
+        dia.innerHTML = "";
+        
+        let offering = document.querySelector('input[name="offering"]:checked').value;
+        
+        let protime = document.querySelector('input[name="protime"]:checked').value == 'y' ? true : false;
+
+        // when protime in play, activate the protime links for all offerings
+        if (protime) {
+          for ( let i = 0; i < mmLinks.length; i++) {
+            let li = mmLinks[i];
+            if ( li.from == 'protime' || li.to == 'protime') {
+              li.gro = li.gro + 1;
+              li.flo_old = li.gro + 1;
+              li.flo_new = li.gro + 1;
+              li.pro = li.gro + 1;
+            }
+          }
+        }
+        //console.log(mmLinks);
+
+        let country = document.querySelector('input[name="country"]').value;
+
+        let markDown = sdMarkdown(offering, protime, country);
+        
+        let renderMermaid = function (mermaidMarkdown) {
+          dia.innerHTML = mermaidMarkdown;
+        };
+
+        mermaid.render( "sd", markDown, renderMermaid);
+      }
+      
+    </script>
+  </body>
+</html>
