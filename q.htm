@@ -87,25 +87,25 @@
         </tr>
         
         <tr class="offering">
-          <td>FLO</td>
+          <td>FLO :&nbsp; &nbsp; ERP to LPE</td>
           <td id="id-c01-flo"></td>
         </tr>
 
         <tr>
-          <td>ERP</td>
-          <td id="id-c01-q07" class="flo"><input list="erps"></td>
+          <td>ERP &nbsp; &nbsp; &#126;</td>
+          <td id="id-c01-q07" class="flo"><input list="erps" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
           <td>Protime?</td>
           <td id="id-c01-q08" class="flo"><input type="checkbox"></td>
         </tr>
         <tr>
-          <td>Other T&A tool?</td>
-          <td id="id-c01-q09" class="flo"><input type="checkbox"></td>
+          <td>Other T&A tool? &nbsp; &nbsp; &#126;</td>
+          <td id="id-c01-q09" class="flo"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td>Other inbound interfaces?</td>
-          <td id="id-c01-q10" class="flo"><input type="checkbox"></td>
+          <td>Other inbound interfaces? &nbsp; &nbsp; &#126;</td>
+          <td id="id-c01-q10" class="flo"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
           <td>with Data Enichment? (SDWP)</td>
@@ -126,21 +126,20 @@
           <td id="id-c01-q13" class="pro"><input type="checkbox"></td>
         </tr>
         <tr>
-          <td>Other T&A tool?</td>
-          <td id="id-c01-q14" class="pro"><input type="checkbox"></td>
+          <td>Other T&A tool? &nbsp; &nbsp; &#126;</td>
+          <td id="id-c01-q14" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td title="inbound & outbound,&#10; but no payroll output">Other interfaces?</td>
-          <td id="id-c01-q15" class="pro"><input type="checkbox"></td>
+          <td title="inbound & outbound,&#10; but no payroll output">Other interfaces? &nbsp; &nbsp; &#126;</td>
+          <td id="id-c01-q15" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td title="Besides Basic HR">Move existing HR solutions to SDWP?</td>
-          <td id="id-c01-q16" class="pro"><input type="checkbox"></td>
+          <td>Move not only basic HR to SDWP?  &nbsp; &nbsp; &#126;</td>
+          <td id="id-c01-q16" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td title="- low: Excel, Office driven, a lot of manual work&#10;- medium&#10;- high">Complexity of actual HR landscape</td>
-          <td id="id-c01-q17" class="pro"><input list="complexities">
-          </td>
+          <td title="- low: Excel, Office driven, a lot of manual work&#10;- medium&#10;- high">Complexity of actual HR landscape &#126;</td>
+          <td id="id-c01-q17" class="pro"><input list="complexities"  onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
           <td>Readiness OK?</td>
@@ -149,7 +148,7 @@
 
         <tr class="review-sol-arch">
           <td>Review with soluttion architect</td>
-          <td id="id-c01-sol">?</td>
+          <td id="id-c01-sol">-</td>
         </tr>
       </table>
     </div>
@@ -169,31 +168,28 @@
     <br><br><br>
     <p>to do</p>
     <ul>
-      <li>calculate sol arch review result</li>
-      <li>mark sol arch influence columns (*)</li>
       <li>some responsive design (mobile ok-ish)</li>
-      <li>select list: have to remove earlier value before the whole list is shown</li>
     </ul>
   </body>
 
   <script>
-    iiSdwp = {};
-    iiSdwp.colCount = 1;
+    iiSol = {};
+    iiSol.colCount = 1;
 
     // set the column nr on all elements & children of column 1.
     let col1 = document.querySelectorAll('[id^="id-c01-"]');
     for (let i=0; i < col1.length; i++) {
       let ele_from_col1 = col1[i];
-      ele_from_col1.setAttribute('data-colnr', iiSdwp.colCount);
+      ele_from_col1.setAttribute('data-colnr', iiSol.colCount);
       
       for (const child of ele_from_col1.children) {
-        child.setAttribute('data-colnr', iiSdwp.colCount);
+        child.setAttribute('data-colnr', iiSol.colCount);
       }
     }
 
     function copyColumn() {
 
-      iiSdwp.colCount = iiSdwp.colCount + 1;
+      iiSol.colCount = iiSol.colCount + 1;
 
       let col1 = document.querySelectorAll('[id^="id-c01-"]');
       
@@ -205,16 +201,16 @@
         //console.log( table_row);
 
         let clone = table_data.cloneNode(true);
-        clone.id = table_data.id.replace( 'c01', 'c' + String( iiSdwp.colCount).padStart(2, '0'));
+        clone.id = table_data.id.replace( 'c01', 'c' + String( iiSol.colCount).padStart(2, '0'));
 
-        clone.setAttribute('data-colnr', iiSdwp.colCount);
+        clone.setAttribute('data-colnr', iiSol.colCount);
 
         for (const child of clone.children) {
-          console.log(child.tagName, child.name);
-          child.setAttribute('data-colnr', iiSdwp.colCount);
+          //console.log(child.tagName, child.name);
+          child.setAttribute('data-colnr', iiSol.colCount);
 
           if (child.name === 'offering-col01') {
-            child.name = 'offering-col' + + String( iiSdwp.colCount).padStart(2, '0');
+            child.name = 'offering-col' + + String( iiSol.colCount).padStart(2, '0');
           }
         }
 
@@ -245,6 +241,61 @@
       
 
       disableCells( false, offering.toLowerCase(), colNr);
+    }
+
+    function solArchDifferentFrom( pColNr, pQuestionNr, pCompare, pNote) {
+      let plus = 0;
+      const id = 'id-c' + String( pColNr).padStart(2, '0') + '-q'  + String( pQuestionNr).padStart(2, '0');
+      const val = document.getElementById( id).firstChild.value;
+      
+      if ( val && val.toLowerCase() != pCompare.toLowerCase()) {
+        console.log( 'Sol Arch in column', pColNr, ':', val, pNote);
+        plus = 1;
+      }
+
+      return plus;
+    }
+
+    function solArchBool( pColNr, pQuestionNr, pNote) {
+      let plus = 0;
+      const id = 'id-c' + String( pColNr).padStart(2, '0') + '-q'  + String( pQuestionNr).padStart(2, '0');
+      const bool = document.getElementById( id).firstChild.checked;
+      
+      if ( bool) {
+        console.log( 'Sol Arch in column', pColNr, ':', pNote);
+        plus = 1;
+      }
+
+      return plus;
+    }
+
+    function calcSolArch( pColNr) {
+      
+      //console.log( 'soll', pColNr, pTopic, pValue, pNote);
+      let score = 0;
+
+      // all ERP except Workday
+      score = score + solArchDifferentFrom( pColNr,  7, 'Workday', 'erp');
+
+      score = score + solArchBool( pColNr,  9, 'other T&A');
+      score = score + solArchBool( pColNr, 10, 'other interface');
+
+      score = score + solArchBool( pColNr, 14, 'other T&A');
+      score = score + solArchBool( pColNr, 15, 'other interface');
+      score = score + solArchBool( pColNr, 16, 'not only basic HR');
+
+      // all complexities except low
+      score = score + solArchDifferentFrom( pColNr, 17, 'Low', 'complexity');
+      
+      console.log( 'final score on column', pColNr, ':', score);
+
+      let id = 'id-c' + String( pColNr).padStart(2, '0') + '-sol';
+      if (score > 0) {
+        document.getElementById(id).innerHTML = 'Yes';
+      } else {
+        document.getElementById(id).innerHTML = '-';
+      }
+      
     }
   </script>
 </html>
