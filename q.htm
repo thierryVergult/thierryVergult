@@ -37,61 +37,6 @@
       }
     </style>
 
-    <script>
-      iiSdwp = {};
-      iiSdwp.colCount = 1;
-
-      function copyColumn() {
-
-        iiSdwp.colCount = iiSdwp.colCount + 1;
-
-        let col1 = document.querySelectorAll('[id^="id-c01-"]');
-        
-        for (let i=0; i < col1.length; i++) {
-          let table_data = col1[i];
-          //console.log( table_data.id);
-
-          let table_row = table_data.closest('tr');
-          //console.log( table_row);
-
-          let clone = table_data.cloneNode(true);
-          clone.id = table_data.id.replace( 'c01', 'c' + String( iiSdwp.colCount).padStart(2, '0'));
-
-          clone.setAttribute('data-colnr', iiSdwp.colCount);
-          if (clone.firstElementChild) {
-            clone.firstElementChild.setAttribute('data-colnr', iiSdwp.colCount);
-            //console.log(clone);
-          }
-
-          table_row.appendChild(clone);
-        }
-      };
-
-      function disableCells(bool, offering, colNr) {
-        // has class offering and the child has the correct colnr
-        let selector = "." + offering + " [data-colnr='" + colNr + "']";
-        console.log(selector);
-
-        let matches = document.querySelectorAll( selector);
-        console.log(matches);
-
-        for (var i = 0; i < matches.length; i++) {
-          matches[i].disabled=bool;
-        }
-      }
-
-      function setReadOnly (colNr, offering) {
-        console.log('set read only', colNr, offering);
-
-        
-        disableCells( true, 'gro', colNr);
-        disableCells( true, 'flo', colNr);
-        disableCells( true, 'pro', colNr);
-        
-
-        disableCells( false, offering.toLowerCase(), colNr);
-      }
-    </script>
   </head>
   
   <body>
@@ -119,12 +64,16 @@
           <td id="id-c01-q03"><input type="number" min="1" max="2" value="1"></td>
         </tr>
         <tr>
-          <td>Offering</td>
-          <td id="id-c01-q04"><input list="offerings" data-colnr="1" onchange="setReadOnly(this.dataset.colnr, this.value);"></td>
+          <td>Headcount</td>
+          <td id="id-c01-q04"><input type="number"></td>
         </tr>
         <tr>
-          <td>Headcount</td>
-          <td id="id-c01-q05"><input type="number"></td>
+          <td>Offering</td>
+          <td id="id-c01-q05">
+            <input type="radio" name="offering-col01" value="gro" onchange="setReadOnly( this.dataset.colnr, this.value);"><label>GRO</label><br>
+            <input type="radio" name="offering-col01" value="flo" onchange="setReadOnly( this.dataset.colnr, this.value);"><label>FLO</label><br>
+            <input type="radio" name="offering-col01" value="pro" onchange="setReadOnly( this.dataset.colnr, this.value);"><label>PRO</label>
+          </td>
         </tr>
 
         <tr class="offering">
@@ -190,7 +139,8 @@
         </tr>
         <tr>
           <td title="- low: Excel, Office driven, a lot of manual work&#10;- medium&#10;- high">Complexity of actual HR landscape</td>
-          <td id="id-c01-q17" class="pro"><input list="complexities"></td>
+          <td id="id-c01-q17" class="pro"><input list="complexities">
+          </td>
         </tr>
         <tr>
           <td>Readiness OK?</td>
@@ -203,12 +153,6 @@
         </tr>
       </table>
     </div>
-
-    <datalist id="offerings">
-      <option value="GRO">
-      <option value="FLO">
-      <option value="PRO">
-    </datalist>
 
     <datalist id="erps">
       <option value="Workday">
@@ -225,10 +169,82 @@
     <br><br><br>
     <p>to do</p>
     <ul>
-      <li>make part of a column read-only, based upon the offering choosen</li>
       <li>calculate sol arch review result</li>
       <li>mark sol arch influence columns (*)</li>
-      <li>some responsive design</li>
+      <li>some responsive design (mobile ok-ish)</li>
+      <li>select list: have to remove earlier value before the whole list is shown</li>
     </ul>
   </body>
+
+  <script>
+    iiSdwp = {};
+    iiSdwp.colCount = 1;
+
+    // set the column nr on all elements & children of column 1.
+    let col1 = document.querySelectorAll('[id^="id-c01-"]');
+    for (let i=0; i < col1.length; i++) {
+      let ele_from_col1 = col1[i];
+      ele_from_col1.setAttribute('data-colnr', iiSdwp.colCount);
+      
+      for (const child of ele_from_col1.children) {
+        child.setAttribute('data-colnr', iiSdwp.colCount);
+      }
+    }
+
+    function copyColumn() {
+
+      iiSdwp.colCount = iiSdwp.colCount + 1;
+
+      let col1 = document.querySelectorAll('[id^="id-c01-"]');
+      
+      for (let i=0; i < col1.length; i++) {
+        let table_data = col1[i];
+        //console.log( table_data.id);
+
+        let table_row = table_data.closest('tr');
+        //console.log( table_row);
+
+        let clone = table_data.cloneNode(true);
+        clone.id = table_data.id.replace( 'c01', 'c' + String( iiSdwp.colCount).padStart(2, '0'));
+
+        clone.setAttribute('data-colnr', iiSdwp.colCount);
+
+        for (const child of clone.children) {
+          console.log(child.tagName, child.name);
+          child.setAttribute('data-colnr', iiSdwp.colCount);
+
+          if (child.name === 'offering-col01') {
+            child.name = 'offering-col' + + String( iiSdwp.colCount).padStart(2, '0');
+          }
+        }
+
+        table_row.appendChild(clone);
+      }
+    };
+
+    function disableCells(bool, offering, colNr) {
+      // has class offering and the child has the correct colnr
+      let selector = "." + offering + " [data-colnr='" + colNr + "']";
+      console.log( selector, bool);
+
+      let matches = document.querySelectorAll( selector);
+      console.log( matches.length, matches);
+
+      for (var i = 0; i < matches.length; i++) {
+        matches[i].disabled=bool;
+      }
+    }
+
+    function setReadOnly (colNr, offering) {
+      console.log('set read only', colNr, offering);
+
+      
+      disableCells( true, 'gro', colNr);
+      disableCells( true, 'flo', colNr);
+      disableCells( true, 'pro', colNr);
+      
+
+      disableCells( false, offering.toLowerCase(), colNr);
+    }
+  </script>
 </html>
