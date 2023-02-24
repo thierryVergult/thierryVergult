@@ -31,6 +31,11 @@
         background-color: khaki;
       }
 
+      .sol-answer {
+        text-align: center; 
+        color:steelblue;
+      }
+
       .review-sol-arch>td {
         padding: 5px;
         padding-top: 10px;
@@ -41,6 +46,7 @@
         padding-left: 4px;
       }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   </head>
   
@@ -82,7 +88,7 @@
         </tr>
 
         <tr class="offering">
-          <td>GRO</td>
+          <td><div style="float:left;">GRO</div><div style="text-align:right;">local</div></td>
           <td id="id-c01-gro"></td>
         </tr>
       
@@ -92,7 +98,7 @@
         </tr>
         
         <tr class="offering">
-          <td>FLO :&nbsp; &nbsp; ERP to LPE</td>
+          <td><div style="float:left;">FLO</div><div style="text-align:right;">ERP to LPE</div></td>
           <td id="id-c01-flo"></td>
         </tr>
 
@@ -122,7 +128,7 @@
         </tr>
 
         <tr class="offering">
-          <td>PRO</td>
+          <td><div style="float:left;">PRO</div><div style="text-align:right;">SD Worx People</div></td>
           <td id="id-c01-pro"></td>
         </tr>
 
@@ -131,19 +137,19 @@
           <td id="id-c01-q13" class="pro"><input type="checkbox"></td>
         </tr>
         <tr>
-          <td>Other T&A tool? &nbsp; &nbsp; &#126;</td>
+          <td class="sol">Other T&A tool?</td>
           <td id="id-c01-q14" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td title="inbound & outbound,&#10; but no payroll output">Other interfaces? &nbsp; &nbsp; &#126;</td>
+          <td  class="sol" title="inbound & outbound,&#10; but no payroll output">Other interfaces?</td>
           <td id="id-c01-q15" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td>Move not only basic HR to SDWP?  &nbsp; &nbsp; &#126;</td>
+          <td class="sol">Move not only basic HR to SDWP?</td>
           <td id="id-c01-q16" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td title="- low: Excel, Office driven, a lot of manual work&#10;- medium&#10;- high">Complexity of actual HR landscape &#126;</td>
+          <td class="sol" title="- low: Excel, Office driven, a lot of manual work&#10;- medium&#10;- high">Complexity of actual HR landscape</td>
           <td id="id-c01-q17" class="pro"><input list="complexities"  onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
@@ -152,8 +158,8 @@
         </tr>
 
         <tr class="review-sol-arch">
-          <td>Review with soluttion architect</td>
-          <td id="id-c01-sol">-</td>
+          <td>Review with solution architect</td>
+          <td id="id-c01-sol" class="sol-answer">-</td>
         </tr>
       </table>
     </div>
@@ -296,7 +302,7 @@
 
       let id = 'id-c' + String( pColNr).padStart(2, '0') + '-sol';
       if (score > 0) {
-        document.getElementById(id).innerHTML = 'Yes';
+        document.getElementById(id).innerHTML = '<i class="fa fa-calendar-plus-o"></i>';
       } else {
         document.getElementById(id).innerHTML = '-';
       }
