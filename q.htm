@@ -35,6 +35,11 @@
         padding: 5px;
         padding-top: 10px;
       }
+
+      .sol {
+        border-left: 1px solid steelblue;
+        padding-left: 4px;
+      }
     </style>
 
   </head>
@@ -92,7 +97,7 @@
         </tr>
 
         <tr>
-          <td>ERP &nbsp; &nbsp; &#126;</td>
+          <td class="sol">ERP</td>
           <td id="id-c01-q07" class="flo"><input list="erps" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
@@ -100,11 +105,11 @@
           <td id="id-c01-q08" class="flo"><input type="checkbox"></td>
         </tr>
         <tr>
-          <td>Other T&A tool? &nbsp; &nbsp; &#126;</td>
+          <td class="sol">Other T&A tool?</td>
           <td id="id-c01-q09" class="flo"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td>Other inbound interfaces? &nbsp; &nbsp; &#126;</td>
+          <td class="sol">Other inbound interfaces?</td>
           <td id="id-c01-q10" class="flo"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
