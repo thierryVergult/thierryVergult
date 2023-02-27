@@ -1,0 +1,176 @@
+<!doctype html>
+  <html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>sd plotly sunburst - onion</title>
+
+    <style>
+      .sunburstlayer .slice.cursor-pointer {
+        cursor: default!important;
+      }
+    </style>
+
+    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+
+  </head>
+  
+  <body>
+    <div id='idPlotly'></div>
+
+    <script>
+      function degrees2radians(deg) {
+        return rad = Math.PI * 2 / 360 * deg;
+      }
+
+      function arrowAnnotation( {startRadiusPct, startRadiusDegrees, endRadiusPct, endRadiusDegrees, doubleHead, color, opacity}) {
+
+        if (! endRadiusDegrees) {
+          endRadiusDegrees = startRadiusDegrees;
+        }
+
+        if (! endRadiusPct) {
+          endRadiusPct = startRadiusPct;
+        }
+
+        let r1 = startRadiusPct / 100 / 2, // divide by 2, since graph takes 2R = 100% * 2
+            rad1 = degrees2radians(startRadiusDegrees),
+            x1 = (r1 * Math.cos( rad1)) + .5, // + .5 since (0,0) is bottom-left for paper coordinates, and maxes at (1,1) and sunburst goes to middle, so (.5, .5)
+            y1 = (r1 * Math.sin( rad)) + .5;
+        
+        let r2 = endRadiusPct / 100 / 2,
+            rad2 = degrees2radians(endRadiusDegrees),
+            x2 = (r2 * Math.cos( rad2)) + .5,
+            y2 = (r2 * Math.sin( rad2)) + .5;
+
+        return {
+            x: x2, // end point x
+            y: y2, // end point y
+            xref: 'paper', 
+            yref: 'paper',
+            text: '', // no text, so also no hover ..
+            hovertext: '', // is only appearing when hovering over text, not over arrow, unfortunately
+            showarrow: true,
+            arrowhead: 4, // 1-8 : nr 4 gives best visual result, given the width of the arrow (and relative size of the head)
+            arrowside: ( doubleHead ? 'start+end' : 'end'),
+            arrowcolor: color,
+            arrowwidth: 20, // to do, important
+            arrowsize: 0.3, // 0.3 is smallest number accepted (relative, referencing width)
+            axref: 'paper',
+            ayref: 'paper',
+            ax: x1, // start point x
+            ay: y1, // start point y
+            opacity: opacity
+          }
+        
+          // ps: the resulting svg will contain data-index="x", where x is the position in the annotations array
+
+      }
+
+      let arrows = [];
+
+      // france: skello ←→ alicia
+      arrows[0] = arrowAnnotation( {startRadiusPct: 42, endRadiusPct: 82, startRadiusDegrees: 10, color: 'grey', doubleHead: true});
+
+      // germany, sdwp → skello
+      arrows[1] = arrowAnnotation( {startRadiusPct: 90, startRadiusDegrees: 112, endRadiusDegrees: 105, color: 'lightgrey'})
+      // germany: skello → sd connect
+      arrows[2] = arrowAnnotation( {startRadiusPct: 80, endRadiusPct: 70, startRadiusDegrees: 100, color: 'lightgrey', opacity: 1});
+      // germany: sd connect → accurat
+      arrows[3] = arrowAnnotation( {startRadiusPct: 55, endRadiusPct: 45, startRadiusDegrees: 100, color: 'lightgrey', opacity: 1});
+
+      // uk: skello ←→ HRe
+      arrows[4] = arrowAnnotation( {startRadiusPct: 42, endRadiusPct: 82, startRadiusDegrees: 190, color: 'grey', doubleHead: true});
+
+      // italy, sdwp → skello
+      arrows[5] = arrowAnnotation( {startRadiusPct: 90, startRadiusDegrees: 292, endRadiusDegrees: 285, color: 'lightgrey'})
+      // germany: skello → sd connect
+      arrows[6] = arrowAnnotation( {startRadiusPct: 80, endRadiusPct: 70, startRadiusDegrees: 280, color: 'lightgrey', opacity: 1});
+      // germany: sd connect → lpe
+      arrows[7] = arrowAnnotation( {startRadiusPct: 55, endRadiusPct: 45, startRadiusDegrees: 280, color: 'lightgrey', opacity: 1});
+
+      var data = [{
+        type: "sunburst",
+        ids: [ 
+          "sd",
+          "lpe1", "lpe2", "lpe3", "lpe4", 
+          "nul1", "sdc1", "skello1", "sdwp1",
+          "sdc2", "skello2", "sdwp2",
+          "nul3", "sdc3", "skello3", "sdwp3",
+          "sdc4", "skello4", "sdwp4"
+        ],
+        labels:  [ 
+          "",
+          "France<br>Alicia", "Germany<br>Accurat", "UK<br>HRe", "Italy<br>Zucchetti", 
+          "", "sd connect", "skello", "sd worx<br>people",
+          "sd connect", "skello", "sd worx<br>people",
+          "", "sd connect", "skello", "sd worx<br>people",
+          "sd connect", "skello", "sd worx<br>people"
+        ],
+        parents: [ 
+          "", 
+          "sd", "sd", "sd", "sd",
+          "lpe1", "lpe1", "nul1", "sdc1",
+          "lpe2", "sdc2", "sdc2",
+          "lpe3", "lpe3", "nul3", "sdc3",
+          "lpe4", "sdc4", "sdc4"
+        ],
+        values:  [ 
+          100,
+          25, 25, 25, 25, 
+          5, 20, 5, 20, 
+          25, 5, 20,
+          5, 20, 5, 20, 
+          25, 5, 20
+        ],
+        text: ['',
+          '','','','',
+          'France','France','France','France',
+          'Germany','Germany','Germany',
+          'UK','UK','UK','UK',
+          'Italy', 'Italy', '<i>Italy<i>'],
+        leaf: {opacity: 0.6},
+        sort: false,
+        branchvalues: 'total',
+        textinfo: 'label',
+        hoverinfo: 'text+label',
+        marker: {
+          line: { width: 6 }, // [1, 12, 12, 12, 12, 6, 6, 6]},
+          colors: [ 
+            "transparent",
+            "white", "white", "white", "white",
+            "transparent","steelblue", "yellow", "steelblue", 
+            "steelblue", "yellow", "steelblue", 
+            "transparent","steelblue", "yellow", "steelblue", 
+            "steelblue", "yellow", "steelblue"
+          ]
+        },
+      }];
+
+      var layout = {
+        paper_bgcolor: "lightgrey",
+        margin: {l: 0, r: 0, b: 0, t: 0},
+        width: 800,
+        height: 800,
+        annotations: arrows
+      };
+
+      Plotly.newPlot('idPlotly', data, layout, {staticPlot: false})
+      // disable the specific sunburst click event on all intermediate nodes to redraw the sunburst from that node onwards
+      // since the annotations have absolute values and hence do not move with any interaction.
+      .then( gd => {
+        gd.on('plotly_sunburstclick', () => false)
+      });
+
+    </script>
+
+    <ul>
+      <li>legend - or highlight (country sector ; all arrows) : restyle: https://codepen.io/etpinard/pen/RQQqzq</li>
+      <li>make onion rings and sectors dynamic</li>
+      <li>make arrow position parameters dynamic (eg: nr of countries)</li>
+      <li>hack an arrow border effect (see original onion)</li>
+
+    </ul>
+    
+
+  </body>
+</html>
