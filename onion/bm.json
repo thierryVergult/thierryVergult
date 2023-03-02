@@ -1,0 +1,81 @@
+{
+  "colors": {
+    "SD Worx People": "#870b58",
+    "SD Connect": "#f8ad07",
+    "unstructured<br>data": "#e4003a",
+    "my Service<br>Point": "#e4003a",
+    "Skello": "#1a6efc"
+  },
+
+  "countries": [
+    {
+      "country": "France",
+      "short": "fr",
+      "lpe": "Alicia",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 10},
+        { "label": "MFT", "pct": 20, "color": "transparent"},
+        { "label": "SD Connect", "pct": 70}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Skello", "parentIndex": 1},
+        { "label": "SD Worx People", "parentIndex": 2}
+      ]
+    },
+    {
+      "country": "Germany",
+      "short": "de",
+      "lpe": "Accurat",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 10},
+        { "label": "SD Connect", "pct": 90}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Skello", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx People", "pct": 80, "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "UK",
+      "short": "uk",
+      "lpe": "HRe",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 10 },
+        { "label": "MFT", "pct": 20, "color": "transparent"},
+        { "label": "SD Connect", "pct": 70 }
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Skello", "parentIndex": 1},
+        { "label": "SD Worx People", "parentIndex": 2}
+      ]
+    },
+    {
+      "country": "Italy<br>Spain",
+      "short": "others",
+      "lpe": "LPE",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 10 },
+        { "label": "SD Connect", "pct": 90 }
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0 },
+        { "label": "Skello", "pct": 20, "parentIndex": 1 },
+        { "label": "SD Worx People", "pct": 80, "parentIndex": 1}
+      ]
+    }
+  ],
+
+  "arrows": [
+    {"startRadiusPct": 42, "endRadiusPct": 84, "startRadiusDegrees": 15, "color": "orange", "doubleHead": true, "comments": "france: skello ←→ alicia"},
+    {"startRadiusPct": 85, "startRadiusDegrees": 122, "endRadiusDegrees": 111, "color": "orange", "comments": "germany, sdwp → skello"},
+    {"startRadiusPct": 80, "endRadiusPct": 68, "startRadiusDegrees": 105, "color": "grey", "opacity": 1, "comments": "germany: skello → sd connect"},
+    {"startRadiusPct": 55, "endRadiusPct": 43, "startRadiusDegrees": 105, "color": "grey", "opacity": 1, "comments": "germany: sd connect → accurat"},
+    {"startRadiusPct": 42, "endRadiusPct": 84, "startRadiusDegrees": 195, "color": "orange", "doubleHead": true, "comments": "uk: skello ←→ HRe"},
+    {"startRadiusPct": 85, "startRadiusDegrees": 302, "endRadiusDegrees": 291, "color": "orange", "comments": "italy, sdwp → skello"},
+    {"startRadiusPct": 80, "endRadiusPct": 68, "startRadiusDegrees": 285, "color": "grey", "opacity": 1, "comments": "germany: skello → sd connect"},
+    {"startRadiusPct": 55, "endRadiusPct": 43, "startRadiusDegrees": 285, "color": "grey", "opacity": 1, "comments": "germany: sd connect → lpe"}
+  ]
+}

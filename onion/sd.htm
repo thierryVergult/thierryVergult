@@ -1,0 +1,68 @@
+<!doctype html>
+  <html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>sd plotly sunburst - onion</title>
+
+    <style>
+      summary {
+        background-color: steelblue;
+        color: white;
+        font-weight: bold;
+        padding: 8px;
+        margin-bottom: 4px;
+      }
+    </style>
+
+    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+    <script src='./sdii_onion.js'></script>
+
+  </head>
+  
+  <body>
+    <h2>Payroll landscapes</h2>
+    <details xopen>
+      <summary>HmH</summary>
+      <div id='idSunHmh'></div>
+    </details>
+    <br>
+
+    <details>
+      <summary>Big Mamma</summary>
+      <div id='idSunBm'></div>
+    </details>
+    <br>
+
+    <details>
+      <summary>Jotun</summary>
+      <div id='idSunJotun'></div>
+      <p>to do</p>
+    </details>
+    <br>
+
+    <details>
+      <summary>Sony</summary>
+      <div id='idSunSony'></div>
+      <p>to do</p>
+    </details>
+    <br>
+    
+    <br>
+    <details>
+      <summary>to do</summary>
+      <ul>
+        <li>legend - or highlight (country sector ; all arrows) : shapes with type=path   / restyle: https://codepen.io/etpinard/pen/RQQqzq</li>
+        <li>add svg export</li>
+        <li>make arrow position parameters dynamic (eg: nr of countries)</li>
+        <li>hack an arrow border effect (see original onion, fill transparent)</li>
+      </ul>
+    </details>
+
+    <script>
+      getJson4PlotlySunburst( 'idSunHmh', './hmh.json');
+      getJson4PlotlySunburst( 'idSunBm', './bm.json');
+
+    </script>
+
+  </body>
+</html>

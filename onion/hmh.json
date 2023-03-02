@@ -1,0 +1,60 @@
+{
+  "background_color": "lightgrey",
+  "leaf_opacity": 1,
+  "line_width_separator": 6,
+  "countryColor": "white",
+  "lpeColor": "khaki", 
+
+  "colors": {
+    "Workday": "#0875e1",
+    "unstructured<br>data": "#e4003a",
+    "my Service<br>Point": "#e4003a",
+    "SD Connect": "#f8ad07"
+  },
+  
+  "countries":  [
+    {
+      "country": "Norway",
+      "short": "no",
+      "lpe": "Aditro<br>Lön",
+      "connect_ring": [
+        { "label": "MFT", "pct": 75, "color": "#E4E4E4" }, 
+        { "label": "my Service<br>Point", "pct": 25 }
+      ],
+      "hr_ring": [
+        { "label": "Workday", "parentIndex": 0 }, 
+        { "label": "unstructured<br>data", "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "Germany",
+      "short": "de",
+      "lpe": "Accurat",
+      "connect_ring": [
+        { "label": "SD Connect", "pct": 75}, 
+        { "label": "my Service<br>Point", "pct": 25 }
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 1},
+        { "label": "Workday", "parentIndex": 0 }
+      ]
+    },
+    {
+      "country": "UK",
+      "short": "uk",
+      "lpe": "HRe",
+      "connect_ring": [
+        { "label": "SD Connect", "pct": 75 }, 
+        { "label": "my Service<br>Point", "pct": 25 }
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 1 },
+        { "label": "Workday", "parentIndex": 0 }
+      ]
+    }
+  ],
+
+  "arrows": [
+    {"startRadiusPct": 85, "endRadiusPct": 40, "startRadiusDegrees": 20, "color": "#f8ad07", "doubleHead": false}
+  ]
+}
