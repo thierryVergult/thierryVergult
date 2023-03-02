@@ -47,7 +47,7 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     ids.push(id);
     labels.push(co.country);
     values.push(sectorValue);
-    colors.push( sd.countryColor || "khaki");
+    colors.push( sd.countryColor || "#eeebe3"); // white-ish
 
     // second circle : all lpe payrolls
     parents.push(id);
@@ -55,7 +55,7 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     ids.push(id);
     labels.push(co.lpe);
     values.push(sectorValue);
-    colors.push( sd.lpeColor || "white");
+    colors.push( sd.lpeColor || "khaki");
 
     // 3th circle: middleware
     let middleware = co.connect_ring,
@@ -95,8 +95,6 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     }
   }
 
-  //console.log(ids, colors);
-
   let data = [{
     type: "sunburst",
     ids: ids,
@@ -121,14 +119,43 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     width: 800,
     height: 800,
     hovermode: false,
-    annotations: []
+    annotations: [],
+    shapes: []
   };
   
   for (let i=0; i < sd.arrows.length; i++) {
     layout.annotations[i] = arrowAnnotation( sd.arrows[i]);
   }
 
-  Plotly.newPlot( idHtml, data, layout)
+  const config = {
+    toImageButtonOptions: {
+      format: 'svg', // one of png, svg, jpeg, webp
+      filename: 'sd_' + sd.customer + '_pay_landscape',
+      height: 800,
+      width: 800,
+      scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+    }
+  };
+
+  // a line to separate the countries
+  const mid = 0.5;
+  for (let i=0; i < sectors; i++) {
+    let line = {
+        type: 'path',
+        line: {
+          color: sd.countrySeparatorColor || 'white',
+          width: sd.country_width_separator || 8
+        }
+      };
+    // svg path : move to the middle, draw a line to : mid + r (=0.5) * cos Angle  : the same for y, but sinus.
+    // plotly - shapes - path does not support (yet) the Arc command, and relative commands
+    let rad = (2*Math.PI / sectors) * i;
+    line.path = ['M', mid, mid, 'L', 0.5 + (mid * Math.cos(rad)), 0.5 + (mid * Math.sin(rad))].join(' ');
+    layout.shapes[i] = line;
+  }
+
+  // plot Plotly
+  Plotly.newPlot( idHtml, data, layout, config)
     // disable the specific sunburst click event on all intermediate nodes to redraw the sunburst from that node onwards
     // since the annotations have absolute values and hence do not move with any interaction.
     .then( gd => {

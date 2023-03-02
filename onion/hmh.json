@@ -1,9 +1,12 @@
 {
+  "customer": "hmh",
   "background_color": "lightgrey",
   "leaf_opacity": 1,
   "line_width_separator": 6,
-  "countryColor": "white",
-  "lpeColor": "khaki", 
+  "country_width_separator": 10,
+  "countryColor": "#eeebe3",
+  "lpeColor": "khaki",
+  "countrySeparatorColor": "white",
 
   "colors": {
     "Workday": "#0875e1",
