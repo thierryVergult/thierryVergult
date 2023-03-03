@@ -26,7 +26,6 @@ function getJson4PlotlySunburst( idHtml, jsonUrl) {
 }
 
 function addCountryLegend( idHtml, countries) {
-  console.log( 'addCountryLegend');
 
   const legendDiv = document.createElement("div");
   
@@ -70,13 +69,22 @@ function addCountryLegend( idHtml, countries) {
 function highlightCountry( idHtml, i0, NrOfCountries) {
   // thanks: https://stackoverflow.com/questions/64016308/dynamically-toggle-visibility-of-shapes-in-plotly-js
 
-  const i1 = (i0+1)%NrOfCountries;
-  const opacity = [
-    Number( document.querySelectorAll('#idSunHmh .shapelayer>path[data-index="' + i0 + '"]')[0].style.opacity),
-    Number( document.querySelectorAll('#idSunHmh .shapelayer>path[data-index="' + i1 + '"]')[0].style.opacity)
-  ];
-  console.log('**', i0, i1, opacity);
+  const i1 = (i0+1)%NrOfCountries,
+    // selector: under #id and having .shapelayer>path with data-index the index in the original shape array
+    // eg: .shapelayer>path[data-index="0"]
+    selector = [
+      ['#', idHtml, ' ', '.shapelayer>path', '[', 'data-index="', i0, '"]'].join(''),
+      ['#', idHtml, ' ', '.shapelayer>path', '[', 'data-index="', i1, '"]'].join('')
+    ],
+    // get the actual opacity from the DOM
+    opacity = [
+      Number( document.querySelectorAll( selector[0])[0].style.opacity),
+      Number( document.querySelectorAll( selector[1])[0].style.opacity)
+    ];
   
+  // console.log('**', i0, i1, opacity);
+  
+  // toggle the opacity 0 → 1 / 1 → 0
   // line.color is also an option, also line.width : see https://plotly.com/javascript/reference/layout/shapes/
   Plotly.relayout( idHtml, {
     ["shapes[" + i0 + "].opacity"]: (opacity[0] + 1)%2,

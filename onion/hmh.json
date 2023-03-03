@@ -58,6 +58,6 @@
   ],
 
   "arrows": [
-    {"startRadiusPct": 85, "endRadiusPct": 40, "startRadiusDegrees": 20, "color": "#f8ad07", "doubleHead": false}
+    {"startRadiusPct": 85, "endRadiusPct": 40, "startRadiusDegrees": 20, "color": "#e4003a", "doubleHead": false}
   ]
 }
