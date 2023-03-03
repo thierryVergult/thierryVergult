@@ -25,6 +25,65 @@ function getJson4PlotlySunburst( idHtml, jsonUrl) {
   .then( data => sdiiPlotlySunburstOnion( idHtml, data));
 }
 
+function addCountryLegend( idHtml, countries) {
+  console.log( 'addCountryLegend');
+
+  const legendDiv = document.createElement("div");
+  
+  legendDiv.style.width = '800px';  // magic number, also used to set the svg dimensions.
+  legendDiv.style.marginTop = '6px';
+  
+  legendDiv.style.display = 'flex';
+  legendDiv.style.flexFlow = 'row wrap';
+  legendDiv.style.justifyContent = 'space-around';
+  
+  // in case one want custom css, you can do via this class
+  legendDiv.classList.add('sd-sunburst-onion-legend');
+  
+  document.getElementById(idHtml).appendChild(legendDiv);
+
+  for (let i= 0; i < countries.length; i++) {
+    let legendCountry = document.createElement("div");
+    legendCountry.textContent = countries[i].country.replace('<br>', '/');
+    
+    legendCountry.style.backgroundColor = 'steelblue'; // to do, hardcode & review all colors in json, regroup
+    legendCountry.style.color = 'white'; // to do, see above
+    legendCountry.style.fontSize = '18px';
+    legendCountry.style.fontWeight = 'bold';
+
+    // in case the countries flow in a second row, add some margin to have vertical space between them
+    legendCountry.style.marginTop = '2px';
+    legendCountry.style.marginBottom = '2px';
+
+    legendCountry.style.padding= '1em 2em';
+    legendCountry.classList.add('sd-sunburst-onion-legend-item');
+
+    legendCountry.onclick = function() { highlightCountry( idHtml, i, countries.length); };
+    legendCountry.style.cursor = 'zoom-in';
+
+    legendDiv.appendChild(legendCountry);
+    
+  }
+
+};
+
+function highlightCountry( idHtml, i0, NrOfCountries) {
+  // thanks: https://stackoverflow.com/questions/64016308/dynamically-toggle-visibility-of-shapes-in-plotly-js
+
+  const i1 = (i0+1)%NrOfCountries;
+  const opacity = [
+    Number( document.querySelectorAll('#idSunHmh .shapelayer>path[data-index="' + i0 + '"]')[0].style.opacity),
+    Number( document.querySelectorAll('#idSunHmh .shapelayer>path[data-index="' + i1 + '"]')[0].style.opacity)
+  ];
+  console.log('**', i0, i1, opacity);
+  
+  // line.color is also an option, also line.width : see https://plotly.com/javascript/reference/layout/shapes/
+  Plotly.relayout( idHtml, {
+    ["shapes[" + i0 + "].opacity"]: (opacity[0] + 1)%2,
+    ["shapes[" + i1 + "].opacity"]: (opacity[1] + 1)%2
+  });
+}
+
 function sdiiPlotlySunburstOnion( idHtml, sd) {
   //console.log(idHtml, sd);  
 
@@ -147,10 +206,15 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
           width: sd.country_width_separator || 8
         }
       };
+    
     // svg path : move to the middle, draw a line to : mid + r (=0.5) * cos Angle  : the same for y, but sinus.
     // plotly - shapes - path does not support (yet) the Arc command, and relative commands
-    let rad = (2*Math.PI / sectors) * i;
-    line.path = ['M', mid, mid, 'L', 0.5 + (mid * Math.cos(rad)), 0.5 + (mid * Math.sin(rad))].join(' ');
+    let radians = (2*Math.PI / sectors) * i;
+    line.path = [
+      'M', mid, mid, 
+      'L',  0.5 + (mid * Math.cos(radians)),  0.5 + (mid * Math.sin(radians))
+    ].join(' ');
+    
     layout.shapes[i] = line;
   }
 
@@ -162,6 +226,9 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
       gd.on('plotly_sunburstclick', () => false)
     });
   
+  // add html country legend
+  addCountryLegend(idHtml, sd.countries);
+
   // add a CSS rule to the body of the page to force the cursor on hover to the default arrow, instead of the hand plotly came up with.
   const css = document.createElement("style");
   css.innerHTML = ".sunburstlayer .slice.cursor-pointer{cursor: default!important;}";

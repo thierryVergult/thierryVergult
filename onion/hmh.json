@@ -4,14 +4,14 @@
   "leaf_opacity": 1,
   "line_width_separator": 6,
   "country_width_separator": 10,
-  "countryColor": "#eeebe3",
-  "lpeColor": "khaki",
+  "countryColor": "#e4003a",
+  "lpeColor": "#FF9F00",
   "countrySeparatorColor": "white",
 
   "colors": {
     "Workday": "#0875e1",
-    "unstructured<br>data": "#e4003a",
-    "my Service<br>Point": "#e4003a",
+    "unstructured<br>data": "khaki",
+    "my Service<br>Point": "khaki",
     "SD Connect": "#f8ad07"
   },
   
@@ -21,7 +21,7 @@
       "short": "no",
       "lpe": "Aditro<br>Lön",
       "connect_ring": [
-        { "label": "MFT", "pct": 75, "color": "#E4E4E4" }, 
+        { "label": "MFT", "pct": 75, "color": "#eeebe3" }, 
         { "label": "my Service<br>Point", "pct": 25 }
       ],
       "hr_ring": [
