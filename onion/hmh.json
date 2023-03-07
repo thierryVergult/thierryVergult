@@ -4,7 +4,7 @@
   "leaf_opacity": 1,
   "line_width_separator": 6,
   "country_width_separator": 10,
-  "countryColor": "#e4003a",
+  "countryColor": ["#eeebe3", "#e4003a", "#0875e1"],
   "lpeColor": "#FF9F00",
   "countrySeparatorColor": "white",
   "countrySeparatorHighlightColor": "yellow",

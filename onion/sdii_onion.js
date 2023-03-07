@@ -108,7 +108,13 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     ids.push(id);
     labels.push(co.country);
     values.push(sectorValue);
-    colors.push( sd.countryColor || "#eeebe3"); // white-ish
+
+    if (Array.isArray(sd.countryColor)) {
+      const len = sd.countryColor.length;
+      colors.push( sd.countryColor[i%len]);
+    } else {
+      colors.push( sd.countryColor || "#eeebe3"); // white-ish
+    }
 
     // second circle : all lpe payrolls
     parents.push(id);
