@@ -7,6 +7,7 @@
   "countryColor": "#e4003a",
   "lpeColor": "#FF9F00",
   "countrySeparatorColor": "white",
+  "countrySeparatorHighlightColor": "yellow",
 
   "colors": {
     "Workday": "#0875e1",

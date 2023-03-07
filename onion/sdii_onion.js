@@ -25,7 +25,7 @@ function getJson4PlotlySunburst( idHtml, jsonUrl) {
   .then( data => sdiiPlotlySunburstOnion( idHtml, data));
 }
 
-function addCountryLegend( idHtml, countries) {
+function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
 
   const legendDiv = document.createElement("div");
   
@@ -57,7 +57,7 @@ function addCountryLegend( idHtml, countries) {
     legendCountry.style.padding= '1em 2em';
     legendCountry.classList.add('sd-sunburst-onion-legend-item');
 
-    legendCountry.onclick = function() { highlightCountry( idHtml, i, countries.length); };
+    legendCountry.onclick = function() { highlightCountry( idHtml, i, countries.length, baseColor, highlightColor); };
     legendCountry.style.cursor = 'zoom-in';
 
     legendDiv.appendChild(legendCountry);
@@ -66,30 +66,24 @@ function addCountryLegend( idHtml, countries) {
 
 };
 
-function highlightCountry( idHtml, i0, NrOfCountries) {
+function highlightCountry( idHtml, countryIndex, NrOfCountries, baseColor, highlightColor) {
   // thanks: https://stackoverflow.com/questions/64016308/dynamically-toggle-visibility-of-shapes-in-plotly-js
 
-  const i1 = (i0+1)%NrOfCountries,
-    // selector: under #id and having .shapelayer>path with data-index the index in the original shape array
-    // eg: .shapelayer>path[data-index="0"]
-    selector = [
-      ['#', idHtml, ' ', '.shapelayer>path', '[', 'data-index="', i0, '"]'].join(''),
-      ['#', idHtml, ' ', '.shapelayer>path', '[', 'data-index="', i1, '"]'].join('')
-    ],
-    // get the actual opacity from the DOM
-    opacity = [
-      Number( document.querySelectorAll( selector[0])[0].style.opacity),
-      Number( document.querySelectorAll( selector[1])[0].style.opacity)
-    ];
+  let colorShapes = {};
+
+  for (let i = 0; i < NrOfCountries; i++) {
+    colorShapes["shapes[" + i + "].line.color"] = baseColor;
+  }
+
+  colorShapes["shapes[" + countryIndex + "].line.color"] = highlightColor;
   
-  // console.log('**', i0, i1, opacity);
+  const next = (countryIndex+1)%NrOfCountries;
+  colorShapes["shapes[" + next + "].line.color"] = highlightColor;
+
+  //console.log('**', colorShapes);
   
-  // toggle the opacity 0 → 1 / 1 → 0
-  // line.color is also an option, also line.width : see https://plotly.com/javascript/reference/layout/shapes/
-  Plotly.relayout( idHtml, {
-    ["shapes[" + i0 + "].opacity"]: (opacity[0] + 1)%2,
-    ["shapes[" + i1 + "].opacity"]: (opacity[1] + 1)%2
-  });
+  // line.width is also an option : see all parameters: https://plotly.com/javascript/reference/layout/shapes/
+  Plotly.relayout( idHtml, colorShapes);
 }
 
 function sdiiPlotlySunburstOnion( idHtml, sd) {
@@ -215,12 +209,12 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
         }
       };
     
-    // svg path : move to the middle, draw a line to : mid + r (=0.5) * cos Angle  : the same for y, but sinus.
+    // svg path : move to the middle (plus 1/8 R extra), draw a line to : mid + r (=0.5) * cos Angle  : the same for y, but sinus.
     // plotly - shapes - path does not support (yet) the Arc command, and relative commands
     let radians = (2*Math.PI / sectors) * i;
     line.path = [
-      'M', mid, mid, 
-      'L',  0.5 + (mid * Math.cos(radians)),  0.5 + (mid * Math.sin(radians))
+      'M', mid + (mid/8 * Math.cos(radians)), mid + (mid/8 * Math.sin(radians)), 
+      'L', mid + (mid   * Math.cos(radians)), mid + (mid   * Math.sin(radians))
     ].join(' ');
     
     layout.shapes[i] = line;
@@ -235,7 +229,7 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     });
   
   // add html country legend
-  addCountryLegend(idHtml, sd.countries);
+  addCountryLegend(idHtml, sd.countries, sd.countrySeparatorColor || 'white', sd.countrySeparatorHighlightColor || 'red');
 
   // add a CSS rule to the body of the page to force the cursor on hover to the default arrow, instead of the hand plotly came up with.
   const css = document.createElement("style");
