@@ -26,7 +26,6 @@ function getJson4PlotlySunburst( idHtml, jsonUrl) {
 }
 
 function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
-
   const legendDiv = document.createElement("div");
   
   legendDiv.style.width = '800px';  // magic number, also used to set the svg dimensions.
@@ -57,6 +56,8 @@ function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
     legendCountry.style.padding= '1em 2em';
     legendCountry.classList.add('sd-sunburst-onion-legend-item');
 
+    // ugly, global variable to store state
+    sdLastHighlight = idHtml + i;
     legendCountry.onclick = function() { highlightCountry( idHtml, i, countries.length, baseColor, highlightColor); };
     legendCountry.style.cursor = 'zoom-in';
 
@@ -68,6 +69,12 @@ function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
 
 function highlightCountry( idHtml, countryIndex, NrOfCountries, baseColor, highlightColor) {
   // thanks: https://stackoverflow.com/questions/64016308/dynamically-toggle-visibility-of-shapes-in-plotly-js
+  if (sdLastHighlight == idHtml + countryIndex) {
+    highlightColor = baseColor;
+    sdLastHighlight = 'flip';
+  } else {
+    sdLastHighlight = idHtml + countryIndex;
+  }
 
   let colorShapes = {};
 
