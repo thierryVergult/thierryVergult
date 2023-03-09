@@ -1,0 +1,115 @@
+{
+    "customer": "big mamma",
+    "countryColor": ["#1a6efc", "#870b58", "#f8ad07", "#1a6efc", "#e4003a"],
+  
+    "colors": {
+      "SD Worx<br>People": "#870b58",
+      "SD Connect": "#f8ad07",
+      "unstructured<br>data": "#e4003a",
+      "my Service<br>Point": "#e4003a",
+      "Protime": "#1a6efc"
+    },
+  
+    "countries": [
+      {
+        "country": "Belgium",
+        "short": "be",
+        "lpe": "eBlox",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      },
+      {
+        "country": "Germany",
+        "short": "de",
+        "lpe": "Accurat",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      },
+      {
+        "country": "Netherlands",
+        "short": "nl",
+        "lpe": "Cobra",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      },
+      {
+        "country": "Austria",
+        "short": "at",
+        "lpe": "lpe",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      },
+      {
+        "country": "UK",
+        "short": "uk",
+        "lpe": "HRe",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      },
+      {
+        "country": "Denmark",
+        "short": "dk",
+        "lpe": "lpe",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect?", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      },
+      {
+        "country": "Slovakia",
+        "short": "sk",
+        "lpe": "lpe",
+        "connect_ring": [
+          { "label": "my Service<br>Point", "pct": 20},
+          { "label": "SD Connect", "pct": 80}
+        ],
+        "hr_ring": [
+          { "label": "unstructured<br>data", "parentIndex": 0},
+          { "label": "Protime", "pct": 25, "parentIndex": 1},
+          { "label": "SD Worx<br>People", "pct": 75, "parentIndex": 1}
+        ]
+      }
+    ],
+
+    "arrows": []
+  }
