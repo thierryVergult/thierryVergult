@@ -123,8 +123,8 @@
           <td id="id-c01-q11" class="flo"><input type="checkbox"></td>
         </tr>
         <tr>
-          <td>Readiness OK?</td>
-          <td id="id-c01-q12" class="flo"><input type="checkbox"></td>
+          <td class="sol">Readiness OK?</td>
+          <td id="id-c01-q12" class="flo"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
 
         <tr class="offering">
@@ -150,11 +150,11 @@
         </tr>
         <tr>
           <td class="sol" title="- low: Excel, Office driven, a lot of manual work&#10;- medium&#10;- high">Complexity of actual HR landscape</td>
-          <td id="id-c01-q17" class="pro"><input list="complexities"  onchange="calcSolArch( this.dataset.colnr);"></td>
+          <td id="id-c01-q17" class="pro"><input list="complexities" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
         <tr>
-          <td>Readiness OK?</td>
-          <td id="id-c01-q18" class="pro"><input type="checkbox"></td>
+          <td class="sol">Readiness OK?</td>
+          <td id="id-c01-q18" class="pro"><input type="checkbox" onchange="calcSolArch( this.dataset.colnr);"></td>
         </tr>
 
         <tr class="review-sol-arch">
@@ -290,10 +290,12 @@
 
       score = score + solArchBool( pColNr,  9, 'other T&A');
       score = score + solArchBool( pColNr, 10, 'other interface');
+      score = score + solArchBool( pColNr, 12, 'flo readiness');
 
       score = score + solArchBool( pColNr, 14, 'other T&A');
       score = score + solArchBool( pColNr, 15, 'other interface');
       score = score + solArchBool( pColNr, 16, 'not only basic HR');
+      score = score + solArchBool( pColNr, 18, 'gro readiness');
 
       // all complexities except low
       score = score + solArchDifferentFrom( pColNr, 17, 'Low', 'complexity');

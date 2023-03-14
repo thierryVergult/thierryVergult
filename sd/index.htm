@@ -1,5 +1,15 @@
 <!doctype html>
-  <title>sd</title>
+  <head>
+    <meta charset=utf-8>
+    <title>sd</title>
+    <style>
+      pre { 
+        display: inline-block;
+        padding: 20px 20px 5px;
+        background-color: lightgrey;
+      }
+    </style>
+  </head>
   
   <body>
     <p>Solutions Architect</p>
@@ -11,16 +21,46 @@
     
     <br>
     <p>sdw People</p>
-    <pre style='display: inline-block; margin-left: 20px; padding:20px; background-color:lightgrey;'>  
-  fetch('https://www.opayra.com/sd/iiSdwp.js')
-  .then( response => response.text())
-  .then( text => eval(text))
-  .then( () => {
-    iiSdwp.init();
-    console.log('SD Worx People ii Helper library loaded.')
-  })
-    </pre>
-    <br>
-    <a href="./iiSdwp.js" style='margin-left: 40px;'>ii sdwP JavaScript helper library</a>
+    <div  style='margin-left: 20px;'>
+      <p>load &nbsp;<a href="./iiSdwp.js">ii sdwP JavaScript helper library</a>&nbsp; in the web console:</p>
+      <pre>
+fetch('https://www.opayra.com/sd/iiSdwp.js')
+.then( response => response.text())
+.then( text => eval(text))
+.then( () => {
+  iiSdwp.init();
+  console.log('SD Worx People ii Helper library loaded.')
+})
+      </pre>
+      <br>
+
+      <details>
+        <summary>get all locations</summary>
+        <pre>
+iiSdwp.get.locations();
+        </pre>
+      </details>
+
+      <details>
+        <summary>get all locations at level 1</summary>
+        <pre>
+iiSdwp.get.locations().body.filter( r => r.entityLevel == 1);
+        </pre>
+      </details>
+
+      <details>
+        <summary>copy access from one role to an other for a given list</summary>
+        <ol>
+          <li>gloRegId: 10001177</li>
+          <li>list name: COUNTRYCODE</li>
+          <li>role from: ADMIN</li>
+          <li>role to: ADMIN_ALL</li>
+        </ol>
+        <pre>
+iiSdwp.copyValues2Profile( 10001177, 'COUNTRYCODE', 'ADMIN', 'ADMIN_ALL');
+        </pre>
+      </details>
+  </div>
+    
     
   </body>

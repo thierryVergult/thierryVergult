@@ -1,0 +1,144 @@
+{
+  "customer": "hmh",
+  "background_color": "lightgrey",
+  "leaf_opacity": 1,
+  "line_width_separator": 6,
+  "country_width_separator": 10,
+  "countryColor": ["#eeebe3", "#e4003a", "#0875e1"],
+  "lpeColor": "#FF9F00",
+  "countrySeparatorColor": "white",
+  "countrySeparatorHighlightColor": "yellow",
+
+  "colors": {
+    "Workday": "#0875e1",
+    "unstructured<br>data": "khaki",
+    "my Service<br>Point": "khaki",
+    "Protime": "green",
+    "SD Connect": "#f8ad07"
+  },
+  
+  "countries":  [
+    {
+      "country": "United Kingdom",
+      "short": "uk",
+      "lpe": "Hre",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 20},
+        { "label": "SD Connect", "pct": 80}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Protime", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx<br>People", "pct": 20, "parentIndex": 1},
+        { "label": "Workday", "pct": 60, "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "Netherlands",
+      "short": "nh",
+      "lpe": "Cobra",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 20},
+        { "label": "SD Connect", "pct": 80}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Protime", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx<br>People", "pct": 20, "parentIndex": 1},
+        { "label": "Workday", "pct": 60, "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "Italy",
+      "short": "it",
+      "lpe": "Zuchetti",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 20},
+        { "label": "SD Connect", "pct": 80}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Protime", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx<br>People", "pct": 20, "parentIndex": 1},
+        { "label": "Workday", "pct": 60, "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "Poland",
+      "short": "po",
+      "lpe": "???",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 20},
+        { "label": "SD Connect", "pct": 80}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Protime", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx<br>People", "pct": 20, "parentIndex": 1},
+        { "label": "Workday", "pct": 60, "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "France",
+      "short": "fr",
+      "lpe": "Alicia/Silae",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 20},
+        { "label": "SD Connect", "pct": 80}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Protime", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx<br>People", "pct": 20, "parentIndex": 1},
+        { "label": "Workday", "pct": 60, "parentIndex": 1}
+      ]
+    },
+
+    {
+      "country": "Germany",
+      "short": "de",
+      "lpe": "Accurat",
+      "connect_ring": [
+        { "label": "my Service<br>Point", "pct": 20},
+        { "label": "SD Connect", "pct": 80}
+      ],
+      "hr_ring": [
+        { "label": "unstructured<br>data", "parentIndex": 0},
+        { "label": "Protime", "pct": 20, "parentIndex": 1},
+        { "label": "SD Worx<br>People", "pct": 20, "parentIndex": 1},
+        { "label": "Workday", "pct": 60, "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "Cyprus",
+      "short": "cy",
+      "lpe": "???",
+      "connect_ring": [
+        { "label": "MFT", "pct": 75, "color": "#eeebe3" }, 
+        { "label": "my Service<br>Point", "pct": 25 }
+      ],
+      "hr_ring": [
+        { "label": "Workday", "parentIndex": 0 }, 
+        { "label": "unstructured<br>data", "parentIndex": 1}
+      ]
+    },
+    {
+      "country": "Norway",
+      "short": "nw",
+      "lpe": "Aditro",
+      "connect_ring": [
+        { "label": "MFT", "pct": 75, "color": "#eeebe3" }, 
+        { "label": "my Service<br>Point", "pct": 25 }
+      ],
+      "hr_ring": [
+        { "label": "Protime", "pct": 20, "parentIndex": 0},
+        { "label": "Workday",  "pct": 80, "parentIndex": 0 }, 
+        { "label": "unstructured<br>data", "parentIndex": 1}
+      ]
+    }
+  ],
+
+  "arrows": [
+    {"startRadiusPct": 0, "endRadiusPct": 0, "startRadiusDegrees": 20, "color": "#e4003a", "doubleHead": false}
+  ]
+}
