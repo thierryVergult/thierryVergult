@@ -1,7 +1,6 @@
 <html>
   <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
 
     <style>
       .radioSpan {
@@ -76,33 +75,29 @@
     </p>
 
     <br>
-    <button style="margin: 10px; color: white; background-color: silver;" onclick="renderDiagram();">render</button>
+    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram();">render</button>
 
     <div id="mm-id" style = "border:3px solid silver"></div>
 
     <br>
     <p>to do :</p>
     <ul>
-      <li>upgrade to version 10, via import construction</li>
-      <li>make config more generic and more configurable</li>
+      <li>review code after upgrade to version 10 : import esm construction</li>
+      <li>make config more generic and more configurable : $mm</li>
       <li>styling in general
       <li>icons, even the sd svg ones colored previously</li>
-      <li>hover & click behavior _blank (check in latest version)</li>
-      <li>save svg: export to svg or png, or just screenshot it?</li>
+      <li>hover functionality. Is supposed to work via click, includes url & hover (seems to work in start mode)</li>
       <li>p2p dynamic text, same for erp, now hardcoded workday</li>
       <li>lpe name?</li>
-      <li>name erp dynamically</li>
+      <li>save svg: export to svg or png, or just screenshot it?</li>
     </ul>
 
     <br>
     <a href="https://mermaid.js.org/syntax/flowchart.html" target="_blank">Mermaid flowchart documentation</a>
 
     <script>
-      if (typeof ii == 'undefined') {
-        ii = {};
-      }
-      ii.mermaid = {};
-      ii.mermaid.showAll = false;
+      $mm = {};
+      $mm.showAll = false;
       
       mmLinks = [
         { "from": "hr",        "to": "erp",       "link": "-.->",   "groups": ['flo']},
@@ -134,9 +129,9 @@
       ];
 
       mmNodes = [];
-      mmNodes['hr']       = "(fa:fa-user hr<br/>input)";
+      mmNodes['hr']       = "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)";
       mmNodes['sdc']      = "((sd connect<br>fa:fa-plug<br>))";
-      mmNodes['payroll']  = "{payroll}";
+      mmNodes['payroll']  = "{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}";
       mmNodes['unstruct'] = "(fa:fa-table<br>unstructured<br/>data)";
       mmNodes['calc']     = "(calculated<br/>data)";
       mmNodes['erp']      = "((workday))";
@@ -146,89 +141,10 @@
       mmNodes['mysp2']    = "(fa:fa-file<br>my<br>ServicePoint)";
       mmNodes['mysd']     = "(fa:fa-mobile<br>mySdWorx<br>portal)";
       mmNodes['mft']      = "(fa:fa-external-link<br>mft)";
-      mmNodes['gl']       = "{<img src='https://iconscout.com/ms-icon-310x310.png' width='40' height='40'><br>GL}";
+      mmNodes['gl']       = "{GL}";
       
-      function sdMarkdown( pOffering, pProtime, pEnrich, pPoint2p) {
+      function prepareMarkdown () {
 
-        let mmMarkdown = '';
-                
-        mmMarkdown += 'flowchart LR \n ';
-
-        let nodes = {};
-        
-        // add all links for the offering
-        for ( let i = 0; i < mmLinks.length; i++) {
-          let li = mmLinks[i];
-          //console.log(pOffering, li.groups.indexOf(pOffering));
-          if (li.groups.indexOf(pOffering) >= 0 || ii.mermaid.showAll) {
-
-            if ( li.extraCondition === undefined
-              || li.extraCondition == pProtime
-              || li.extraCondition == pEnrich
-              || li.extraCondition == pPoint2p
-              || ii.mermaid.showAll) {
-              
-              if ( !('visible' in li ) || li.visible) {
-
-                mmMarkdown =  mmMarkdown + li.from + ' ' 
-                          + li.link + (li.linkTxt ? '|' + li.linkTxt + '|' : '') + ' ' 
-                          + li.to + ' \n ';
-
-                // add to the nodes dictionary, and increment if key already exists.
-                nodes[li.from] = (nodes[li.from] + 1) || 1;
-                nodes[li.to] = (nodes[li.to] + 1) || 1;
-              }
-
-            }
-          }
-        }
-        //console.log( nodes);
-
-        // add fixed subgraph for payroll output
-        mmMarkdown += 'subgraph out ["payroll output"]\n mysd \n mysp2 \n mft \n end \n';
-
-        // add subgraph of hr input systems, with subgraph in subgraph (fixed) for myServicePoint
-        mmMarkdown += 'subgraph hris ["  "]\n subgraph mysp ["my ServicePoint  "]\n cases \n unstruct \n end \n';
-        if ( nodes['erp'] || ii.mermaid.showAll) {
-          mmMarkdown += 'erp \n ';
-        }
-        
-        if ( nodes['sdwp'] || ii.mermaid.showAll) {
-          mmMarkdown += 'sdwp \n '
-        }
-
-        if ( nodes['protime'] || ii.mermaid.showAll) { 
-          mmMarkdown += 'protime \n ';
-        }
-
-        if ( nodes['p2p'] || ii.mermaid.showAll) { 
-          mmMarkdown += 'p2p \n ';
-        }
-        // to do: 4 times the same construct, functionize
-
-        mmMarkdown += 'end \n ';
-
-        // add node make up to the graph, when the node was part of a previous link
-        for (const [key, value] of Object.entries(nodes)) {
-          //console.log(key, value);
-          if (mmNodes[key]) {
-            mmMarkdown += key + mmNodes[key] + '\n';
-          }
-        }
-
-        mmMarkdown += 'click hr "https://www.sdworx.com" "appelboom" _blank\n';
-        mmMarkdown += 'click sdc "https://www.sdworx.com" "appelboom2" _blank\n';
-
-        console.log( '== start markdown mermaid ==');
-        console.log( mmMarkdown);
-        console.log( '== end markdown mermaid ==');
-
-        return mmMarkdown;
-      }
-
-
-      function renderDiagram () { 
-        
         let offering = document.querySelector('input[name="offering"]:checked').value;
         
         let protime = document.querySelector('input[name="protime"]:checked').value == 'y' ? 'protime' : 'noProtime';
@@ -255,38 +171,116 @@
           mmLinks.find( r => r.to   == 'calc').visible = false;
         }
 
-        let markDown = sdMarkdown( offering, protime, enrich, point2p);
+        return sdMarkdown( offering, protime, enrich, point2p);
+      }
+
+      function sdMarkdown( pOffering, pProtime, pEnrich, pPoint2p) {
+
+        let mmMarkdown = '';
+                
+        mmMarkdown += 'flowchart LR \n ';
+
+        let nodes = {};
         
-        let injectSvg = (mermaidSvg) => {
-          let diaParent = document.getElementById("mm-id");
-          diaParent.innerHTML = '';
+        // add all links for the offering
+        for ( let i = 0; i < mmLinks.length; i++) {
+          let li = mmLinks[i];
+          //console.log(pOffering, li.groups.indexOf(pOffering));
+          if (li.groups.indexOf(pOffering) >= 0 || $mm.showAll) {
 
-          let country = document.querySelector('input[name="country"]').value;
+            if ( li.extraCondition === undefined
+              || li.extraCondition == pProtime
+              || li.extraCondition == pEnrich
+              || li.extraCondition == pPoint2p
+              || $mm.showAll) {
+              
+              if ( !('visible' in li ) || li.visible) {
 
-          if (country) {
-            let p = document.createElement("p");
-            p.innerHTML = [offering, 'flow', 'for', country].join( ' ');
-            p.classList.add('mmTitle');
-            diaParent.appendChild(p);
+                mmMarkdown =  mmMarkdown + li.from + ' ' 
+                          + li.link + (li.linkTxt ? '|' + li.linkTxt + '|' : '') + ' ' 
+                          + li.to + ' \n ';
+
+                // add to the nodes dictionary, and increment if key already exists.
+                nodes[li.from] = (nodes[li.from] + 1) || 1;
+                nodes[li.to] = (nodes[li.to] + 1) || 1;
+              }
+
+            }
           }
+        }
+        //console.log( nodes);
 
-          let dia = document.createElement("div");
-          dia.innerHTML = mermaidSvg;
-          diaParent.appendChild(dia);
-        };
+        // add fixed subgraph for payroll output
+        mmMarkdown += 'subgraph out ["payroll output"]\n mysd \n mysp2 \n mft \n end \n';
 
-        /*
-          The core of this api is the render function that 
-          given a graph definition as markdown
-          renders the graph/diagram and returns a svg element for the graph. 
-          It is is then up to the user of the API to make use of the svg, either insert it somewhere in the page or something completely different.
-          Here the callback inserts the resulting svg in the page.
-          The id (1st parameter) "sd" becomes the id of the resulting svg (id='sd' & #sd{font-family:"trebuchet ms", ..)
-          Can become usefull in CSS selectors, for example.
-        */
-        mermaid.render( "sd", markDown, injectSvg);
+        // add subgraph of hr input systems, with subgraph in subgraph (fixed) for myServicePoint
+        mmMarkdown += 'subgraph hris ["  "]\n subgraph mysp ["my ServicePoint  "]\n cases \n unstruct \n end \n';
+        if ( nodes['erp'] || $mm.showAll) {
+          mmMarkdown += 'erp \n ';
+        }
+        
+        if ( nodes['sdwp'] || $mm.showAll) {
+          mmMarkdown += 'sdwp \n '
+        }
+
+        if ( nodes['protime'] || $mm.showAll) { 
+          mmMarkdown += 'protime \n ';
+        }
+
+        if ( nodes['p2p'] || $mm.showAll) { 
+          mmMarkdown += 'p2p \n ';
+        }
+        // to do: 4 times the same construct, functionize
+
+        mmMarkdown += 'end \n ';
+
+        // add node make up to the graph, when the node was part of a previous link
+        for (const [key, value] of Object.entries(nodes)) {
+          //console.log(key, value);
+          if (mmNodes[key]) {
+            mmMarkdown += key + mmNodes[key] + '\n';
+          }
+        }
+
+        mmMarkdown += 'click hr "https://www.sdworx.com" "appelboom"\n';
+        mmMarkdown += 'click sdc "https://www.sdworx.com" "appelboom2"\n';
+
+        console.log( '== start markdown mermaid ==');
+        console.log( mmMarkdown);
+        console.log( '== end markdown mermaid ==');
+
+        return mmMarkdown;
+      }
+
+      let injectSvg = (mermaidSvg) => {
+        let diaParent = document.getElementById("mm-id");
+        diaParent.innerHTML = '';
+
+        let country = document.querySelector('input[name="country"]').value;
+
+        if (country) {
+          let p = document.createElement("p");
+          p.innerHTML = [offering, 'flow', 'for', country].join( ' ');
+          p.classList.add('mmTitle');
+          diaParent.appendChild(p);
+        }
+
+        let dia = document.createElement("div");
+        dia.innerHTML = mermaidSvg;
+        diaParent.appendChild(dia);
+      };
+    </script>
+
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
+      mermaid.initialize({ startOnLoad: false });
+
+      $mm.renderDiagram = async function () { 
+        const { svg } = await mermaid.render('sd', prepareMarkdown());
+        injectSvg(svg);
       }
       
     </script>
+
   </body>
 </html>
