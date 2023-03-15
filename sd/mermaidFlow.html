@@ -45,13 +45,13 @@
     <h3>Map payroll output</h3>
 
     <p><span class="radioSpan">GL Posting goes to</span>
-      <input type="radio" name="gl" id="gl-mft"   value="mft" checked><label for="gl-mft">MFT</label>
+      <input type="radio" name="gl" id="gl-mft"   value="mft"><label for="gl-mft">MFT</label>
       <input type="radio" name="gl" id="gl-mysp2" value="mysp2"><label for="gl-mysp2">My Service Point</label>
       <input type="radio" name="gl" id="gl-mysd"  value="mysd"><label for="gl-mysd">sd Worx Portal</label>
     </p>
 
     <p><span class="radioSpan">SEPA goes to</span>
-      <input type="radio" name="sepa" id="sepa-mft" value="mft" checked><label for="sepa-mft">MFT</label>
+      <input type="radio" name="sepa" id="sepa-mft" value="mft"><label for="sepa-mft">MFT</label>
       <input type="radio" name="sepa" id="sepa-mysp2" value="mysp2"><label for="sepa-mysp2">My Service Point</label>
       <input type="radio" name="sepa" id="sepa-mysd" value="mysd"><label for="sepa-mysd">sd Worx Portal</label>
     </p>
@@ -70,7 +70,7 @@
 
     <p><span class="radioSpan">Reporting goes to</span>
       <input type="radio" name="rep" id="rep-mft" value="mft"><label for="rep-mft">MFT</label>
-      <input type="radio" name="rep" id="rep-mysp2" value="mysp2" checked><label for="rep-mysp2">My Service Point</label>
+      <input type="radio" name="rep" id="rep-mysp2" value="mysp2"><label for="rep-mysp2">My Service Point</label>
       <input type="radio" name="rep" id="rep-mysd" value="mysd"><label for="rep-mysd">sd Worx Portal</label>
     </p>
 
@@ -87,6 +87,7 @@
       <li>styling in general
       <li>icons, even the sd svg ones colored previously</li>
       <li>hover functionality. Is supposed to work via click, includes url & hover (seems to work in start mode)</li>
+      <li>hover bug : title in svg element : nok ; sub node title + sub node text : okay !! ; can be injected via the flowchart-key-nro id</li>
       <li>p2p dynamic text, same for erp, now hardcoded workday</li>
       <li>lpe name?</li>
       <li>save svg: export to svg or png, or just screenshot it?</li>
@@ -98,6 +99,23 @@
     <script>
       $mm = {};
       $mm.showAll = false;
+
+      function setLinkTo( nameRadio, nameNode = nameRadio) {
+        let selector = 'input[name="' + nameRadio + '"]:checked',
+            ele = document.querySelector(selector);
+        
+        if ( ele) {
+          mmLinks.find( r => r.from == nameNode).to = ele.value;
+          mmLinks.find( r => r.from == nameNode).visible = true;
+
+          mmLinks.find( r => r.to   == nameNode).visible = true;
+
+        } else {
+          // hide the related links (1 from, 1 to)
+          mmLinks.find( r => r.from == nameNode).visible = false;
+          mmLinks.find( r => r.to   == nameNode).visible = false;
+        }
+      }
       
       mmLinks = [
         { "from": "hr",        "to": "erp",       "link": "-.->",   "groups": ['flo']},
@@ -154,22 +172,11 @@
         let point2p = document.querySelector('input[name="p2p"]:checked').value == 'y' ? 'p2p' : 'noP2p';
 
         // set payroll output destinations
-        mmLinks.find( r => r.from == 'gl').to        = document.querySelector('input[name="gl"]:checked'  ).value;
-        mmLinks.find( r => r.from == 'sepa').to      = document.querySelector('input[name="sepa"]:checked').value;
-        mmLinks.find( r => r.from == 'reporting').to = document.querySelector('input[name="rep"]:checked' ).value;
-        mmLinks.find( r => r.from == 'payslips').to  = document.querySelector('input[name="slip"]:checked').value;
-
-        let calc = document.querySelector('input[name="calc"]:checked');
-        if ( calc) {
-          mmLinks.find( r => r.from == 'calc').to = calc.value;
-          mmLinks.find( r => r.from == 'calc').visible = true;
-
-          mmLinks.find( r => r.to   == 'calc').visible = true;
-        } else {
-          // hide the 2 calc links
-          mmLinks.find( r => r.from == 'calc').visible = false;
-          mmLinks.find( r => r.to   == 'calc').visible = false;
-        }
+        setLinkTo( 'gl');
+        setLinkTo( 'sepa');
+        setLinkTo( 'rep', 'reporting');
+        setLinkTo( 'slip', 'payslips');
+        setLinkTo( 'calc');
 
         return sdMarkdown( offering, protime, enrich, point2p);
       }
@@ -242,8 +249,8 @@
           }
         }
 
-        mmMarkdown += 'click hr "https://www.sdworx.com" "appelboom"\n';
-        mmMarkdown += 'click sdc "https://www.sdworx.com" "appelboom2"\n';
+        mmMarkdown += 'click hr href "https://www.sdworx.com" "appelboom"\n';
+        mmMarkdown += 'click mft callback "appelboom2"\n';
 
         console.log( '== start markdown mermaid ==');
         console.log( mmMarkdown);
