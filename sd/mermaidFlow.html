@@ -82,7 +82,6 @@
     <br>
     <p>to do :</p>
     <ul>
-      <li>make config more generic and more configurable : $mm</li>
       <li>dynamic textx: p2p, erp, lpe..
       <li>hover
     </ul>
@@ -91,75 +90,34 @@
     <a href="https://mermaid.js.org/syntax/flowchart.html" target="_blank">Mermaid flowchart documentation</a>
 
     <script>
-      $mm = {};
-      $mm.showAll = false;
+
+      const getJSON = async url => {
+        const response = await fetch(url);
+        return response.json(); // get JSON from the response 
+      }
 
       function setLinkTo( nameRadio, nameNode = nameRadio) {
         let selector = 'input[name="' + nameRadio + '"]:checked',
             ele = document.querySelector(selector);
         
         if ( ele) {
-          mmLinks.find( r => r.from == nameNode).to = ele.value;
-          mmLinks.find( r => r.from == nameNode).visible = true;
+          $mm.links.find( r => r.from == nameNode).to = ele.value;
+          $mm.links.find( r => r.from == nameNode).visible = true;
 
-          mmLinks.find( r => r.to   == nameNode).visible = true;
+          $mm.links.find( r => r.to   == nameNode).visible = true;
 
         } else {
           // hide the related links (1 from, 1 to)
-          mmLinks.find( r => r.from == nameNode).visible = false;
-          mmLinks.find( r => r.to   == nameNode).visible = false;
+          $mm.links.find( r => r.from == nameNode).visible = false;
+          $mm.links.find( r => r.to   == nameNode).visible = false;
         }
       }
       
-      mmLinks = [
-        { "from": "hr",        "to": "erp",       "link": "-.->",   "groups": ['flo']},
-        { "from": "hr",        "to": "sdwp",      "link": "-->" ,   "groups": ['pro']},
-        { "from": "hr",        "to": "sdwp",      "link": "-->" ,   "groups": ['flo'],               "extraCondition": "enrich"},
-        { "from": "hr",        "to": "protime",   "link": "-->" ,   "groups": ['gro', 'flo', 'pro'], "extraCondition": "protime"},
-        { "from": "hr",        "to": "unstruct",  "link": "-->" ,   "groups": ['gro', 'flo', 'pro']},
-        { "from": "hr",        "to": "p2p",       "link": "-->" ,   "groups": ['gro', 'flo', 'pro'], "extraCondition": "p2p"},
-        { "from": "erp",       "to": "sdc",       "link": "==>" ,   "groups": ['flo']},
-        { "from": "sdwp",      "to": "sdc",       "link": "-->" ,   "groups": ['pro']},
-        { "from": "sdwp",      "to": "sdc",       "link": "-->" ,   "groups": ['flo'],               "extraCondition": "enrich"},
-        { "from": "protime",   "to": "sdc",       "link": "-->" ,   "groups": ['flo', 'pro'],        "extraCondition": "protime",   "LinkTxt": "T&A"},
-        { "from": "protime",   "to": "payroll",   "link": "-->" ,   "groups": ['gro'],               "extraCondition": "protime",   "linkTxt": "T&A"},
-        { "from": "p2p",       "to": "sdc",       "link": "-->" ,   "groups": ['flo', 'pro'],        "extraCondition": "p2p"},
-        { "from": "p2p",       "to": "payroll",   "link": "-->" ,   "groups": ['gro'],               "extraCondition": "p2p"},
-        { "from": "unstruct",  "to": "payroll",   "link": "-...->", "groups": ['gro', 'flo', 'pro']},
-        { "from": "sdc",       "to": "payroll",   "link": "==>",    "groups": ['flo', 'pro']},
-        { "from": "payroll",   "to": "gl",        "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "sepa",      "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "reporting", "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "payslips",  "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "calc",      "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        // invisible links, to trigger the node icons and other layout on the target
-        { "from": "hr",        "to": "cases", "link": "~~~", "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "mysd",  "link": "~~~", "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "mysp2", "link": "~~~", "groups": ['gro', 'flo', 'pro']},
-        { "from": "payroll",   "to": "mft",   "link": "~~~", "groups": ['gro', 'flo', 'pro']},
-        // -to- is set dynamically
-        { "from": "gl",        "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
-        { "from": "sepa",      "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
-        { "from": "reporting", "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
-        { "from": "payslips",  "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
-        { "from": "calc",      "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']}
-      ];
-
-      mmNodes = [];
-      mmNodes['hr']       = "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)";
-      mmNodes['cases']    = "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>case<br>handling)";
-      mmNodes['sdc']      = "((sd connect<br><img src='./mm/sd-connect.svg' width='40' height='40'>))";
-      mmNodes['payroll']  = "{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}";
-      mmNodes['unstruct'] = "(<img src='./mm/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)";
-      mmNodes['calc']     = "(calculated<br/>data)";
-      mmNodes['erp']      = "((workday))";
-      mmNodes['sdwp']     = "[[SD Worx<br><br><img src='./mm/sd-people.svg' width='60' height='40'><br/>People]]";
-      mmNodes['protime']  = "{protime<br><br><img src='./mm/sd-clock.svg' width='40' height='40'>}";
-      mmNodes['mysp2']    = "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>my<br>ServicePoint)";
-      mmNodes['mysd']     = "(<img src='./mm/sd-phone.svg' width='40' height='40'><br>mySdWorx<br>portal)";
-      mmNodes['mft']      = "(<img src='./mm/sd-download.svg' width='40' height='40'><br>mft)";
-      mmNodes['gl']       = "{GL}";
-      mmNodes['payslips'] = "(<img src='./mm/sd-payslip.svg' width='40' height='40'><br>payslips)";
+      getJSON( './mm/_mm_config.json')
+      .then( data => {
+        $mm = data;
+        // console.log($mm);
+      });
       
       function prepareMarkdown () {
 
@@ -190,8 +148,8 @@
         let nodes = {};
         
         // add all links for the offering
-        for ( let i = 0; i < mmLinks.length; i++) {
-          let li = mmLinks[i];
+        for ( let i = 0; i < $mm.links.length; i++) {
+          let li = $mm.links[i];
           //console.log(pOffering, li.groups.indexOf(pOffering));
           if (li.groups.indexOf(pOffering) >= 0 || $mm.showAll) {
 
@@ -244,8 +202,8 @@
         // add node make up to the graph, when the node was part of a previous link
         for (const [key, value] of Object.entries(nodes)) {
           //console.log(key, value);
-          if (mmNodes[key]) {
-            mmMarkdown += key + mmNodes[key] + '\n';
+          if ($mm.nodes[key]) {
+            mmMarkdown += key + $mm.nodes[key] + '\n';
           }
         }
 
@@ -260,6 +218,7 @@
       }
 
       let injectSvg = (mermaidSvg, idHtml) => {
+        
         let diaParent = document.getElementById( idHtml);
         diaParent.innerHTML = '';
 

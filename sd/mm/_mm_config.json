@@ -1,0 +1,52 @@
+{
+  "showAll": false,
+  "nodes" : {
+    "hr"       : "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)",
+    "cases"    : "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>case<br>handling)",
+    "sdc"      : "((sd connect<br><img src='./mm/sd-connect.svg' width='40' height='40'>))",
+    "payroll"  :"{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}",
+    "unstruct" : "(<img src='./mm/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)",
+    "calc"     : "(calculated<br/>data)",
+    "erp"      : "((workday))",
+    "sdwp"     : "[[SD Worx<br><br><img src='./mm/sd-people.svg' width='60' height='40'><br/>People]]",
+    "protime"  : "{protime<br><br><img src='./mm/sd-clock.svg' width='40' height='40'>}",
+    "mysp2"    : "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>my<br>ServicePoint)",
+    "mysd"     : "(<img src='./mm/sd-phone.svg' width='40' height='40'><br>mySdWorx<br>portal)",
+    "mft"      : "(<img src='./mm/sd-download.svg' width='40' height='40'><br>mft)",
+    "gl"       : "{GL}",
+    "payslips" : "(<img src='./mm/sd-payslip.svg' width='40' height='40'><br>payslips)"
+  },
+  "links": [
+    { "from": "hr",        "to": "erp",       "link": "-.->",   "groups": ["flo"]},
+    { "from": "hr",        "to": "sdwp",      "link": "-->" ,   "groups": ["pro"]},
+    { "from": "hr",        "to": "sdwp",      "link": "-->" ,   "groups": ["flo"],               "extraCondition": "enrich"},
+    { "from": "hr",        "to": "protime",   "link": "-->" ,   "groups": ["gro", "flo", "pro"], "extraCondition": "protime"},
+    { "from": "hr",        "to": "unstruct",  "link": "-->" ,   "groups": ["gro", "flo", "pro"]},
+    { "from": "hr",        "to": "p2p",       "link": "-->" ,   "groups": ["gro", "flo", "pro"], "extraCondition": "p2p"},
+    { "from": "erp",       "to": "sdc",       "link": "==>" ,   "groups": ["flo"]},
+    { "from": "sdwp",      "to": "sdc",       "link": "-->" ,   "groups": ["pro"]},
+    { "from": "sdwp",      "to": "sdc",       "link": "-->" ,   "groups": ["flo"],               "extraCondition": "enrich"},
+    { "from": "protime",   "to": "sdc",       "link": "-->" ,   "groups": ["flo", "pro"],        "extraCondition": "protime",   "LinkTxt": "T&A"},
+    { "from": "protime",   "to": "payroll",   "link": "-->" ,   "groups": ["gro"],               "extraCondition": "protime",   "linkTxt": "T&A"},
+    { "from": "p2p",       "to": "sdc",       "link": "-->" ,   "groups": ["flo", "pro"],        "extraCondition": "p2p"},
+    { "from": "p2p",       "to": "payroll",   "link": "-->" ,   "groups": ["gro"],               "extraCondition": "p2p"},
+    { "from": "unstruct",  "to": "payroll",   "link": "-...->", "groups": ["gro", "flo", "pro"]},
+    { "from": "sdc",       "to": "payroll",   "link": "==>",    "groups": ["flo", "pro"]},
+    { "from": "payroll",   "to": "gl",        "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payroll",   "to": "sepa",      "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payroll",   "to": "reporting", "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payroll",   "to": "payslips",  "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payroll",   "to": "calc",      "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    
+    { "from": "hr",        "to": "cases",     "link": "~~~",    "groups": ["gro", "flo", "pro"], "comments": "invisible links, to trigger the node icons and other layout on the target"},
+    { "from": "payroll",   "to": "mysd",      "link": "~~~",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payroll",   "to": "mysp2",     "link": "~~~",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payroll",   "to": "mft",       "link": "~~~",    "groups": ["gro", "flo", "pro"]},
+    
+    { "from": "gl",        "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"], "comments": "-to- is set dynamically"},
+    { "from": "sepa",      "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "reporting", "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "payslips",  "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]},
+    { "from": "calc",      "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]}
+  ]
+}
