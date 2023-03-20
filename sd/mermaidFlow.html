@@ -76,7 +76,7 @@
     </p>
 
     <br>
-    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id');">render</button>
+    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id', 'sd');">render</button>
 
     <div id="mm-id" style = "border:3px solid silver"></div>
 
@@ -84,6 +84,7 @@
     <p>to do :</p>
     <ul>
       <li>dynamic textx: p2p, erp, lpe..
+      <li>prepareMarkdown: transform hardcoded html values into parameters</li>
       <li>hover
     </ul>
 
@@ -97,12 +98,12 @@
         return response.json(); // get JSON from the response 
       }
 
-      function setLinkTo( nameRadio, nameNode = nameRadio) {
+      function setLinkToFromRadio( nameRadio, nameNode = nameRadio) {
         let selector = 'input[name="' + nameRadio + '"]:checked',
             ele = document.querySelector(selector);
         
         if ( ele) {
-          $mm.links.find( r => r.from == nameNode).to = ele.value;
+          $mm.links.find( r => r.from == nameNode).to = ele.value; // set to to column
           $mm.links.find( r => r.from == nameNode).visible = true;
 
           $mm.links.find( r => r.to   == nameNode).visible = true;
@@ -130,12 +131,15 @@
 
         let point2p = document.querySelector('input[name="p2p"]:checked').value == 'y' ? 'p2p' : 'noP2p';
 
+        $mm.country = document.querySelector('input[name="country"]').value;
+        $mm.offering = offering;
+
         // set payroll output destinations
-        setLinkTo( 'gl');
-        setLinkTo( 'sepa');
-        setLinkTo( 'rep', 'reporting');
-        setLinkTo( 'slip', 'payslips');
-        setLinkTo( 'calc');
+        setLinkToFromRadio( 'gl');
+        setLinkToFromRadio( 'sepa');
+        setLinkToFromRadio( 'rep', 'reporting');
+        setLinkToFromRadio( 'slip', 'payslips');
+        setLinkToFromRadio( 'calc');
 
         return sdMarkdown( offering, protime, enrich, point2p);
       }
@@ -224,13 +228,11 @@
         diaParent.innerHTML = '';
 
         // set title in h4, under idHtml
-        // no title in Mermaid used, since then it becomes the hover text of each item.
-        let country = document.querySelector('input[name="country"]').value,
-            offering = document.querySelector('input[name="offering"]:checked').value;
+        // no title in Mermaid svg used, since then it becomes the hover text of each item.
 
-        if (country) {
+        if ($mm.country) {
           let p = document.createElement("h4");
-          p.innerHTML = [offering, 'flow', 'for', country].join( ' ');
+          p.innerHTML = [$mm.offering, 'flow', 'for', $mm.country].join( ' ');
           p.classList.add('mmTitle');
           diaParent.appendChild(p);
         }
@@ -246,8 +248,8 @@
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
       mermaid.initialize({ startOnLoad: false});
 
-      $mm.renderDiagram = async function (idHtml) { 
-        const { svg } = await mermaid.render('sd', prepareMarkdown());
+      $mm.renderDiagram = async function (idHtml, idSvg) { 
+        const { svg } = await mermaid.render( idSvg, prepareMarkdown());
         injectSvg( svg, idHtml);
       }
       
