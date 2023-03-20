@@ -76,15 +76,14 @@
     </p>
 
     <br>
-    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id', 'sd');">render</button>
+    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id', 'sd', 'offering', 'protime', 'enrich', 'p2p', 'country');">render</button>
 
     <div id="mm-id" style = "border:3px solid silver"></div>
 
     <br>
     <p>to do :</p>
     <ul>
-      <li>dynamic textx: p2p, erp, lpe..
-      <li>prepareMarkdown: transform hardcoded html values into parameters</li>
+      <li>push this to the q page</li>
       <li>hover
     </ul>
 
@@ -121,19 +120,34 @@
         // console.log($mm);
       });
       
-      function prepareMarkdown () {
+      function prepareMarkdown ( nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry) {
 
-        let offering = document.querySelector('input[name="offering"]:checked').value;
+        $mm.offering = document.querySelector('input[name="' + nameHtmlOffering + '"]:checked').value;
         
-        let protime = document.querySelector('input[name="protime"]:checked').value == 'y' ? 'protime' : 'noProtime';
+        $mm.protime = document.querySelector('input[name="' + nameHtmlProtime + '"]:checked').value == 'y' ? true : false;
 
-        let enrich = document.querySelector('input[name="enrich"]:checked').value == 'y' ? 'enrich' : 'noEnrich';
+        $mm.enrich = document.querySelector('input[name="' + nameHtmlEnrich + '"]:checked').value == 'y' ? true : false;
 
-        let point2p = document.querySelector('input[name="p2p"]:checked').value == 'y' ? 'p2p' : 'noP2p';
+        $mm.point2p = document.querySelector('input[name="' + nameHtmlP2p + '"]:checked').value == 'y' ? true : false;
 
-        $mm.country = document.querySelector('input[name="country"]').value;
-        $mm.offering = offering;
+        $mm.country = document.querySelector('input[name="' + nameHtmlCountry + '"]').value;
+        
+        if ($mm.point2pName)
+        {
+          $mm.nodes['p2p'] = '(point-to-point<br>' + $mm.point2pName +')';
+        }
 
+        if ($mm.erpName)
+        {
+          $mm.nodes['erp'] = $mm.nodes['erp'].replace('workday', $mm.erpName);
+        }
+
+        if ($mm.lpeName)
+        {
+          let payroll = ($mm.nodes['payroll'] || '{payroll}');
+          $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
+        }
+        
         // set payroll output destinations
         setLinkToFromRadio( 'gl');
         setLinkToFromRadio( 'sepa');
@@ -141,10 +155,10 @@
         setLinkToFromRadio( 'slip', 'payslips');
         setLinkToFromRadio( 'calc');
 
-        return sdMarkdown( offering, protime, enrich, point2p);
+        return sdMarkdown();
       }
 
-      function sdMarkdown( pOffering, pProtime, pEnrich, pPoint2p) {
+      function sdMarkdown() {
 
         let mmMarkdown = '';
                 
@@ -155,13 +169,13 @@
         // add all links for the offering
         for ( let i = 0; i < $mm.links.length; i++) {
           let li = $mm.links[i];
-          //console.log(pOffering, li.groups.indexOf(pOffering));
-          if (li.groups.indexOf(pOffering) >= 0 || $mm.showAll) {
+          
+          if (li.groups.indexOf( $mm.offering) >= 0 || $mm.showAll) {
 
             if ( li.extraCondition === undefined
-              || li.extraCondition == pProtime
-              || li.extraCondition == pEnrich
-              || li.extraCondition == pPoint2p
+              || li.extraCondition == ( $mm.protime ? 'protime' : 'no-protime')
+              || li.extraCondition == ( $mm.enrich ? 'enrich' : 'no-enrich')
+              || li.extraCondition == ( $mm.point2p ? 'p2p' : 'no-p2p')
               || $mm.showAll) {
               
               if ( !('visible' in li ) || li.visible) {
@@ -248,8 +262,8 @@
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
       mermaid.initialize({ startOnLoad: false});
 
-      $mm.renderDiagram = async function (idHtml, idSvg) { 
-        const { svg } = await mermaid.render( idSvg, prepareMarkdown());
+      $mm.renderDiagram = async function (idHtml, idSvg, nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry) { 
+        const { svg } = await mermaid.render( idSvg, prepareMarkdown( nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry));
         injectSvg( svg, idHtml);
       }
       

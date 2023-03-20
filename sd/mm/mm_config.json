@@ -3,7 +3,7 @@
   "nodes" : {
     "hr"       : "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)",
     "cases"    : "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>case<br>handling)",
-    "sdc"      : "((sd connect<br><img src='./mm/sd-connect.svg' width='40' height='40'>))",
+    "sdc"      : "{sd<br>connect <br><br><img src='./mm/sd-connect.svg' width='60' height='60'>}",
     "payroll"  :"{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}",
     "unstruct" : "(<img src='./mm/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)",
     "calc"     : "(calculated<br/>data)",
