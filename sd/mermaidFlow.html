@@ -75,7 +75,7 @@
     </p>
 
     <br>
-    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram();">render</button>
+    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id');">render</button>
 
     <div id="mm-id" style = "border:3px solid silver"></div>
 
@@ -83,11 +83,7 @@
     <p>to do :</p>
     <ul>
       <li>make config more generic and more configurable : $mm</li>
-      <li>styling in general
-      <li>icons</li>
-      <li>p2p dynamic text, same for erp, now hardcoded workday</li>
-      <li>lpe name?</li>
-      <li>save svg: export to svg or png, or just screenshot it?</li>
+      <li>dynamic textx: p2p, erp, lpe..
       <li>hover
     </ul>
 
@@ -136,16 +132,22 @@
         { "from": "payroll",   "to": "reporting", "link": "-->",    "groups": ['gro', 'flo', 'pro']},
         { "from": "payroll",   "to": "payslips",  "link": "-->",    "groups": ['gro', 'flo', 'pro']},
         { "from": "payroll",   "to": "calc",      "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        // to do : set to dynamically
-        { "from": "gl",        "to": "mft",       "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "sepa",      "to": "mft",       "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "reporting", "to": "mysp2",     "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "payslips",  "to": "mysd",      "link": "-->",    "groups": ['gro', 'flo', 'pro']},
-        { "from": "calc",      "to": "mysp2",     "link": "-->",    "groups": ['gro', 'flo', 'pro']}
+        // invisible links, to trigger the node icons and other layout on the target
+        { "from": "hr",        "to": "cases", "link": "~~~", "groups": ['gro', 'flo', 'pro']},
+        { "from": "payroll",   "to": "mysd",  "link": "~~~", "groups": ['gro', 'flo', 'pro']},
+        { "from": "payroll",   "to": "mysp2", "link": "~~~", "groups": ['gro', 'flo', 'pro']},
+        { "from": "payroll",   "to": "mft",   "link": "~~~", "groups": ['gro', 'flo', 'pro']},
+        // -to- is set dynamically
+        { "from": "gl",        "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
+        { "from": "sepa",      "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
+        { "from": "reporting", "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
+        { "from": "payslips",  "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']},
+        { "from": "calc",      "to": "", "link": "-->", "groups": ['gro', 'flo', 'pro']}
       ];
 
       mmNodes = [];
       mmNodes['hr']       = "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)";
+      mmNodes['cases']    = "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>case<br>handling)";
       mmNodes['sdc']      = "((sd connect<br><img src='./mm/sd-connect.svg' width='40' height='40'>))";
       mmNodes['payroll']  = "{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}";
       mmNodes['unstruct'] = "(<img src='./mm/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)";
@@ -157,6 +159,7 @@
       mmNodes['mysd']     = "(<img src='./mm/sd-phone.svg' width='40' height='40'><br>mySdWorx<br>portal)";
       mmNodes['mft']      = "(<img src='./mm/sd-download.svg' width='40' height='40'><br>mft)";
       mmNodes['gl']       = "{GL}";
+      mmNodes['payslips'] = "(<img src='./mm/sd-payslip.svg' width='40' height='40'><br>payslips)";
       
       function prepareMarkdown () {
 
@@ -246,8 +249,8 @@
           }
         }
 
-        mmMarkdown += 'click hr "https://www.sdworx.com" "svg title<br><i>italic html</i>" _blank\n';
-        mmMarkdown += 'click mft whateverFunction "svg title on callback"\n';
+        //mmMarkdown += 'click hr "https://www.sdworx.com" "svg title<br><i>italic html</i>" _blank\n';
+        //mmMarkdown += 'click mft whateverFunction "svg title on callback"\n';
 
         console.log( '== start markdown mermaid ==');
         console.log( mmMarkdown);
@@ -256,20 +259,23 @@
         return mmMarkdown;
       }
 
-      let injectSvg = (mermaidSvg) => {
-        let diaParent = document.getElementById("mm-id");
+      let injectSvg = (mermaidSvg, idHtml) => {
+        let diaParent = document.getElementById( idHtml);
         diaParent.innerHTML = '';
 
+        // set title in h4, under idHtml
+        // no title in Mermaid used, since then it becomes the hover text of each item.
         let country = document.querySelector('input[name="country"]').value,
             offering = document.querySelector('input[name="offering"]:checked').value;
 
         if (country) {
-          let p = document.createElement("p");
+          let p = document.createElement("h4");
           p.innerHTML = [offering, 'flow', 'for', country].join( ' ');
           p.classList.add('mmTitle');
           diaParent.appendChild(p);
         }
 
+        // inject the Mermaid svg in html element under idHtml.
         let dia = document.createElement("div");
         dia.innerHTML = mermaidSvg;
         diaParent.appendChild(dia);
@@ -280,9 +286,9 @@
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
       mermaid.initialize({ startOnLoad: false});
 
-      $mm.renderDiagram = async function () { 
+      $mm.renderDiagram = async function (idHtml) { 
         const { svg } = await mermaid.render('sd', prepareMarkdown());
-        injectSvg(svg);
+        injectSvg( svg, idHtml);
       }
       
     </script>
