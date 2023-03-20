@@ -1,7 +1,5 @@
 <html>
   <head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
     <style>
       .radioSpan {
         display: inline-flex;
@@ -12,10 +10,12 @@
         margin-left: 10%;
         font-size: 20px;
       }
+
       #L-sdc-payroll-0:hover {
         stroke: green!important;
         stroke-width:5px!important;
       }
+
     </style>
   </head>
   <body>
@@ -82,15 +82,13 @@
     <br>
     <p>to do :</p>
     <ul>
-      <li>review code after upgrade to version 10 : import esm construction</li>
       <li>make config more generic and more configurable : $mm</li>
       <li>styling in general
-      <li>icons, even the sd svg ones colored previously</li>
-      <li>hover functionality. Is supposed to work via click, includes url & hover (seems to work in start mode)</li>
-      <li>hover bug : title in svg element : nok ; sub node title + sub node text : okay !! ; can be injected via the flowchart-key-nro id</li>
+      <li>icons</li>
       <li>p2p dynamic text, same for erp, now hardcoded workday</li>
       <li>lpe name?</li>
       <li>save svg: export to svg or png, or just screenshot it?</li>
+      <li>hover
     </ul>
 
     <br>
@@ -148,17 +146,16 @@
 
       mmNodes = [];
       mmNodes['hr']       = "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)";
-      mmNodes['sdc']      = "((sd connect<br>fa:fa-plug<br>))";
+      mmNodes['sdc']      = "((sd connect<br><img src='./mm/sd-connect.svg' width='40' height='40'>))";
       mmNodes['payroll']  = "{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}";
-      mmNodes['unstruct'] = "(fa:fa-table<br>unstructured<br/>data)";
+      mmNodes['unstruct'] = "(<img src='./mm/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)";
       mmNodes['calc']     = "(calculated<br/>data)";
       mmNodes['erp']      = "((workday))";
-      mmNodes['sdwp']     = "[[SD Worx<br/>People<br>fa:fa-users]]";
-      mmNodes['protime']  = "{protime<br>fa:fa-calendar-check}";
-      mmNodes['cases']    = "(fa:fa-headphones case<br/>handling)";
-      mmNodes['mysp2']    = "(fa:fa-file<br>my<br>ServicePoint)";
-      mmNodes['mysd']     = "(fa:fa-mobile<br>mySdWorx<br>portal)";
-      mmNodes['mft']      = "(fa:fa-external-link<br>mft)";
+      mmNodes['sdwp']     = "[[SD Worx<br><br><img src='./mm/sd-people.svg' width='60' height='40'><br/>People]]";
+      mmNodes['protime']  = "{protime<br><br><img src='./mm/sd-clock.svg' width='40' height='40'>}";
+      mmNodes['mysp2']    = "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>my<br>ServicePoint)";
+      mmNodes['mysd']     = "(<img src='./mm/sd-phone.svg' width='40' height='40'><br>mySdWorx<br>portal)";
+      mmNodes['mft']      = "(<img src='./mm/sd-download.svg' width='40' height='40'><br>mft)";
       mmNodes['gl']       = "{GL}";
       
       function prepareMarkdown () {
@@ -249,8 +246,8 @@
           }
         }
 
-        mmMarkdown += 'click hr href "https://www.sdworx.com" "appelboom"\n';
-        mmMarkdown += 'click mft callback "appelboom2"\n';
+        mmMarkdown += 'click hr "https://www.sdworx.com" "svg title<br><i>italic html</i>" _blank\n';
+        mmMarkdown += 'click mft whateverFunction "svg title on callback"\n';
 
         console.log( '== start markdown mermaid ==');
         console.log( mmMarkdown);
@@ -263,7 +260,8 @@
         let diaParent = document.getElementById("mm-id");
         diaParent.innerHTML = '';
 
-        let country = document.querySelector('input[name="country"]').value;
+        let country = document.querySelector('input[name="country"]').value,
+            offering = document.querySelector('input[name="offering"]:checked').value;
 
         if (country) {
           let p = document.createElement("p");
@@ -280,7 +278,7 @@
 
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
-      mermaid.initialize({ startOnLoad: false });
+      mermaid.initialize({ startOnLoad: false});
 
       $mm.renderDiagram = async function () { 
         const { svg } = await mermaid.render('sd', prepareMarkdown());
