@@ -308,4 +308,70 @@
       
     }
   </script>
+
+  <br>
+  <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id', 'sd', setParametersFromUi);">render</button>
+
+  <div id="mm-id" style = "border:3px solid silver"></div>
+
+  <script src='./sdii_mermaid.js'></script>
+
+  <script>
+    function setParametersFromUi () {
+
+      let colNr = '01';
+        
+      $mm.offering = document.querySelector( 'input[name="offering-col' + colNr + '"]:checked').value;
+        
+      $mm.protime  = solArchBool( colNr, 8) + solArchBool( colNr, 13) > 0 ? true : false;
+
+      $mm.enrich   = solArchBool( colNr, 11) > 0 ? true : false;
+      
+      $mm.point2p  = solArchBool( colNr, 6) > 0 ? true : false;
+
+      $mm.country  = document.getElementById( 'id-c' + colNr + '-q01').firstChild.value;
+      
+      //$mm.point2pName
+      //$mm.erpName
+      //$mm.lpeName
+        
+      if ($mm.point2pName)
+      {
+        $mm.nodes['p2p'] = '(point-to-point<br>' + $mm.point2pName +')';
+      }
+
+        if ($mm.erpName)
+        {
+          $mm.nodes['erp'] = $mm.nodes['erp'].replace('workday', $mm.erpName);
+        }
+
+        if ($mm.lpeName)
+        {
+          let payroll = ($mm.nodes['payroll'] || '{payroll}');
+          $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
+        }
+        
+        // set payroll output destinations
+        setLinkToFromRadio( 'gl');
+        setLinkToFromRadio( 'sepa');
+        setLinkToFromRadio( 'rep', 'reporting');
+        setLinkToFromRadio( 'slip', 'payslips');
+        setLinkToFromRadio( 'calc');
+        
+      }
+  </script>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
+    mermaid.initialize({ startOnLoad: false});
+
+    $mm = await getJSON( './mm_config.json');
+
+    $mm.renderDiagram = async function (idHtml, idSvg, setParameters) { 
+      setParameters();
+      const { svg } = await mermaid.render( idSvg, sdMarkdown());
+      injectSvg( svg, idHtml);
+    }
+    
+  </script>
 </html>

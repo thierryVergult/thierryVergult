@@ -21,44 +21,6 @@ $mm = {};
           $mm.links.find( r => r.to   == nameNode).visible = false;
         }
       }
-      
-      function prepareMarkdown () {
-
-        $mm.offering = document.querySelector('input[name="' + $mm.nameHtml["offering"] + '"]:checked').value;
-        
-        $mm.protime = document.querySelector('input[name="' + $mm.nameHtml["protime"] + '"]:checked').value == 'y' ? true : false;
-
-        $mm.enrich = document.querySelector('input[name="' + $mm.nameHtml["enrich"] + '"]:checked').value == 'y' ? true : false;
-
-        $mm.point2p = document.querySelector('input[name="' + $mm.nameHtml["p2p"] + '"]:checked').value == 'y' ? true : false;
-
-        $mm.country = document.querySelector('input[name="' + $mm.nameHtml["country"] + '"]').value;
-        
-        if ($mm.point2pName)
-        {
-          $mm.nodes['p2p'] = '(point-to-point<br>' + $mm.point2pName +')';
-        }
-
-        if ($mm.erpName)
-        {
-          $mm.nodes['erp'] = $mm.nodes['erp'].replace('workday', $mm.erpName);
-        }
-
-        if ($mm.lpeName)
-        {
-          let payroll = ($mm.nodes['payroll'] || '{payroll}');
-          $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
-        }
-        
-        // set payroll output destinations
-        setLinkToFromRadio( 'gl');
-        setLinkToFromRadio( 'sepa');
-        setLinkToFromRadio( 'rep', 'reporting');
-        setLinkToFromRadio( 'slip', 'payslips');
-        setLinkToFromRadio( 'calc');
-
-        return sdMarkdown();
-      }
 
       function sdMarkdown() {
 

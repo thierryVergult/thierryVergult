@@ -76,15 +76,14 @@
     </p>
 
     <br>
-    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id', 'sd');">render</button>
+    <button style="margin: 10px; color: white; background-color: silver;" onclick="$mm.renderDiagram('mm-id', 'sd', setParametersFromUi);">render</button>
 
     <div id="mm-id" style = "border:3px solid silver"></div>
 
     <br>
     <p>to do :</p>
     <ul>
-      <li>reorg</li>
-      <li>push this to the q page</li>
+      <li>more generic approach so to push to the q page
       <li>hover
     </ul>
 
@@ -93,26 +92,58 @@
 
     <script src='./sdii_mermaid.js'></script>
 
+    <script>
+      function setParametersFromUi () {
+        
+        $mm.offering = document.querySelector( 'input[name="offering"]:checked').value;
+        
+        $mm.protime  = document.querySelector('input[name="protime"]:checked').value == 'y' ? true : false;
+
+        $mm.enrich   = document.querySelector('input[name="enrich"]:checked').value == 'y' ? true : false;
+
+        $mm.point2p  = document.querySelector('input[name="p2p"]:checked').value == 'y' ? true : false;
+
+        $mm.country  = document.querySelector('input[name="country"]').value;
+      
+        //$mm.point2pName
+        //$mm.erpName
+        //$mm.lpeName
+        
+        if ($mm.point2pName)
+        {
+          $mm.nodes['p2p'] = '(point-to-point<br>' + $mm.point2pName +')';
+        }
+
+        if ($mm.erpName)
+        {
+          $mm.nodes['erp'] = $mm.nodes['erp'].replace('workday', $mm.erpName);
+        }
+
+        if ($mm.lpeName)
+        {
+          let payroll = ($mm.nodes['payroll'] || '{payroll}');
+          $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
+        }
+        
+        // set payroll output destinations
+        setLinkToFromRadio( 'gl');
+        setLinkToFromRadio( 'sepa');
+        setLinkToFromRadio( 'rep', 'reporting');
+        setLinkToFromRadio( 'slip', 'payslips');
+        setLinkToFromRadio( 'calc');
+
+      }
+    </script>
+
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
       mermaid.initialize({ startOnLoad: false});
 
       $mm = await getJSON( './mm_config.json');
 
-      $mm.nameHtml = {
-        "offering": "offering",
-        "protime": "protime",
-        "enrich": "enrich",
-        "p2p": "p2p",
-        "country": "country"
-      };
-      
-      //$mm.point2pName
-      //$mm.erpName
-      //$mm.lpeName
-
-      $mm.renderDiagram = async function (idHtml, idSvg) { 
-        const { svg } = await mermaid.render( idSvg, prepareMarkdown());
+      $mm.renderDiagram = async function (idHtml, idSvg, setParameters) { 
+        setParameters();
+        const { svg } = await mermaid.render( idSvg, sdMarkdown());
         injectSvg( svg, idHtml);
       }
       
