@@ -1,20 +1,20 @@
 {
   "showAll": false,
   "nodes" : {
-    "hr"       : "(<img src='./mm/sd-user.svg' width='60' height='60'><br>hr input)",
-    "cases"    : "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>case<br>handling)",
-    "sdc"      : "{sd<br>connect <br><br><img src='./mm/sd-connect.svg' width='60' height='60'>}",
-    "payroll"  :"{<img src='./mm/sd-payroll-processing-plus-calendar.svg' width='60' height='60'><br>payroll}",
-    "unstruct" : "(<img src='./mm/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)",
+    "hr"       : "(<img src='./ico/sd-user.svg' width='60' height='60'><br>hr input)",
+    "cases"    : "(<img src='./ico/sd-call-center.svg' width='40' height='40'><br>case<br>handling)",
+    "sdc"      : "{sd<br>connect <br><br><img src='./ico/sd-connect.svg' width='60' height='60'>}",
+    "payroll"  :"{<img src='./ico/sd-payroll.svg' width='60' height='60'><br>payroll}",
+    "unstruct" : "(<img src='./ico/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)",
     "calc"     : "(calculated<br/>data)",
     "erp"      : "((workday))",
-    "sdwp"     : "[[SD Worx<br><br><img src='./mm/sd-people.svg' width='60' height='40'><br/>People]]",
-    "protime"  : "{protime<br><br><img src='./mm/sd-clock.svg' width='40' height='40'>}",
-    "mysp2"    : "(<img src='./mm/sd-call-center.svg' width='40' height='40'><br>my<br>ServicePoint)",
-    "mysd"     : "(<img src='./mm/sd-phone.svg' width='40' height='40'><br>mySdWorx<br>portal)",
-    "mft"      : "(<img src='./mm/sd-download.svg' width='40' height='40'><br>mft)",
+    "sdwp"     : "[[SD Worx<br><br><img src='./ico/sd-people.svg' width='60' height='40'><br/>People]]",
+    "protime"  : "{protime<br><br><img src='./ico/sd-clock.svg' width='40' height='40'>}",
+    "mysp2"    : "(<img src='./ico/sd-call-center.svg' width='40' height='40'><br>my<br>ServicePoint)",
+    "mysd"     : "(<img src='./ico/sd-phone.svg' width='40' height='40'><br>mySdWorx<br>portal)",
+    "mft"      : "(<img src='./ico/sd-download.svg' width='40' height='40'><br>mft)",
     "gl"       : "{GL}",
-    "payslips" : "(<img src='./mm/sd-payslip.svg' width='40' height='40'><br>payslips)"
+    "payslips" : "(<img src='./ico/sd-payslip.svg' width='40' height='40'><br>payslips)"
   },
   "links": [
     { "from": "hr",        "to": "erp",       "link": "-.->",   "groups": ["flo"]},

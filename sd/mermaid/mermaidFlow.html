@@ -257,7 +257,7 @@
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
       mermaid.initialize({ startOnLoad: false});
 
-      $mm = await getJSON( './mm/mm_config.json');
+      $mm = await getJSON( './mm_config.json');
 
       $mm.renderDiagram = async function (idHtml, idSvg, nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry) { 
         const { svg } = await mermaid.render( idSvg, prepareMarkdown( nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry));
