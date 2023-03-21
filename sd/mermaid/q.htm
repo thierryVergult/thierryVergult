@@ -321,8 +321,8 @@
   
   <h2>Flow diagram</h2>
   <br>
-  <button style="margin: 10px; background-color: khaki; padding: 10px;" onclick="$mm.renderDiagram('mm-id', 'sd', setParametersFromUi);">render diagram</button>
-  <div><input id="id-colnr-mermaid" type="number" min="1" max="20" value="1" style="margin-left: 15px;">&nbsp; column nr</div>
+  <button id="id-mm-button" style="margin: 10px; background-color: khaki; padding: 10px;" onclick="$mm.renderDiagram('mm-id', 'sd', setParametersFromUi);">render diagram</button>
+  <div><input id="id-colnr-mermaid" type="number" min="1" max="20" value="1" style="margin-left: 15px;" onchange="setButton(this.value)">&nbsp; column nr</div>
   <br>
   <h3>Map payroll output</h3>
 
@@ -361,11 +361,28 @@
   <script src='./sdii_mermaid.js'></script>
 
   <script>
+    function setButton (colNr) {
+      colNr = colNr.padStart(2, '0');
+      let country = document.getElementById( 'id-c' + colNr + '-q01').firstChild.value
+      document.getElementById( 'id-mm-button').textContent = "render diagram for " + country;
+
+      if (! document.querySelector( 'input[name="offering-col' + colNr + '"]:checked')) {
+        alert( 'Please precise offering for column ' + parseInt(colNr) + ' - ' + country);
+      }
+
+      $mm.renderDiagram('mm-id', 'sd', setParametersFromUi);
+    }
+
     function setParametersFromUi () {
 
       let colNr = document.getElementById( 'id-colnr-mermaid').value.padStart(2, '0');
-        
-      $mm.offering = document.querySelector( 'input[name="offering-col' + colNr + '"]:checked').value;
+
+      let offering = document.querySelector( 'input[name="offering-col' + colNr + '"]:checked');
+      if (offering) {
+        $mm.offering = document.querySelector( 'input[name="offering-col' + colNr + '"]:checked').value;
+      } else {
+        alert( 'Please precise offering for column ' + parseInt(colNr));
+      }
         
       $mm.protime  = solArchBool( colNr, 8) + solArchBool( colNr, 13) > 0 ? true : false;
 
@@ -376,9 +393,10 @@
       $mm.country  = document.getElementById( 'id-c' + colNr + '-q01').firstChild.value;
 
       $mm.erpName  = document.getElementById( 'id-c' + colNr + '-q07').firstChild.value;
+
+      $mm.lpeName  = document.getElementById( 'id-c' + colNr + '-q02').firstChild.value;
       
       //$mm.point2pName
-      //$mm.lpeName
         
       if ($mm.point2pName)
       {
