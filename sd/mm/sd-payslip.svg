@@ -5,8 +5,8 @@
     0-8.75 3.91-8.75 8.75v52.5c0 11.73-4.55 22.70-12.86 30.94-8.18 8.26-19.15 12.8-30.88 12.8-24.12 
     0-43.75-19.62-43.75-43.75zm367.5 0c0 11.73-4.55 22.7-12.86 30.94-8.18 8.26-19.15 12.8-30.88 
     12.8h-237.17c0.14-0.14 0.28-0.28 0.43-0.43 11.59-11.49 17.98-26.87 17.98-43.31v-43.75h262.5z"/>
-  <line stroke='#870b58' x1="220" y1="150" x2="420" y2="150" stroke-linecap="round" stroke-width="24" />
-  <line stroke='#870b58' x1="220" y1="250" x2="350" y2="250" stroke-linecap="round" stroke-width="24" />
-  <line stroke='#870b58' x1="220" y1="350" x2="350" y2="350" stroke-linecap="round" stroke-width="24" />
+  <line stroke='#870b58' x1="220" y1="150" x2="430" y2="150" stroke-linecap="round" stroke-width="32" />
+  <line stroke='#870b58' x1="280" y1="250" x2="430" y2="250" stroke-linecap="round" stroke-width="32" />
+  <line stroke='#870b58' x1="280" y1="350" x2="430" y2="350" stroke-linecap="round" stroke-width="32" />
  </g>
 </svg>

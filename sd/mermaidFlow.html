@@ -91,6 +91,7 @@
     <a href="https://mermaid.js.org/syntax/flowchart.html" target="_blank">Mermaid flowchart documentation</a>
 
     <script>
+      $mm = {};
 
       const getJSON = async url => {
         const response = await fetch(url);
@@ -113,12 +114,6 @@
           $mm.links.find( r => r.to   == nameNode).visible = false;
         }
       }
-      
-      getJSON( './mm/mm_config.json')
-      .then( data => {
-        $mm = data;
-        // console.log($mm);
-      });
       
       function prepareMarkdown ( nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry) {
 
@@ -261,6 +256,8 @@
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
       mermaid.initialize({ startOnLoad: false});
+
+      $mm = await getJSON( './mm/mm_config.json');
 
       $mm.renderDiagram = async function (idHtml, idSvg, nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry) { 
         const { svg } = await mermaid.render( idSvg, prepareMarkdown( nameHtmlOffering, nameHtmlProtime, nameHtmlEnrich, nameHtmlP2p, nameHtmlCountry));
