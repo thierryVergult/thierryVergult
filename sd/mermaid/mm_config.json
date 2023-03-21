@@ -3,7 +3,7 @@
   "nodes" : {
     "hr"       : "(<img src='./ico/sd-user.svg' width='60' height='60'><br>hr input)",
     "cases"    : "(<img src='./ico/sd-call-center.svg' width='40' height='40'><br>case<br>handling)",
-    "sdc"      : "{sd<br>connect <br><br><img src='./ico/sd-connect.svg' width='60' height='60'>}",
+    "sdc"      : "{sd<br><img src='./ico/sd-connect.svg' width='40' height='40'><br>connect}",
     "payroll"  :"{<img src='./ico/sd-payroll.svg' width='60' height='60'><br>payroll}",
     "unstruct" : "(<img src='./ico/sd-excel.svg' width='40' height='40'><br>unstructured<br/>data)",
     "calc"     : "(calculated<br/>data)",
@@ -48,5 +48,9 @@
     { "from": "reporting", "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]},
     { "from": "payslips",  "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]},
     { "from": "calc",      "to": "",          "link": "-->",    "groups": ["gro", "flo", "pro"]}
-  ]
+  ],
+  "hovers" : {
+    "mft": "sftp / mft box<br>to exchange files",
+    "payroll": "<center>LPE</center>Local Payroll Engine"
+  }
 }

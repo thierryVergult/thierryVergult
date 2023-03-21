@@ -81,15 +81,11 @@
     <div id="mm-id" style = "border:3px solid silver"></div>
 
     <br>
-    <p>to do :</p>
-    <ul>
-      <li>hover
-    </ul>
-
-    <br>
     <a href="https://mermaid.js.org/syntax/flowchart.html" target="_blank">Mermaid flowchart documentation</a>
 
     <script src='./sdii_mermaid.js'></script>
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@5"></script>
 
     <script>
       function setParametersFromUi () {
@@ -136,14 +132,20 @@
 
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.0.2/+esm';
-      mermaid.initialize({ startOnLoad: false});
+      mermaid.initialize({ 
+        startOnLoad: false,
+        securityLevel: 'loose'
+      });
 
       $mm = await getJSON( './mm_config.json');
-
+      
       $mm.renderDiagram = async function (idHtml, idSvg, setParameters) { 
         setParameters();
         const { svg } = await mermaid.render( idSvg, sdMarkdown());
         injectSvg( svg, idHtml);
+        tippy('[title]', {
+          content: (reference) => reference.getAttribute('title')
+        });
       }
       
     </script>

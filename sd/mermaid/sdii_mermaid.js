@@ -90,8 +90,13 @@ $mm = {};
           }
         }
 
-        //mmMarkdown += 'click hr "https://www.sdworx.com" "svg title<br><i>italic html</i>" _blank\n';
-        //mmMarkdown += 'click mft whateverFunction "svg title on callback"\n';
+        // add click lines to the markdown.
+        // securityLevel must be loose in case one wants to have html in the tooltip (value)
+        if ($mm.hovers) {
+          for (const [key, value] of Object.entries($mm.hovers)) {
+            mmMarkdown += 'click ' + key + ' whateverFunction "' + value + '"\n';
+          }
+        }
 
         console.log( '== start markdown mermaid ==');
         console.log( mmMarkdown);
