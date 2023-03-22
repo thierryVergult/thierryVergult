@@ -97,5 +97,10 @@
     {"startRadiusPct": 85, "startRadiusDegrees": 326, "endRadiusDegrees": 314, "color": "orange", "comments": "spain, sdwp → skello"},
     {"startRadiusPct": 80, "endRadiusPct": 68, "startRadiusDegrees": 308, "color": "grey", "opacity": 1, "comments": "spain: skello → sd connect"},
     {"startRadiusPct": 55, "endRadiusPct": 43, "startRadiusDegrees": 308, "color": "grey", "opacity": 1, "comments": "spain: sd connect → lpe"}
+  ],
+  "texts": [
+    { "radiusPct": 45, "radiusDegrees":  60, "text": "&#x1F4C3;", "size": 24, "hover": "payslip in<br>Alicia portal", "comments": "unicode symbol of payslip as text"},
+    { "radiusPct": 77, "radiusDegrees":  77, "text": "&#x1F4C3;", "size": 20, "hover": "payslip in pdf"},
+    { "radiusPct": 45, "radiusDegrees": 348, "text": "planned", "size": 18, "hover": "January 2024", "color": "red"}
   ]
 }

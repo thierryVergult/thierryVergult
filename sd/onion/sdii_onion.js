@@ -200,6 +200,12 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
   for (let i=0; i < sd.arrows.length; i++) {
     layout.annotations[i] = arrowAnnotation( sd.arrows[i]);
   }
+  
+  if (sd.texts) {
+    for (let i=0; i < sd.texts.length; i++) {
+      layout.annotations.push( textAnnotation( sd.texts[i]));
+    }
+  }
 
   const config = {
     toImageButtonOptions: {
@@ -252,23 +258,23 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
 
 function arrowAnnotation( {startRadiusPct, startRadiusDegrees, endRadiusPct, endRadiusDegrees, doubleHead, color, opacity}) {
 
-    if (! endRadiusDegrees) {
-      endRadiusDegrees = startRadiusDegrees;
-    }
+  if (! endRadiusDegrees) {
+    endRadiusDegrees = startRadiusDegrees;
+  }
 
-    if (! endRadiusPct) {
-      endRadiusPct = startRadiusPct;
-    }
+  if (! endRadiusPct) {
+    endRadiusPct = startRadiusPct;
+  }
 
-    let r1 = startRadiusPct / 100 / 2, // divide by 2, since graph takes 2R = 100% * 2
-        rad1 = degrees2radians(startRadiusDegrees),
-        x1 = (r1 * Math.cos( rad1)) + .5, // + .5 since (0,0) is bottom-left for paper coordinates, and maxes at (1,1) and sunburst goes to middle, so (.5, .5)
-        y1 = (r1 * Math.sin( rad)) + .5;
+  let r1 = startRadiusPct / 100 / 2, // divide by 2, since graph takes 2R = 100% * 2
+      rad1 = degrees2radians(startRadiusDegrees),
+      x1 = (r1 * Math.cos( rad1)) + .5, // + .5 since (0,0) is bottom-left for paper coordinates, and maxes at (1,1) and sunburst goes to middle, so (.5, .5)
+      y1 = (r1 * Math.sin( rad)) + .5;
     
-    let r2 = endRadiusPct / 100 / 2,
-        rad2 = degrees2radians(endRadiusDegrees),
-        x2 = (r2 * Math.cos( rad2)) + .5,
-        y2 = (r2 * Math.sin( rad2)) + .5;
+  let r2 = endRadiusPct / 100 / 2,
+      rad2 = degrees2radians(endRadiusDegrees),
+      x2 = (r2 * Math.cos( rad2)) + .5,
+      y2 = (r2 * Math.sin( rad2)) + .5;
 
   return {
     x: x2, // end point x
@@ -297,4 +303,26 @@ function arrowAnnotation( {startRadiusPct, startRadiusDegrees, endRadiusPct, end
         opacity: 0.5;
       }
   */
+}
+
+function textAnnotation( {radiusPct, radiusDegrees, text, size, color, hover}) {
+
+  let r = radiusPct / 100 / 2, // divide by 2, since graph takes 2R = 100% * 2
+      rad = degrees2radians( radiusDegrees),
+      x = (r * Math.cos( rad)) + .5, // + .5 since (0,0) is bottom-left for paper coordinates, and maxes at (1,1) and sunburst goes to middle, so (.5, .5)
+      y = (r * Math.sin( rad)) + .5;
+
+  return {
+    x: x,
+    y: y,
+    xref: 'paper', 
+    yref: 'paper',
+    text: text,
+    hovertext: hover,
+    font: {
+      size: size || 24,
+      color: color || 'black'  // ps: color is not working on unicode characters
+    },
+    showarrow: false
+  }
 }
