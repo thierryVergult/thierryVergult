@@ -405,25 +405,27 @@
         $mm.nodes['p2p'] = '(point-to-point<br>' + $mm.point2pName +')';
       }
 
-        if ($mm.erpName)
-        {
-          $mm.nodes['erp'] = '((' + $mm.erpName + '))';
-        }
+      if ($mm.erpName)
+      {
+        $mm.nodes['erp'] = '((' + $mm.erpName + '))';
+      }
 
-        if ($mm.lpeName)
-        {
-          let payroll = ($mm.nodes['payroll'] || '{payroll}');
+      if ($mm.lpeName)
+      {
+        let payroll = ($mm.nodes['payroll'] || '{payroll}');
+        if ( ! payroll.includes( $mm.lpeName)) {
           $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
         }
-        
-        // set payroll output destinations
-        setLinkToFromRadio( 'gl');
-        setLinkToFromRadio( 'sepa');
-        setLinkToFromRadio( 'rep', 'reporting');
-        setLinkToFromRadio( 'slip', 'payslips');
-        setLinkToFromRadio( 'calc');
-        
       }
+        
+      // set payroll output destinations
+      setLinkToFromRadio( 'gl');
+      setLinkToFromRadio( 'sepa');
+      setLinkToFromRadio( 'rep', 'reporting');
+      setLinkToFromRadio( 'slip', 'payslips');
+      setLinkToFromRadio( 'calc');
+        
+    }
   </script>
 
   <script type="module">

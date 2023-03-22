@@ -117,7 +117,9 @@
         if ($mm.lpeName)
         {
           let payroll = ($mm.nodes['payroll'] || '{payroll}');
-          $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
+          if ( ! payroll.includes( $mm.lpeName)) {
+            $mm.nodes['payroll'] = [payroll.slice(0,-1), '<br>', $mm.lpeName, payroll.slice(-1)].join('');
+          }
         }
         
         // set payroll output destinations
