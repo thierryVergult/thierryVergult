@@ -1,6 +1,7 @@
 {
   "customer": "big mamma",
   "countryColor": ["#1a6efc", "#870b58", "#f8ad07", "#1a6efc", "#e4003a"],
+  "flowerMode": true,
 
   "colors": {
     "SD Worx<br>People": "#870b58",

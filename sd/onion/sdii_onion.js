@@ -25,7 +25,7 @@ function getJson4PlotlySunburst( idHtml, jsonUrl) {
   .then( data => sdiiPlotlySunburstOnion( idHtml, data));
 }
 
-function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
+function addCountryLegend( idHtml, countries, baseColor, highlightColor, nrOfAnnotations, flowerMode) {
   const legendDiv = document.createElement("div");
   
   legendDiv.style.width = '800px';  // magic number, also used to set the svg dimensions.
@@ -57,8 +57,8 @@ function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
     legendCountry.classList.add('sd-sunburst-onion-legend-item');
 
     // ugly, global variable to store state
-    sdLastHighlight = idHtml + i;
-    legendCountry.onclick = function() { highlightCountry( idHtml, i, countries.length, baseColor, highlightColor); };
+    sdLastHighlight = ''; // idHtml + ' ' + i;
+    legendCountry.onclick = function() { highlightCountry( idHtml, i, countries.length, baseColor, highlightColor, nrOfAnnotations, flowerMode); };
     legendCountry.style.cursor = 'zoom-in';
 
     legendDiv.appendChild(legendCountry);
@@ -67,30 +67,68 @@ function addCountryLegend( idHtml, countries, baseColor, highlightColor) {
 
 };
 
-function highlightCountry( idHtml, countryIndex, NrOfCountries, baseColor, highlightColor) {
+function highlightCountry( idHtml, countryIndex, NrOfCountries, pBaseColor, pHighlightColor, nrOfAnnotations, flowerMode) {
   // thanks: https://stackoverflow.com/questions/64016308/dynamically-toggle-visibility-of-shapes-in-plotly-js
-  if (sdLastHighlight == idHtml + countryIndex) {
-    highlightColor = baseColor;
-    sdLastHighlight = 'flip';
+  let focusOneCountry;
+
+  if (sdLastHighlight) {
+    // back again to all countries
+    focusOneCountry = false;
+
+    // mimic as we are clicking a 2nd time on the same country button, to go back to the full, open state
+    let previousState = sdLastHighlight.split(' ');
+    idHtml = previousState[0];
+    countryIndex = sdLastHighlight.split(' ')[1];
+    
+    sdLastHighlight = '';
+    
+    console.log( 'in highlight country again', idHtml, countryIndex);
+
   } else {
-    sdLastHighlight = idHtml + countryIndex;
+    // focus on one single country
+
+    focusOneCountry = true;
+    
+    sdLastHighlight = idHtml + ' ' + countryIndex;
+
+    console.log( 'in highlight country', idHtml, countryIndex, sdLastHighlight);
   }
 
   let colorShapes = {};
-
-  for (let i = 0; i < NrOfCountries; i++) {
-    colorShapes["shapes[" + i + "].line.color"] = baseColor;
-  }
-
-  colorShapes["shapes[" + countryIndex + "].line.color"] = highlightColor;
   
-  const next = (countryIndex+1)%NrOfCountries;
-  colorShapes["shapes[" + next + "].line.color"] = highlightColor;
+  if (flowerMode) {
 
-  //console.log('**', colorShapes);
+    for (let i = 0; i < NrOfCountries; i++) {
+      colorShapes["shapes[" + i + "].visible"] = false;
+    }
+    
+    for (let i = 0; i < nrOfAnnotations; i++) {
+      colorShapes["annotations[" + i + "].visible"] = !focusOneCountry;
+    }
+  } else {
+
+    // set all shapes (country separator lines) to the base color
+    for (let i = 0; i < NrOfCountries; i++) {
+      colorShapes["shapes[" + i + "].line.color"] = pBaseColor;
+    }
+
+    // and set the ones around the selected country to the highlight color (or base color, when swichting back)
+    colorShapes["shapes[" + countryIndex + "].line.color"] = (focusOneCountry ? pHighlightColor : pBaseColor);
+    
+    const next = (countryIndex+1)%NrOfCountries;
+    colorShapes["shapes[" + next + "].line.color"] = (focusOneCountry ? pHighlightColor : pBaseColor);
+  }
   
   // line.width is also an option : see all parameters: https://plotly.com/javascript/reference/layout/shapes/
   Plotly.relayout( idHtml, colorShapes);
+  
+  if (flowerMode) {
+    let selector = '#' + idHtml + ' .slice.cursor-pointer',
+        index = focusOneCountry ? countryIndex : 0;
+    console.log( selector, sdLastHighlight, 'country indx', countryIndex, index);
+    // mimic click on the country segment, or on the very middle when going back (0)
+    document.querySelectorAll(selector)[ index].dispatchEvent(new Event('click'));
+  }
 }
 
 function sdiiPlotlySunburstOnion( idHtml, sd) {
@@ -192,7 +230,7 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     margin: {l: 0, r: 0, b: 0, t: 0},
     width: 800,
     height: 800,
-    hovermode: false,
+    hovermode: false, // disable hover over segments
     annotations: [],
     shapes: []
   };
@@ -244,15 +282,25 @@ function sdiiPlotlySunburstOnion( idHtml, sd) {
     // disable the specific sunburst click event on all intermediate nodes to redraw the sunburst from that node onwards
     // since the annotations have absolute values and hence do not move with any interaction.
     .then( gd => {
-      gd.on('plotly_sunburstclick', () => false)
+      //gd.on('plotly_sunburstclick', () => false);  // disable click in segments with children
+
+      // get rid of pointer events on surface elements, so that clicking in the UI on such surface does nothing
+      // since we want to have the click functionality fro ma country button
+      const surfaces = document.querySelectorAll( '#' + idHtml + ' .slice .surface');
+      for ( let i = 0; i< surfaces.length; i++) {
+        if ( surfaces[i].style.pointerEvents == 'all') {
+          surfaces[i].style.pointerEvents = 'none';
+        }
+      }
+      
     });
   
   // add html country legend
-  addCountryLegend(idHtml, sd.countries, sd.countrySeparatorColor || 'white', sd.countrySeparatorHighlightColor || 'red');
+  addCountryLegend(idHtml, sd.countries, sd.countrySeparatorColor || 'white', sd.countrySeparatorHighlightColor || 'red', layout.annotations.length, sd.flowerMode);
 
   // add a CSS rule to the body of the page to force the cursor on hover to the default arrow, instead of the hand plotly came up with.
   const css = document.createElement("style");
-  css.innerHTML = ".sunburstlayer .slice.cursor-pointer{cursor: default!important;}";
+  css.innerHTML = ".sunburstlayer .slice.cursor-pointer{ cursor: default!important;}";
   document.body.appendChild(css);
 }
 
