@@ -1,23 +1,23 @@
 iiSdwp = {
   "_get": ( pRoute) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', document.location.origin + pRoute, false);  // `false` makes the request synchronous
-        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', document.location.origin + pRoute, false);  // `false` makes the request synchronous
+    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
       
-        xhr.send();
+    xhr.send();
       
-        if (xhr.status === 200) {
-          let j = JSON.parse(xhr.responseText);
+    if (xhr.status === 200) {
+      let j = JSON.parse(xhr.responseText);
       
-          return { 'status': 'ok', 'body': j};
-        }
-        else {
-          let j = JSON.parse(xhr.responseText);
-          console.log( 'oops', xhr.status, j.message);
-            
-          return { 'status': xhr.status, 'body': { 'error': j.message}};
-        }
-      },
+      return { 'status': 'ok', 'body': j};
+    }
+    else {
+      let j = JSON.parse(xhr.responseText);
+      console.log( 'oops', xhr.status, j.message);
+           
+      return { 'status': xhr.status, 'body': { 'error': j.message}};
+    }
+  },
       
   "_post": ( pRoute, pJson) => {
         const xhr = new XMLHttpRequest();
@@ -44,7 +44,39 @@ iiSdwp = {
           return { 'status': xhr.status, 'body': { 'error': j.message}};
         }
       },
+  
+  "_delete": ( pRoute) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', document.location.origin + pRoute, false);  // `false` makes the request synchronous
+    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+      
+    xhr.send();
+    
+    if (xhr.status === 200) {
+      let j = JSON.parse(xhr.responseText);
+      
+      return { 'status': 'ok', 'body': j};
 
+    } else if (xhr.status === 204) {
+      let j = {};
+      if (xhr.responseText) {
+
+        j = JSON.parse(xhr.responseText);
+        
+      } else {
+        j = { 'status': 'ok', 'body': { 'msg': 'status 204: okay, no response'}}
+      }
+      
+      return { 'status': 'ok', 'body': j};
+    }
+    else {
+      let j = JSON.parse(xhr.responseText);
+      console.log( 'oops', xhr.status, j.message);
+            
+      return { 'status': xhr.status, 'body': { 'error': j}};
+    }
+  },
+  
   "get": {
     "client_regulations": () => {
       return iiSdwp._get( '/configtool-api/api/v1/regulation-tree');
@@ -60,6 +92,13 @@ iiSdwp = {
     },
     "trees": () => {
       return iiSdwp._get( '/repository/api/v1/global/entityTree?type=organization');
+    }
+  },
+
+  "delete": {
+    "tree_entity": (id) => {
+      // id must be a final leaf, if not an 400 will be thrown.
+      return iiSdwp._delete( '/ga/api/v1/entity/' + id);
     }
   },
 
