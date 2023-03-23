@@ -90,15 +90,56 @@ iiSdwp = {
     "jobs": () => {
       return iiSdwp._get( '/ga/api/v1/entity/getRepEntitiesShortViewByTree?tree=Jobs');
     },
+    "entities_by_tree": (tree) => {
+      return iiSdwp._get( '/ga/api/v1/entity/getRepEntitiesShortViewByTree?tree=' + tree);
+    },
     "trees": () => {
       return iiSdwp._get( '/repository/api/v1/global/entityTree?type=organization');
+    },
+    "entity": (id) => {
+      return iiSdwp._get( '/ga/api/v1/entity/' + id);
+    },
+    "entityAttribute": (id, attribute) => {
+
+      let entity = iiSdwp.get.entity(id),
+          val = entity.body.data.attributes[attribute];
+      
+      return val;
+
     }
   },
 
   "delete": {
     "tree_entity": (id) => {
       // id must be a final leaf, if not an 400 will be thrown.
+      console.log( 'try to delete entity', id);
       return iiSdwp._delete( '/ga/api/v1/entity/' + id);
+    },
+    "tree_from_top": ( tree_top_id) => {
+      
+      let treeName = iiSdwp.get.entityAttribute( tree_top_id, 'tree');
+      
+      let entities = iiSdwp.get.entities_by_tree( treeName).body;
+      console.log( 'entities', entities);
+
+      const fun = function (top_id) {
+
+        let children = entities.filter( r => r.parentId == top_id);
+        // console.log( 'ch', children);
+          
+        for (let i = 0; i < children.length; i++) {
+          fun( children[i].id);
+        }
+
+        console.log( 'tree', top_id);
+
+        if ( top_id != tree_top_id) {
+          iiSdwp.delete.tree_entity(top_id);
+        }
+      }
+      
+      fun( tree_top_id);
+
     }
   },
 
