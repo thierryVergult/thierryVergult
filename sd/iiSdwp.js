@@ -115,30 +115,47 @@ iiSdwp = {
       console.log( 'try to delete entity', id);
       return iiSdwp._delete( '/ga/api/v1/entity/' + id);
     },
-    "tree_from_top": ( tree_top_id) => {
+    "tree_from_top": ( {treeName, topEntityName, idBetweenFrom = 0, idBetweenTo = 999999999, doDelete = true, deleteAlsoTopNode = false}) => {
       
-      let treeName = iiSdwp.get.entityAttribute( tree_top_id, 'tree');
-      
-      let entities = iiSdwp.get.entities_by_tree( treeName).body;
-      console.log( 'entities', entities);
+      if (!idBetweenFrom) {
+        idBetweenFrom = 0;
+      }
 
-      const fun = function (top_id) {
+      if (!idBetweenTo) {
+        idBetweenTo = 999999999;
+      }
+
+      let entities = iiSdwp.get.entities_by_tree( treeName).body;
+
+      let topEntity = entities.find( r => r.name == topEntityName && r.id >= idBetweenFrom && r.id <= idBetweenTo);
+
+      if (!topEntity) {
+        let msg = 'error: no entity found.';
+        console.log( msg, entities, topEntityName, idBetweenFrom, idBetweenTo);
+        return msg;
+      }
+      
+      let tree_top_id = topEntity.id;
+      
+      console.log( 'all entities on tree', treeName, entities, topEntity, tree_top_id, doDelete);
+      
+      const treeRecursiveDelete = function (top_id, level = 0) {
 
         let children = entities.filter( r => r.parentId == top_id);
         // console.log( 'ch', children);
           
         for (let i = 0; i < children.length; i++) {
-          fun( children[i].id);
+          treeRecursiveDelete( children[i].id, level + 1);
         }
 
-        console.log( 'tree', top_id);
+        console.log( {'tree': top_id, 'level': level});
 
-        if ( top_id != tree_top_id) {
+        if ( ( top_id != tree_top_id || deleteAlsoTopNode) && doDelete) {
           iiSdwp.delete.tree_entity(top_id);
         }
       }
-      
-      fun( tree_top_id);
+
+      treeRecursiveDelete( tree_top_id);
 
     }
   },
