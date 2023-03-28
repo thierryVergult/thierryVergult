@@ -1,4 +1,10 @@
 iiSdwp = {
+ 
+  /*
+      international implementation team
+      local SDWP helper library
+  */
+
   "_get": ( pRoute) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', document.location.origin + pRoute, false);  // `false` makes the request synchronous
@@ -37,7 +43,16 @@ iiSdwp = {
       
           return { 'status': 'ok', 'body': j};
         }
-        else {
+        else if (xhr.status === 201) {
+          let j = {};
+          if (xhr.responseText) {
+            j = JSON.parse(xhr.responseText);
+          } else {
+            j = { 'status': 'ok', 'body': { 'msg': 'created with success'}}
+          }
+      
+          return { 'status': 'ok', 'body': j};
+        } else {
           let j = JSON.parse(xhr.responseText);
           console.log( 'oops', xhr.status, j.message);
             
@@ -270,6 +285,51 @@ iiSdwp = {
     console.log( 'values to be make accessible', valArray);
     
     iiSdwp.createValues4Profile( gloRegId, listName, valArray, profileNameTo);
+  },
+
+  "createOrgTreeEntity" : ( {cliReg, treeName, parentOtherId, childName, childOtherId, childUserSelectable = true}) => {
+    /*
+        == to do ==
+        * entityType logic (by level, important for Jobs)
+        * investigate if repDatas can be used already at this level
+    */
+    if (!childOtherId) {
+      childOtherId = childName.replaceAll( ' ', '_') + '_id'
+    };
+
+    let entities = iiSdwp.get.entities_by_tree( treeName).body;
+
+    let topEntity = entities.find( t => t.otherId == parentOtherId);
+
+    let j = {
+        "name": childName,
+        "otherId": childOtherId,
+        "userSelectable": childUserSelectable,  
+        "mustGenerateName": false,
+        //
+        "parent": topEntity.id,
+        "entityLevel": topEntity.entityLevel + 1,
+        //
+        "cliReg": cliReg,
+        "allowclireg": cliReg,
+        //
+        "tree": treeName,
+        "entityType": treeName,  // to refine for other objexts, logic linked to level
+        //
+        "begindate": "1970-01-01",
+        "enddate": "3000-01-01",
+        "parentBeginDate": "1970-01-01",
+        "parentEndDate": "3000-01-01",
+        //"subTitle1": "",  // putting these in comments worked, so there is hope that when fields are added to the application (trees), not all fields MUST be added here explicitly
+        //"subTitle2": "",
+        //"subTitle3": "",
+        "organization": true,
+        "treeType": "ORGANIZATION",
+        "repDatas": {}    // *****************************************
+    };
+    console.log(j);
+
+    return iiSdwp._post( '/ga/api/v1/entity', j);
   }
 
 }
