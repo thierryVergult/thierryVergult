@@ -141,11 +141,16 @@ iiSdwp = {
       }
 
       let entities = iiSdwp.get.entities_by_tree( treeName).body;
+      if (entities.length == 0) {
+        let msg = 'No entities found for treeName ' + treeName + '.';
+        console.log( msg, treeName, entities);
+        return msg;
+      }
 
       let topEntity = entities.find( r => r.name == topEntityName && r.id >= idBetweenFrom && r.id <= idBetweenTo);
 
       if (!topEntity) {
-        let msg = 'error: no entity found.';
+        let msg = 'error: top entity not found.';
         console.log( msg, entities, topEntityName, idBetweenFrom, idBetweenTo);
         return msg;
       }
@@ -289,6 +294,10 @@ iiSdwp = {
 
   "createOrgTreeEntity" : ( {cliReg, treeName, parentOtherId, childName, childOtherId, childUserSelectable = true}) => {
     /*
+        == notes ==
+        > when parameter parentOtherId null, a top node will be created.
+        > when parameter childOtherId null, the other id will be the name of the child node with "_id" at the end
+
         == to do ==
         * entityType logic (by level, important for Jobs)
         * investigate if repDatas can be used already at this level
@@ -307,8 +316,8 @@ iiSdwp = {
         "userSelectable": childUserSelectable,  
         "mustGenerateName": false,
         //
-        "parent": topEntity.id,
-        "entityLevel": topEntity.entityLevel + 1,
+        "parent": topEntity ? topEntity.id : null,
+        "entityLevel": topEntity ? topEntity.entityLevel + 1 : 0,
         //
         "cliReg": cliReg,
         "allowclireg": cliReg,
@@ -325,7 +334,7 @@ iiSdwp = {
         //"subTitle3": "",
         "organization": true,
         "treeType": "ORGANIZATION",
-        "repDatas": {}    // *****************************************
+        "repDatas": {}    // this is potentially nice ..
     };
     console.log(j);
 
