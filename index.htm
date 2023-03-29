@@ -463,6 +463,7 @@
 
           <div>
             <script src="https://thierryvergult.github.io/CandyPie/candy-pie-babylon.js"></script>
+            <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
 
             <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="width: 100%; touch-action: none;"></canvas>
 
@@ -483,10 +484,11 @@
                 'backgroundColor': 'lightgrey',
                 'clickScalePct': 20,
                 'verticalFactor': 1.6,
-                'secondsPerRotation': 20
+                'secondsPerRotation': 20,
+                'rotationSlowDown': true
               };
               
-              candy_pie_babylon( pie3d);
+              candyPie.babylon( pie3d);
             </script>
 
           </div>

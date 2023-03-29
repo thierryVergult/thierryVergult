@@ -334,7 +334,23 @@ iiSdwp = {
         //"subTitle3": "",
         "organization": true,
         "treeType": "ORGANIZATION",
-        "repDatas": {}    // this is potentially nice ..
+        "repDatas": {
+          /*
+          "LocationIdentification": [
+            {
+              "begindate":"1970-01-01",
+              "isDated":false,
+              "enddate": "3000-01-01",
+              "clientId": 1000031,
+              "groupZoneType": "UNIQUE_NON_MANDATORY",
+              "groupName":"LocationIdentification",
+              "values":{
+                "Location.ID":{"type":"LABEL","value":"TD01"},
+                "Location.Name":{"type":"LABEL","value": childName + '_poc'}}
+            }
+          ]
+        }  */
+        }    // this is potentially nice ..
     };
     console.log(j);
 
