@@ -1,5 +1,5 @@
-Hi, I’m Thierry Vergult, a freelance consultant, living in Belgium. \ 
-I prefer to drive projects at the crossroad of Payroll and IT, with an interst in data visualisations. \
+Hi, I’m Thierry Vergult, a freelance consultant, living in Belgium.
+I prefer to drive projects at the crossroad of Payroll and IT, with an interst in data visualisations.
 
 
 <!---
