@@ -1,0 +1,386 @@
+<!doctype html>
+  <html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>opayra lab: summa sunburst</title>
+    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+    <style>
+      .main-svg {
+        border: 2px solid grey;
+        padding: 25px;
+      }
+
+      .legend {
+        margin-top: 60px;
+        margin-left: 20px;
+        border: 4px solid steelblue;
+        width: 200px;
+        padding-left: 10px;
+        padding-bottom: 12px;
+      }
+
+      .legend>p {
+        font-size: 18px;
+        color: steelblue;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <h4>popay nl - job journey - summa - competence sunburst - plotly - poc</h4>
+
+    <a href="https://plotly.com/javascript/reference/sunburst/">plotly - sunburst reference</a>
+    
+    <ol>
+      <li>sunburst implementation with competence levels and radial labels within a competence lane.
+      <li>legend of groups: click interaction for highlighting of group
+      <li>? zero version, a few spiral boxes (nr of levels must flow in from the student object)</li>
+      <li>to do: transform into function (jj namespace object)</li>
+    </ol>
+    
+    <div id='idVis'></div>
+    <br>
+    <div class="legend">
+      <p>beroepscompetenties</p>
+      <div id='idVisLegend'></div>
+    </div>
+
+    <script>
+      let jjConfig = {
+        "idHtml": "idVis",
+        "idLegendHtml": "idVisLegend",
+        "labelFontSize": 20,
+        "bullEyeText": "Performance",
+        "bullEyeFontSize": 20,
+        "colorLaneLevel0": "rgba(0,0,0,0)",
+        "log": true,
+        "highlightPct": 75,
+        "highlightClearLabels": true,
+        "addSomeInitLines": true
+      };
+
+      let jjStudent = {
+        "group": [
+          {
+            "name": "group 1",
+            "color": "red",
+            "competence": [
+                { "level": 3, "name": "group 1 - comp 1 <br>en <i>nog</i> wat langerrr"},  // understands <br> & other html tags
+                { "level": 2, "name": "group 1 - comp 2"}
+            ]
+          }, {
+            "name": "group 2",
+            "color": "steelblue",
+            "competence": [
+                { "level": 2, "name": "group 2 - comp 1"},
+                { "level": 2, "name": "group 2 - comp 2"},
+                { "level": 0, "name": "group 2 - comp 3"},
+                { "level": 1, "name": "group 2 - comp 4"}
+            ]
+          }, {
+            "name": "muziek",
+            "color": "green",
+            "competence": [
+                { "level": 2, "name": "notenleer"},
+                { "level": 4, "name": "triangel"},
+                { "level": 2, "name": "trommel"},
+                { "level": 4, "name": "zang"}
+            ]
+          }
+        ]
+      };
+
+      // define all arrays to feed both sunbursts, and initialize with a first item for the root node
+      let ids = ['root'],
+          parents = [''],
+          values = [0], // root value will be overwritten by sum of level 1 = nr of competence lanes
+          colors = [''],
+          labels = [];
+
+      let competenceLanes = 0,
+          studentGroups = jjStudent.group;
+
+      // fill all arrays with g(roup) - c(ompetence) - l(evel) logic.
+      for ( let g = 0; g < studentGroups.length; g++) {
+
+        let group = studentGroups[g];
+        
+        for ( let c = 0; c < group.competence.length; c++) {
+
+          let comp = group.competence[c];
+          competenceLanes +=1;
+          
+          labels.push( comp.name);
+
+          let lev = comp.level > 0 ? comp.level : 1;
+
+          for ( let l = 0; l < lev; l++) {
+
+            ids.push( 'gcl-' + g + '.' + c + '.' + l);
+            parents.push( l == 0 ? 'root' : 'gcl-' + g + '.' + c + '.' + (l-1));
+
+            let color = comp.level > 0 ? group.color : jjConfig.colorLaneLevel0;
+            colors.push(color);
+
+            values.push(1);
+          }
+        }
+      }
+
+      // 2nd pass : get parameters for redistribution
+      let lane = 0,
+          cell = 0,
+          cells = values.length - 1;
+      
+      for ( let g = 0; g < studentGroups.length; g++) {
+        let group = studentGroups[g],
+            laneStart = lane+1,
+            cellStart = cell+1;
+
+        for ( let c = 0; c < group.competence.length; c++) {
+          lane +=1;
+
+          let comp = group.competence[c],
+              lev = (comp.level > 0 ? comp.level : 1);
+
+          for ( let l = 0; l < lev; l++) {
+            cell +=1;
+          }
+        }
+
+        if (jjConfig.log) {
+          console.log( 'redistributione', competenceLanes, laneStart, lane, 'total cells, cellstart, end', cells, cellStart, cell);
+        }
+        group.highlight = {};
+        group.highlight.label = redistributeLabels(competenceLanes, laneStart, lane);
+        group.highlight.values = redistribute( cells, competenceLanes, cellStart, cell, lane-laneStart+1);
+      
+      }
+      
+      //root value becomes the sum of level 1 = nr of competence lines
+      values[0] = competenceLanes;
+
+      if (jjConfig.log) {
+        console.log( '# competence lanes', competenceLanes);
+        console.log( 'labels', labels);
+        console.log( 'ids', ids);
+        console.log( 'parents', parents);
+        console.log( 'values', values);
+        console.log( 'colors', colors);
+        console.log( 'jjStudent', jjStudent);
+      }
+
+      let lineColors = Array(500).fill('white');
+
+      let data = [{
+        type: "sunburst",
+        ids: ids,
+        parents: parents,
+        branchvalues: 'total',
+        values: values,
+        sort: false,
+        marker: { 
+          colors: colors,
+          line: {
+            color: lineColors
+        }},
+        textinfo: 'none',
+        labels: values, // whatever array of the correct length
+        rotation: 0
+      }, {
+        // sun burst overlay only for the labels
+        // all arrays have n items, an item per competence line.
+        type: 'sunburst',
+        labels: labels,
+        parents: Array(competenceLanes).fill(''),
+        values: Array(competenceLanes).fill(1),
+        branchvalues: 'total',
+        sort: false,
+        marker: { 
+          colors: Array(competenceLanes).fill('rgba(0,0,0,0)'), // hide the sectors by using a color with alpha level 0
+          line: { 
+            width: 0, // set width to 0 to hide also the lines in between, or set to 4 to make the lanes more distinct
+            color: ''
+          }
+        }, 
+        textinfo: 'text',  // do not use label, but text, to show the labels on the graph, since the labels are used as a key (since no ids), and cannot be animated
+        text: [...labels],  // shallow copy
+        insidetextorientation: 'radial',
+        textfont: { size: jjConfig.labelFontSize || 20},
+        rotation: 0
+      }];
+
+      let layout = {
+        margin: {l: 0, r: 0, b: 0, t: 0},
+        width: 800,
+        height: 800,
+        hovermode: false,
+        annotations: [{
+          font: { size: jjConfig.bullEyeFontSize || 24},
+          showarrow: false,
+          text: jjConfig.bullEyeText,
+        }]
+      }
+      
+      if (jjConfig.addSomeInitLines) {
+        addDummy( 'gcl-0.0.', 3);
+        
+        addDummy( 'gcl-0.1.', 2);
+        addDummy( 'gcl-0.1.', 3);
+        
+        addDummy( 'gcl-1.0.', 2);
+        addDummy( 'gcl-1.0.', 3);
+
+        addDummy( 'gcl-1.1.', 2);
+        addDummy( 'gcl-1.1.', 3);
+
+        addDummy( 'gcl-1.2.', 1);
+        addDummy( 'gcl-1.2.', 2);
+        addDummy( 'gcl-1.2.', 3);
+      }
+
+      Plotly.newPlot( jjConfig.idHtml, data, layout);
+
+      let idLegend = document.getElementById(jjConfig.idLegendHtml);
+
+      if (idLegend) {
+        console.log('build legend');
+        for ( let g = 0; g < jjStudent.group.length; g++) {
+
+          let group = jjStudent.group[g];
+
+          let legendItem = document.createElement("div");
+          legendItem.style.display = 'flex'; // set to flex to have both child divs on one row
+          legendItem.style.marginTop = '2px';
+          legendItem.style.cursor = 'pointer';
+          legendItem.onclick = function() { transfoTest( g); };
+
+          // little circle 
+          let circleItem = document.createElement("div"),
+              pixelSize = '12px';
+          circleItem.textContent = ' ';
+          circleItem.style.borderRadius = '50%';
+          circleItem.style.backgroundColor = group.color;
+          circleItem.style.width = pixelSize;
+          circleItem.style.height = pixelSize; // even this does not guarantees same width & height
+          circleItem.style.border = 'solid grey 2px';
+          circleItem.style.marginRight = '8px';
+
+          // text item
+          let legendText = document.createElement("div");
+          legendText.textContent = group.name;
+          //legendText.style.color = group.color;
+          //legendText.style.fontSize = pixelSize;
+          //legendText.style.fontWeight = 'bold';
+
+          idLegend.appendChild( legendItem);
+          legendItem.appendChild( circleItem);
+          legendItem.appendChild( legendText);
+        }
+        
+      } else {
+        console.log('legend tag not found', jjConfig.idLegendHtml);
+      }
+
+      function redistribute( cells, lanes, updStart, updEnd, updLanes) {
+        let arr = [],
+            pct = jjConfig.highlightPct || 50,
+            factor = 10;  // for better precision, since trunc without decimals
+
+        let m = updEnd - updStart + 1;
+        
+        let x = (100 - pct) * factor / (lanes-updLanes);
+        x = Math.trunc(x);
+        for (let i = 1; i <= cells; i++ ) {
+          arr[i] = x;
+        }
+
+        let y = pct * factor / updLanes;
+        y = Math.trunc(y);
+        for (let i = updStart; i <= updEnd; i++ ) {
+          arr[i] = y;
+        }
+
+        let tot = (lanes - updLanes)*x + (updLanes*y);
+        arr[0] = tot;
+        
+        return arr;
+      }
+
+      function redistributeLabels( lanes, laneStart, laneEnd) {
+
+        // a segment of lanes (representing a group) gets 500, the remaining part also 500
+
+        let factor = 10;  // for better precision
+            pct = jjConfig.highlightPct || 50,
+            highlightLanes = laneEnd - laneStart + 1,
+            highlightPct = pct * factor / highlightLanes,    
+            nonHighlightPct = (100-pct) * factor / (lanes - highlightLanes);
+
+        highlightPct = Math.trunc(highlightPct);
+        nonHighlightPct = Math.trunc(nonHighlightPct);
+
+        let arr = Array(lanes).fill(nonHighlightPct),
+            lab = Array(lanes).fill('');
+        
+        for (let i = 0; i < highlightLanes; i++ ) {
+          let ind = laneStart - 1 + i;
+          arr[ind] = highlightPct;
+          lab[ind] = labels[ind];
+        }
+
+        let rotationDegrees = nonHighlightPct * (laneStart - 1) / 100 * 360 / factor;
+        // and compensate now for the highlightPct
+        let nonHiglightedFraction = (100 - jjConfig.highlightPct)/100,
+            nonHiglightedDegrees = 360 * nonHiglightedFraction;
+        // bring to 6 o'clock (+90) and half back
+        rotationDegrees += 90 - nonHiglightedDegrees/2;
+        rotationDegrees = Math.trunc( rotationDegrees);
+
+        //console.log( 'highlight', highlightPct, nonHighlightPct, 'new label values', arr, 'rota', rotationDegrees + '°');
+        
+        return { 'values': arr, 'rotation': rotationDegrees, 'labels': lab};
+      }
+
+
+      function transfoTest( groupNr, duration = 2000) {
+
+        // eventually add code to go back to the base situation, with no highlighting at all
+
+        data[0].values = jjStudent.group[groupNr].highlight.values;
+        data[1].values = jjStudent.group[groupNr].highlight.label.values;
+
+        let rotation = jjStudent.group[groupNr].highlight.label.rotation;
+        rotation = - rotation; // since rotation parameter works clock-counterwise
+        data[0].rotation = rotation;
+        data[1].rotation = rotation;
+
+        if (jjConfig.highlightClearLabels) {
+          data[1].text = jjStudent.group[groupNr].highlight.label.labels;
+        }
+
+        Plotly.animate( jjConfig.idHtml, {
+          data: data,
+          layout: layout
+        }, {
+          transition: {
+            duration: duration,
+            easing: 'cubic-in-out'
+          },
+          frame: {
+            duration: duration
+          }
+        });
+      }
+
+      function addDummy(base, nrParent) {
+        ids.push(base + (nrParent));
+        parents.push( base + (nrParent-1));
+        values.push(1);
+        colors.push('rgba(0,0,0,0.0)');
+        lineColors[ids.length-1] = 'lightgrey';
+      };
+      
+    </script>
+  </body>
+</html>
