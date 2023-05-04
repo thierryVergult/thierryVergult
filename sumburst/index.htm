@@ -101,9 +101,7 @@
           }
         ]
       };
-      studentStart.idHtml = "idVis1";
-      studentStart.idLegendHtml = "idVisLegend1";
-      jj.plotSunburst( studentStart);
+      jj.plotSunburst( studentStart, 'idVis1', 'idVisLegend1');
 
 
       let studentMidPlus5 = {
@@ -129,20 +127,17 @@
             "name": "muziek",
             "color": "green",
             "competence": [
-                { "level": 1, "name": "notenleer", "statusNr": 1},
+                { "level": 1, "name": "notenleer", "statusNr": 3},
                 { "level": 5, "name": "triangel"},
-                { "level": 4, "name": "trommel", "statusNr": 1},
-                { "level": 3, "name": "zang", "statusNr": 1}
+                { "level": 4, "name": "trommel", "statusNr": 2},
+                { "level": 3, "name": "zang", "statusNr": 2}
             ]
           }
         ]
       };
-      studentMidPlus5.idHtml = "idVis2";
-      studentMidPlus5.idLegendHtml = "idVisLegend2";
-      jj.plotSunburst( studentMidPlus5);
+      jj.plotSunburst( studentMidPlus5, 'idVis2', 'idVisLegend2');
 
-
-      let studentEnd = {
+      jj.plotSunburst( {
         "levels": 4,
         "group": [
           {
@@ -172,10 +167,10 @@
             ]
           }
         ]
-      };
-      studentEnd.idHtml = "idVis3";
-      studentEnd.idLegendHtml = "idVisLegend3";
-      jj.plotSunburst( studentEnd);
+        }, 
+        'idVis3', 
+        'idVisLegend3'
+      );
 
 
     </script>

@@ -1,5 +1,6 @@
 let jj = {};
 
+
 jj.config = {
   "labelFontSize": 20,
   "bullEyeText": "",
@@ -16,6 +17,7 @@ jj.config = {
   ]
 };
 
+
 jj.colorHex = function(str) {
   // thanks: https://stackoverflow.com/questions/1573053/javascript-function-to-convert-color-names-to-hex-codes
   
@@ -24,6 +26,7 @@ jj.colorHex = function(str) {
   
   return ctx.fillStyle;
 }
+
 
 jj.redistribute = function ( cells, lanes, updStart, updEnd, updLanes) {
 
@@ -50,6 +53,7 @@ jj.redistribute = function ( cells, lanes, updStart, updEnd, updLanes) {
 
   return arr;
 }
+
 
 jj.redistributeLabels = function ( student, lanes, laneStart, laneEnd) {
 
@@ -162,8 +166,11 @@ jj.addLegendItems = function(student) {
 }
 
 
-jj.plotSunburst = function( studentData) {
+jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
   
+  studentData.idHtml = idHtml;
+  studentData.idLegendHtml = idLegendHtml;
+
   jj.layout = {
     margin: {l: 0, r: 0, b: 0, t: 0},
     width: 800,
@@ -187,6 +194,7 @@ jj.plotSunburst = function( studentData) {
       
   jj.addLegendItems( studentData);
 }
+
 
 jj.prepareData = function( student) {
 
