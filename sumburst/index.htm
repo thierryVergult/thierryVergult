@@ -31,28 +31,40 @@
     <h4>popay nl - job journey - summa - competence sunburst - plotly - poc</h4>
 
     <a href="https://plotly.com/javascript/reference/sunburst/">plotly - sunburst reference</a>
-    
-    <ol>
+
+    <p>
       <li>polar bar - sunburst implementation with competence levels and radial labels within a competence lane.
       <li>legend of groups: click interaction for highlighting of group
-      <li>jj namespace object</li>
-      <li>multiple charts on 1 page</li>
+    </p>
+
+    <ol>
       <li>state nr 4 = something else : arceren : https://stackoverflow.com/questions/13069446/simple-fill-pattern-in-svg-diagonal-hatching</li>
       <li>back to original state missing</li>
     </ol>
-    
-    <ul>
-      <li>begin state</li>
-      <li>mid state + 5s</li>
-      <li>end state (+ 5s)</li>
-    </ul>
-    
-    <div id='idVis'></div>
+        
+    <div id='idVis1'></div>
     <br>
     <div class="legend">
       <p>beroepscompetenties</p>
-      <div id='idVisLegend'></div>
+      <div id='idVisLegend1'></div>
     </div>
+    <br><br>
+
+    <div id='idVis2'></div>
+    <br>
+    <div class="legend">
+      <p>beroepscompetenties</p>
+      <div id='idVisLegend2'></div>
+    </div>
+    <br><br>
+
+    <div id='idVis3'></div>
+    <br>
+    <div class="legend">
+      <p>beroepscompetenties</p>
+      <div id='idVisLegend3'></div>
+    </div>
+    <br><br>
 
     <script>
       let studentStart = {
@@ -79,14 +91,90 @@
             "color": "green",
             "competence": [
                 { "level": 1, "name": "notenleer", "statusNr": 1},
-                { "level": 1, "name": "triangel", "statusNr": 2},
+                { "level": 1, "name": "triangel"},
                 { "level": 1, "name": "trommel", "statusNr": 1},
                 { "level": 1, "name": "zang", "statusNr": 1}
             ]
           }
         ]
       };
+      studentStart.idHtml = "idVis1";
+      studentStart.idLegendHtml = "idVisLegend1";
       jj.plotSunburst( studentStart);
+
+
+      let studentMidPlus5 = {
+        "levels": 4,
+        "group": [
+          {
+            "name": "group 1",
+            "color": "red",
+            "competence": [
+                { "level": 2, "name": "group 1 - comp 1 <br>en <i>nog</i> wat langerrr"},  // understands <br> & other html tags
+                { "level": 2, "name": "group 1 - <a href='https://www.popay.com'>comp 2</a>"}  // and urls
+            ]
+          }, {
+            "name": "group 2",
+            "color": "steelblue",
+            "competence": [
+                { "level": 1, "name": "group 2 - comp 1", "statusNr": 1},
+                { "level": 2, "name": "group 2 - comp 2", "statusNr": 1},
+                { "level": 3, "name": "group 2 - comp 3", "statusNr": 1},
+                { "level": 2, "name": "group 2 - comp 4", "statusNr": 1}
+            ]
+          }, {
+            "name": "muziek",
+            "color": "green",
+            "competence": [
+                { "level": 1, "name": "notenleer", "statusNr": 1},
+                { "level": 5, "name": "triangel"},
+                { "level": 4, "name": "trommel", "statusNr": 1},
+                { "level": 3, "name": "zang", "statusNr": 1}
+            ]
+          }
+        ]
+      };
+      studentMidPlus5.idHtml = "idVis2";
+      studentMidPlus5.idLegendHtml = "idVisLegend2";
+      jj.plotSunburst( studentMidPlus5);
+
+
+      let studentEnd = {
+        "levels": 4,
+        "group": [
+          {
+            "name": "group 1",
+            "color": "red",
+            "competence": [
+                { "level": 4, "statusNr": 3, "name": "group 1 - comp 1 <br>en <i>nog</i> wat langerrr"},  // understands <br> & other html tags
+                { "level": 4, "statusNr": 3, "name": "group 1 - <a href='https://www.popay.com'>comp 2</a>"}  // and urls
+            ]
+          }, {
+            "name": "group 2",
+            "color": "steelblue",
+            "competence": [
+                { "level": 4, "name": "group 2 - comp 1", "statusNr": 3},
+                { "level": 4, "name": "group 2 - comp 2", "statusNr": 3},
+                { "level": 4, "name": "group 2 - comp 3", "statusNr": 3},
+                { "level": 4, "name": "group 2 - comp 4", "statusNr": 1}
+            ]
+          }, {
+            "name": "muziek",
+            "color": "green",
+            "competence": [
+                { "level": 4, "name": "notenleer", "statusNr": 3},
+                { "level": 5, "name": "triangel", "statusNr": 3},
+                { "level": 4, "name": "trommel", "statusNr": 3},
+                { "level": 4, "name": "zang", "statusNr": 3}
+            ]
+          }
+        ]
+      };
+      studentEnd.idHtml = "idVis3";
+      studentEnd.idLegendHtml = "idVisLegend3";
+      jj.plotSunburst( studentEnd);
+
+
     </script>
   </body>
 </html>

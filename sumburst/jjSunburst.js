@@ -1,8 +1,6 @@
 let jj = {};
 
 jj.config = {
-  "idHtml": "idVis",
-  "idLegendHtml": "idVisLegend",
   "labelFontSize": 20,
   "bullEyeText": "",
   "bullEyeFontSize": 20,
@@ -105,7 +103,7 @@ jj.highlightGroup = function ( student, groupNr, duration = 2000) {
     student.data[1].text = student.group[groupNr].highlight.label.labels;
   }
 
-  Plotly.animate( jj.config.idHtml, {
+  Plotly.animate( student.idHtml, {
     data: student.data,
     layout: jj.layout
   }, {
@@ -122,7 +120,7 @@ jj.highlightGroup = function ( student, groupNr, duration = 2000) {
 
 jj.addLegendItems = function(student) {
 
-  let idLegend = document.getElementById(jj.config.idLegendHtml);
+  let idLegend = document.getElementById( student.idLegendHtml);
 
   if (idLegend) {
     console.log('build legend');
@@ -159,7 +157,7 @@ jj.addLegendItems = function(student) {
     }
         
   } else {
-    console.log('legend tag not found', jj.config.idLegendHtml);
+    console.log('legend tag not found', student.idLegendHtml);
   }
 }
 
@@ -185,7 +183,7 @@ jj.plotSunburst = function( studentData) {
   */
 
       
-  Plotly.newPlot( jj.config.idHtml, plotlyData, jj.layout);
+  Plotly.newPlot( studentData.idHtml, plotlyData, jj.layout);
       
   jj.addLegendItems( studentData);
 }
