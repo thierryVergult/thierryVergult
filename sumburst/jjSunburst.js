@@ -93,22 +93,25 @@ jj.redistributeLabels = function ( student, lanes, laneStart, laneEnd) {
 
 jj.highlightGroup = function ( student, groupNr, duration = 2000) {
 
-  // eventually add code to go back to the base situation, with no highlighting at all
+  // to do: add code to go back to the base situation, with no highlighting at all
+  
+  let traces = student.traces,
+      highlight = student.group[groupNr].highlight;
+  
+  traces[0].values = highlight.values;
+  traces[1].values = highlight.label.values;
 
-  student.data[0].values = student.group[groupNr].highlight.values;
-  student.data[1].values = student.group[groupNr].highlight.label.values;
-
-  let rotation = student.group[groupNr].highlight.label.rotation;
+  let rotation = highlight.label.rotation;
   rotation = - rotation; // since rotation parameter works clock-counterwise
-  student.data[0].rotation = rotation;
-  student.data[1].rotation = rotation;
+  traces[0].rotation = rotation;
+  traces[1].rotation = rotation;
 
   if (jj.config.highlightClearLabels) {
-    student.data[1].text = student.group[groupNr].highlight.label.labels;
+    traces[1].text = highlight.label.labels;
   }
 
   Plotly.animate( student.idHtml, {
-    data: student.data,
+    data: traces,
     layout: jj.layout
   }, {
     transition: {
@@ -183,14 +186,15 @@ jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
     }]
   }
 
-  let plotlyData = jj.prepareData( studentData);
+  let plotlyTraces = jj.prepareData( studentData);
+  studentData.traces = plotlyTraces;
   /*
     lineWidths[3] = 5;
     lineColors[3] = 'lightgrey';
   */
 
       
-  Plotly.newPlot( studentData.idHtml, plotlyData, jj.layout);
+  Plotly.newPlot( studentData.idHtml, plotlyTraces, jj.layout);
       
   jj.addLegendItems( studentData);
 }
@@ -315,7 +319,7 @@ jj.prepareData = function( student) {
     console.log( 'jjStudent', student);
   }
 
-  let dataMain = {
+  let mainTrace = {
     type: "sunburst",
     ids: student.ids,
     parents: student.parents,
@@ -334,7 +338,7 @@ jj.prepareData = function( student) {
     leaf: { opacity: 1}
   };
 
-  let dataOverlay = {
+  let overlayTrace = {
     // sun burst overlay only for the labels
     // all arrays have n items, an item per competence line.
     type: 'sunburst',
@@ -357,13 +361,10 @@ jj.prepareData = function( student) {
     leaf: { opacity: 1}
   };
 
-  let data = [
-    dataMain, 
-    dataOverlay
+  let traces = [
+    mainTrace, 
+    overlayTrace
   ];
-
-  student.data = data;
   
-  return data;
-
+  return traces;
 }
