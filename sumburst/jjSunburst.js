@@ -9,11 +9,11 @@ jj.config = {
   "highlightPct": 50,
   "highlightClearLabels": true,
   "defaultLineWidth": 3,
-  "status": [
+  "status": [  // student statusNr maps to this style status (statusNr 1 maps to array entry 0)
     { "opacityPct": 35}, // 0% is volledig transparant
     { "opacityPct": 70},
     { "opacityPct": 100}, // 100% is volledig zichtbaar
-    { "linewidth": 5}
+    { "linewidth": 5}  // to do
   ]
 };
 
@@ -92,22 +92,31 @@ jj.redistributeLabels = function ( student, lanes, laneStart, laneEnd) {
 
 
 jj.highlightGroup = function ( student, groupNr, duration = 2000) {
-
-  // to do: add code to go back to the base situation, with no highlighting at all
   
-  let traces = student.traces,
-      highlight = student.group[groupNr].highlight;
+  let traces = student.traces;
+
+  // groupNr negative means going back to the original state
+  if (groupNr < 0) {
+    traces[0].values = student.values;
+    traces[1].values = Array(student.competenceLanes).fill(1);
+    traces[0].rotation = 0;
+    traces[1].rotation = 0;
+    traces[1].text = student.labels;
+
+  } else {
+    let highlight = student.group[groupNr].highlight;
   
-  traces[0].values = highlight.values;
-  traces[1].values = highlight.label.values;
+    traces[0].values = highlight.values;
+    traces[1].values = highlight.label.values;
 
-  let rotation = highlight.label.rotation;
-  rotation = - rotation; // since rotation parameter works clock-counterwise
-  traces[0].rotation = rotation;
-  traces[1].rotation = rotation;
+    let rotation = highlight.label.rotation;
+    rotation = - rotation; // since rotation parameter works clock-counterwise
+    traces[0].rotation = rotation;
+    traces[1].rotation = rotation;
 
-  if (jj.config.highlightClearLabels) {
-    traces[1].text = highlight.label.labels;
+    if (jj.config.highlightClearLabels) {
+      traces[1].text = highlight.label.labels;
+    }
   }
 
   Plotly.animate( student.idHtml, {
@@ -154,14 +163,19 @@ jj.addLegendItems = function(student) {
       // text item
       let legendText = document.createElement("div");
       legendText.textContent = group.name;
-      //legendText.style.color = group.color;
-      //legendText.style.fontSize = pixelSize;
-      //legendText.style.fontWeight = 'bold';
 
       idLegend.appendChild( legendItem);
       legendItem.appendChild( circleItem);
       legendItem.appendChild( legendText);
     }
+
+    // extra circle to go back to original state : on click call the highlightGroup function with group nr negative.
+    legendText = document.createElement("div");
+    legendText.innerHTML = '&#9711;';
+    legendText.style.marginLeft = '-2px';
+    legendText.style.cursor = 'pointer';
+    legendText.onclick = function() { jj.highlightGroup( student, -1); };
+    idLegend.appendChild( legendText);
         
   } else {
     console.log('legend tag not found', student.idLegendHtml);
@@ -210,7 +224,7 @@ jj.prepareData = function( student) {
   student.labels = [],
   student.lineColors = [''],
   student.lineWidths = [0],
-  student.groups = [-1];  // not used to feed plotly, but to make later processing easier.
+  student.internalGroups = [-1];  // not used to feed plotly, but to make later processing easier.
 
   student.competenceLanes = 0;
 
@@ -235,7 +249,7 @@ jj.prepareData = function( student) {
 
         student.values.push(1);
 
-        student.groups.push(g);
+        student.internalGroups.push(g);
 
         if ( l < comp.level - 1) {
           // default styling
@@ -251,7 +265,7 @@ jj.prepareData = function( student) {
               opacityPct = statusStyle.opacityPct || 100,
               opacityHex = Math.trunc((255 * opacityPct / 100)).toString(16);
               linewidth = statusStyle.linewidth || jj.config.defaultLineWidth;
-          console.log( statusIndex, statusStyle, opacityPct, opacityHex, linewidth);
+          //console.log( statusIndex, statusStyle, opacityPct, opacityHex, linewidth);
 
           let col = group.color;
           col = jj.colorHex(col) + opacityHex;
@@ -275,7 +289,7 @@ jj.prepareData = function( student) {
 
         student.values.push(1);
 
-        student.groups.push(g);
+        student.internalGroups.push(g);
       }
     }
   }
@@ -287,8 +301,8 @@ jj.prepareData = function( student) {
       group = studentGroups[g];
 
       // find start & end index of group in groups array
-      let firstCell = student.groups.findIndex( groupNr => groupNr == g),
-      lastCell = student.groups.lastIndexOf(g);
+      let firstCell = student.internalGroups.findIndex( groupNr => groupNr == g),
+      lastCell = student.internalGroups.lastIndexOf(g);
 
       let firstCompNameInGroup = group.competence[0].name, 
           compIndexStart = student.labels.findIndex( compName => compName == firstCompNameInGroup) + 1,  // weird + 1, seems needed in redistributeLabels, so rename variables
@@ -296,12 +310,12 @@ jj.prepareData = function( student) {
           compIndexEnd = compIndexStart + nrOfCompetencesInGroup - 1;
 
       if (jj.config.log) {
-        console.log( 'redistributione', student.competenceLanes, compIndexStart, compIndexEnd, 'total cells, cellstart, end', student.groups.length, firstCell, lastCell);
+        console.log( 'redistributione', student.competenceLanes, compIndexStart, compIndexEnd, 'total cells, cellstart, end', student.internalGroups.length, firstCell, lastCell);
       }
 
       group.highlight = {};
       group.highlight.label = jj.redistributeLabels( student, student.competenceLanes, compIndexStart, compIndexEnd);
-      group.highlight.values = jj.redistribute( student.groups.length, student.competenceLanes, firstCell, lastCell, nrOfCompetencesInGroup);
+      group.highlight.values = jj.redistribute( student.internalGroups.length, student.competenceLanes, firstCell, lastCell, nrOfCompetencesInGroup);
 
     }
 
@@ -315,7 +329,7 @@ jj.prepareData = function( student) {
     console.log( 'parents', student.parents);
     console.log( 'values', student.values);
     console.log( 'colors', student.colors);
-    console.log( 'groups', student.groups);
+    console.log( 'groups', student.internalGroups);
     console.log( 'jjStudent', student);
   }
 
