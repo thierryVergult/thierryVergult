@@ -35,16 +35,14 @@
     <ol>
       <li>polar bar - sunburst implementation with competence levels and radial labels within a competence lane.
       <li>legend of groups: click interaction for highlighting of group
-      <li>4 states : 3x opacity & something else</li>
-      <li>back to original state missing</li>
-      <li>to do: transform into function (jj namespace object)</li>
-      <li>something else : arceren : https://stackoverflow.com/questions/13069446/simple-fill-pattern-in-svg-diagonal-hatching</li>
+      <li>jj namespace object</li>
       <li>multiple charts on 1 page</li>
+      <li>state nr 4 = something else : arceren : https://stackoverflow.com/questions/13069446/simple-fill-pattern-in-svg-diagonal-hatching</li>
+      <li>back to original state missing</li>
     </ol>
     
     <ul>
       <li>begin state</li>
-      <li>mid state</li>
       <li>mid state + 5s</li>
       <li>end state (+ 5s)</li>
     </ul>
@@ -57,7 +55,7 @@
     </div>
 
     <script>
-      let jjStudent = {
+      let studentStart = {
         "levels": 4,
         "group": [
           {
@@ -81,202 +79,14 @@
             "color": "green",
             "competence": [
                 { "level": 1, "name": "notenleer", "statusNr": 1},
-                { "level": 5, "name": "triangel", "statusNr": 2},
-                { "level": 3, "name": "trommel", "statusNr": 1},
-                { "level": 2, "name": "zang", "statusNr": 1}
+                { "level": 1, "name": "triangel", "statusNr": 2},
+                { "level": 1, "name": "trommel", "statusNr": 1},
+                { "level": 1, "name": "zang", "statusNr": 1}
             ]
           }
         ]
       };
-
-
-      // define all arrays to feed both sunbursts, and initialize with a first item for the root node
-      let ids = ['root'],
-          parents = [''],
-          values = [0], // root value will be overwritten by sum of level 1 = nr of competence lanes
-          colors = [''],
-          labels = [],
-          lineColors = [''],
-          lineWidths = [0],
-          groups = [-1];  // not used to feed plotly, but to make later processing easier.
-
-      let competenceLanes = 0,
-          studentGroups = jjStudent.group;
-
-      // fill all arrays with g(roup) - c(ompetence) - l(evel) logic.
-      for ( let g = 0; g < studentGroups.length; g++) {
-
-        let group = studentGroups[g];
-        
-        for ( let c = 0; c < group.competence.length; c++) {
-
-          let comp = group.competence[c];
-          competenceLanes +=1;
-          
-          labels.push( comp.name);
-
-          for ( let l = 0; l < comp.level; l++) {
-
-            ids.push( 'gcl-' + g + '.' + c + '.' + l);
-            parents.push( l == 0 ? 'root' : 'gcl-' + g + '.' + c + '.' + (l-1));
-
-            values.push(1);
-
-            groups.push(g);
-
-            if ( l < comp.level - 1) {
-              // default styling
-              colors.push(group.color);
-              lineWidths.push( jj.config.defaultLineWidth);
-              lineColors.push( 'white');
-
-            } else {
-              // styling on the edge
-
-              let statusIndex = (comp.statusNr || 1)-1,
-                  statusStyle = jj.config.status[statusIndex],
-                  opacityPct = statusStyle.opacityPct || 100,
-                  opacityHex = Math.trunc((255 * opacityPct / 100)).toString(16);
-                  linewidth = statusStyle.linewidth || jj.config.defaultLineWidth;
-              console.log( statusIndex, statusStyle, opacityPct, opacityHex, linewidth);
-
-              let col = group.color;
-              col = jj.colorHex(col) + opacityHex;
-              colors.push(col);
-
-              lineWidths.push(linewidth);
-
-              lineColors.push( 'white');
-            }
-
-            
-          }
-
-          // fill the sunburst up to the levels of the student
-          for ( let l = comp.level; l < jjStudent.levels; l++) {
-
-            ids.push( 'gcl-' + g + '.' + c + '.' + l);
-            parents.push( 'gcl-' + g + '.' + c + '.' + (l-1));
-
-            colors.push('rgba(0,0,0,0.0)');
-            lineColors.push( 'lightgrey');
-            lineWidths.push(1);
-
-            values.push(1);
-
-            groups.push(g);
-          }
-        }
-
-      }
-
-      // 2nd pass : get parameters for redistribution / highlight
-
-      for ( let g = 0; g < studentGroups.length; g++) {
-
-        group = studentGroups[g];
-
-        // find start & end index of group in groups array
-        let firstCell = groups.findIndex( groupNr => groupNr == g),
-            lastCell = groups.lastIndexOf(g);
-
-        let firstCompNameInGroup = group.competence[0].name, 
-            compIndexStart = labels.findIndex( compName => compName == firstCompNameInGroup) + 1,  // weird + 1, seems needed in redistributeLabels, so rename variables
-            nrOfCompetencesInGroup = group.competence.length,
-            compIndexEnd = compIndexStart + nrOfCompetencesInGroup - 1;
-        
-        if (jj.config.log) {
-          console.log( 'redistributione', competenceLanes, compIndexStart, compIndexEnd, 'total cells, cellstart, end', groups.length, firstCell, lastCell);
-        }
-        
-        group.highlight = {};
-        group.highlight.label = jj.redistributeLabels(competenceLanes, compIndexStart, compIndexEnd);
-        group.highlight.values = jj.redistribute( groups.length, competenceLanes, firstCell, lastCell, nrOfCompetencesInGroup);
-
-      }
-      
-      //root value becomes the sum of level 1 = nr of competence lines
-      values[0] = competenceLanes;
-
-      if (jj.config.log) {
-        console.log( '# competence lanes', competenceLanes);
-        console.log( 'labels', labels);
-        console.log( 'ids', ids);
-        console.log( 'parents', parents);
-        console.log( 'values', values);
-        console.log( 'colors', colors);
-        console.log( 'groups', groups);
-        console.log( 'jjStudent', jjStudent);
-      }
-
-      let dataMain = {
-        type: "sunburst",
-        ids: ids,
-        parents: parents,
-        branchvalues: 'total',
-        values: values,
-        sort: false,
-        marker: { 
-          colors: colors,
-          line: {
-            color: lineColors,
-            width: lineWidths,
-        }},
-        textinfo: 'none',
-        labels: values, // whatever array of the correct length
-        rotation: 0,
-        leaf: { opacity: 1}
-      };
-
-      let dataOverlay = {
-        // sun burst overlay only for the labels
-        // all arrays have n items, an item per competence line.
-        type: 'sunburst',
-        labels: labels,
-        parents: Array(competenceLanes).fill(''),
-        values: Array(competenceLanes).fill(1),
-        branchvalues: 'total',
-        sort: false,
-        marker: { 
-          colors: Array(competenceLanes).fill('rgba(0,0,0,0)'), // hide the sectors by using a color with alpha level 0
-          line: { 
-            width: 0, // set width to 0 to hide also the lines in between, or set to 4 to make the lanes more distinct
-            color: 'lightgrey'
-          }
-        }, 
-        textinfo: 'text',  // do not use label, but text, to show the labels on the graph, since the labels are used as a key (since no ids), and cannot be animated
-        text: [...labels],  // shallow copy
-        insidetextorientation: 'radial',
-        textfont: { size: jj.config.labelFontSize || 20},
-        rotation: 0,
-        leaf: { opacity: 1}
-      };
-
-      let data = [
-        dataMain, 
-        dataOverlay
-      ];
-
-      let layout = {
-        margin: {l: 0, r: 0, b: 0, t: 0},
-        width: 800,
-        height: 800,
-        hovermode: false,
-        annotations: [{
-          font: { size: jj.config.bullEyeFontSize || 24},
-          showarrow: false,
-          text: jj.config.bullEyeText,
-        }]
-      }
-      /*
-      lineWidths[3] = 5;
-      lineColors[3] = 'lightgrey';
-      */
-
-      Plotly.newPlot( jj.config.idHtml, data, layout);
-
-      jj.addLegendItems();
-      
+      jj.plotSunburst( studentStart);
     </script>
   </body>
 </html>
