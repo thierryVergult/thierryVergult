@@ -3,7 +3,7 @@
   <head>
     <meta charset=utf-8>
     <title>opayra lab: summa sunburst</title>
-    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
+    <script src='https://cdn.plot.ly/plotly-2.22.0.min.js'></script>
     <script src="./jjSunburst.js"></script>
     <style>
       .main-svg {
@@ -24,6 +24,7 @@
         font-size: 18px;
         color: steelblue;
       }
+
     </style>
   </head>
   
@@ -37,9 +38,11 @@
       <li>legend of groups: click interaction for highlighting of group
     </p>
 
-    <ol>
-      <li>state nr 4 = something else : arceren : https://stackoverflow.com/questions/13069446/simple-fill-pattern-in-svg-diagonal-hatching</li>
-    </ol>
+    <ul>
+      <li>click event</li>
+      <li>review legend</li>
+      <li>long shot: status fill w pattern</li>
+    </ul>
     
     <h4>student start position</h4>
     <div id='idVis1'></div>
@@ -119,8 +122,8 @@
             "competence": [
                 { "level": 1, "name": "group 2 - comp 1", "statusNr": 1},
                 { "level": 2, "name": "group 2 - comp 2", "statusNr": 1},
-                { "level": 3, "name": "group 2 - comp 3", "statusNr": 1},
-                { "level": 2, "name": "group 2 - comp 4", "statusNr": 1}
+                { "level": 3, "name": "group 2 - comp 3", "statusNr": 4},
+                { "level": 2, "name": "group 2 - comp 4", "statusNr": 4}
             ]
           }, {
             "name": "muziek",
@@ -150,7 +153,7 @@
             "name": "group 2",
             "color": "steelblue",
             "competence": [
-                { "level": 4, "name": "group 2 - comp 1", "statusNr": 3},
+                { "level": 4, "name": "group 2 - comp 1", "statusNr": 4},
                 { "level": 4, "name": "group 2 - comp 2", "statusNr": 3},
                 { "level": 4, "name": "group 2 - comp 3", "statusNr": 2},
                 { "level": 4, "name": "group 2 - comp 4", "statusNr": 1}
@@ -159,7 +162,7 @@
             "name": "muziek",
             "color": "green",
             "competence": [
-                { "level": 4, "name": "notenleer", "statusNr": 3},
+                { "level": 4, "name": "notenleer", "statusNr": 4},
                 { "level": 5, "name": "triangel", "statusNr": 3},
                 { "level": 4, "name": "trommel", "statusNr": 2},
                 { "level": 4, "name": "zang", "statusNr": 1}

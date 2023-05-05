@@ -9,11 +9,12 @@ jj.config = {
   "highlightPct": 50,
   "highlightClearLabels": true,
   "defaultLineWidth": 3,
+  "defaultLineColor": "white",
   "status": [  // student statusNr maps to this style status (statusNr 1 maps to array entry 0)
     { "opacityPct": 35}, // 0% is volledig transparant
     { "opacityPct": 70},
     { "opacityPct": 100}, // 100% is volledig zichtbaar
-    { "linewidth": 5}  // to do
+    { "linewidth": 8, "linecolor": 'pink', "opacityPct": 100}
   ]
 };
 
@@ -202,11 +203,6 @@ jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
 
   let plotlyTraces = jj.prepareData( studentData);
   studentData.traces = plotlyTraces;
-  /*
-    lineWidths[3] = 5;
-    lineColors[3] = 'lightgrey';
-  */
-
       
   Plotly.newPlot( studentData.idHtml, plotlyTraces, jj.layout);
       
@@ -255,7 +251,7 @@ jj.prepareData = function( student) {
           // default styling
           student.colors.push(group.color);
           student.lineWidths.push( jj.config.defaultLineWidth);
-          student.lineColors.push( 'white');
+          student.lineColors.push( jj.config.defaultLineColor);
 
         } else {
           // styling on the edge
@@ -264,8 +260,10 @@ jj.prepareData = function( student) {
               statusStyle = jj.config.status[statusIndex],
               opacityPct = statusStyle.opacityPct || 100,
               opacityHex = Math.trunc((255 * opacityPct / 100)).toString(16);
-              linewidth = statusStyle.linewidth || jj.config.defaultLineWidth;
-          //console.log( statusIndex, statusStyle, opacityPct, opacityHex, linewidth);
+              linewidth = statusStyle.linewidth || jj.config.defaultLineWidth,
+              linecolor = statusStyle.linecolor || jj.config.defaultLineColor;
+
+          //console.log( statusIndex, statusStyle, opacityPct, opacityHex, linewidth, linecolor);
 
           let col = group.color;
           col = jj.colorHex(col) + opacityHex;
@@ -273,7 +271,7 @@ jj.prepareData = function( student) {
 
           student.lineWidths.push(linewidth);
 
-          student.lineColors.push( 'white');
+          student.lineColors.push( linecolor);
         }
       }
 
