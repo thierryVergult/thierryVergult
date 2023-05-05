@@ -210,9 +210,10 @@ jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
 
   let plot = document.getElementById( idHtml);
   plot.on('plotly_sunburstclick', function(d){
-    let lane = d.points[0];
-    console.log( 'click', lane.pointNumber, lane.text, lane, d);
-    jj.highlightGroup( studentData, 0);  // to do : map this to group nr
+    let lane = d.points[0],
+        groupId = studentData.internalGroupsLabel[lane.pointNumber];
+    console.log( 'click', 'group', groupId, 'laneId', lane.pointNumber, lane.text, lane, d);
+    jj.highlightGroup( studentData, groupId);
 
   });
 }
@@ -228,7 +229,8 @@ jj.prepareData = function( student) {
   student.labels = [],
   student.lineColors = [''],
   student.lineWidths = [0],
-  student.internalGroups = [-1];  // not used to feed plotly, but to make later processing easier.
+  student.internalGroups = [-1],  // not used to feed plotly, but to make later processing easier.
+  student.internalGroupsLabel = [];
 
   student.competenceLanes = 0;
 
@@ -245,6 +247,7 @@ jj.prepareData = function( student) {
       student.competenceLanes +=1;
 
       student.labels.push( comp.name);
+      student.internalGroupsLabel.push(g);
 
       for ( let l = 0; l < comp.level; l++) {
 
