@@ -207,6 +207,14 @@ jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
   Plotly.newPlot( studentData.idHtml, plotlyTraces, jj.layout);
       
   jj.addLegendItems( studentData);
+
+  let plot = document.getElementById( idHtml);
+  plot.on('plotly_sunburstclick', function(d){
+    let lane = d.points[0];
+    console.log( 'click', lane.pointNumber, lane.text, lane, d);
+    jj.highlightGroup( studentData, 0);  // to do : map this to group nr
+
+  });
 }
 
 
