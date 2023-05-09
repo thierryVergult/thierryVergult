@@ -5,11 +5,12 @@ jj.config = {
   "labelFontSize": 20,
   "bullEyeText": "",
   "bullEyeFontSize": 20,
-  "log": true,
+  "log": false,
   "highlightPct": 50,
   "highlightClearLabels": true,
   "defaultLineWidth": 3,
   "defaultLineColor": "white",
+  "graphDimensionPx": 600,
   "status": [  // student statusNr maps to this style status (statusNr 1 maps to array entry 0)
     { "opacityPct": 35}, // 0% is volledig transparant
     { "opacityPct": 70},
@@ -63,19 +64,19 @@ jj.redistributeLabels = function ( student, lanes, laneStart, laneEnd) {
   let factor = 10;  // for better precision
       pct = jj.config.highlightPct || 50,
       highlightLanes = laneEnd - laneStart + 1,
-      highlightPct = pct * factor / highlightLanes,    
-      nonHighlightPct = (100-pct) * factor / (lanes - highlightLanes);
+      highlightPct = pct / highlightLanes * factor,  // pct of one highlighted lane * factor
+      nonHighlightPct = (100-pct) / (lanes - highlightLanes) * factor;  // // pct of one non-highlighted lane * factor
 
   highlightPct = Math.trunc(highlightPct);
   nonHighlightPct = Math.trunc(nonHighlightPct);
 
   let arr = Array(lanes).fill(nonHighlightPct),
-      lab = Array(lanes).fill('');
+      highlightLabelsOnly = Array(lanes).fill('');
 
   for (let i = 0; i < highlightLanes; i++ ) {
     let ind = laneStart - 1 + i;
     arr[ind] = highlightPct;
-    lab[ind] = student.labels[ind];
+    highlightLabelsOnly[ind] = student.labels[ind];
   }
 
   let rotationDegrees = nonHighlightPct * (laneStart - 1) / 100 * 360 / factor;
@@ -88,7 +89,7 @@ jj.redistributeLabels = function ( student, lanes, laneStart, laneEnd) {
 
   //console.log( 'highlight', highlightPct, nonHighlightPct, 'new label values', arr, 'rota', rotationDegrees + '°');
 
-  return { 'values': arr, 'rotation': rotationDegrees, 'labels': lab};
+  return { 'values': arr, 'rotation': rotationDegrees, 'highlightLabelsOnly': highlightLabelsOnly};
 }
 
 
@@ -115,9 +116,8 @@ jj.highlightGroup = function ( student, groupNr, duration = 2000) {
     traces[0].rotation = rotation;
     traces[1].rotation = rotation;
 
-    if (jj.config.highlightClearLabels) {
-      traces[1].text = highlight.label.labels;
-    }
+    // update the labels of the lanes to only the highlighted lanes (of the group)
+    if (jj.config.highlightClearLabels) traces[1].text = highlight.label.highlightLabelsOnly;
   }
 
   Plotly.animate( student.idHtml, {
@@ -140,7 +140,7 @@ jj.addLegendItems = function(student) {
   let idLegend = document.getElementById( student.idLegendHtml);
 
   if (idLegend) {
-    console.log('build legend');
+    
     for ( let g = 0; g < student.group.length; g++) {
 
       let group = student.group[g];
@@ -191,8 +191,8 @@ jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
 
   jj.layout = {
     margin: {l: 0, r: 0, b: 0, t: 0},
-    width: 800,
-    height: 800,
+    width:  jj.config.graphDimensionPx || 800,
+    height: jj.config.graphDimensionPx || 800,
     hovermode: false,
     annotations: [{
       font: { size: jj.config.bullEyeFontSize || 24},
@@ -208,11 +208,12 @@ jj.plotSunburst = function( studentData, idHtml, idLegendHtml) {
       
   jj.addLegendItems( studentData);
 
+  // set the plotly_sunburstclick event
   let plot = document.getElementById( idHtml);
-  plot.on('plotly_sunburstclick', function(d){
-    let lane = d.points[0],
+  plot.on('plotly_sunburstclick', function(d) {
+    let lane = d.points[0],  // contains the details of the point clicked, such as pointNumber (id) and as proof, the text.
         groupId = studentData.internalGroupsLabel[lane.pointNumber];
-    console.log( 'click', 'group', groupId, 'laneId', lane.pointNumber, lane.text, lane, d);
+    if (jj.config.log) console.log( 'click', 'group', groupId, 'laneId', lane.pointNumber, lane.text, 'lane', lane, 'd', d);
     jj.highlightGroup( studentData, groupId);
 
   });
