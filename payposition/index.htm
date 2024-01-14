@@ -1,0 +1,113 @@
+<!doctype html>
+  <html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>opayra lab - pay position</title>
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+  </head>
+  
+  <body>
+    <div id='myDiv' style="width: 800px"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+    <script>
+      let startkolomPerLevel = [1, 2, 3, 4, 5, 7, 9, 11],
+          startAmountPerLevel = [1000.01, 2000.02,  3000.03,  4000.04,  5000.05,  6000.06,  7000.07,
+                                 8000.08, 9000.09, 10000.10, 11000.11, 12000.12, 13000.13, 14000.14],
+          payPositions = 4;
+
+      function ppData( startAt) {
+        
+        let d = {};
+        d.colVal = [];  // stores the value of the color value for the color scale, from 1 to ..
+        d.pp = []; // stores the pay positions (pp1 - pp2 - pp3- pp4) at the right place in the array, per level
+        d.levels = [],
+        d.letters = [];
+        
+        let columns = startAt.at(-1) + payPositions - 1;
+        
+        // fill the letters array
+        for (var i = 0; i < columns; i++) {
+          d.letters.push( String.fromCharCode(65+i)); // 65 is ascii A
+        }
+        
+        for (var i = 0; i < startAt.length; i++) {
+          // push the levels array
+          d.levels.push(i+1);
+          
+          const col = Array(columns),
+                ppo = Array(columns);
+          
+          // and fill now the real values : color scale value & pay position
+          for ( var p = 0; p < payPositions; p++) {
+            let colNr = startAt[i] + p -1;
+            col[ colNr] = colNr;
+            ppo[ colNr] = p+1;
+          }
+          
+          d.colVal[i] = col;
+          d.pp[i] = ppo;
+        }
+        
+        //console.log(d);
+        return d;
+      }
+
+      let d = ppData( startkolomPerLevel);
+
+      var data = [
+        {
+          x: d.letters,
+          y: d.levels,
+          z: d.colVal,
+          type: 'heatmap',
+          ygap: 2,  // some gaps between the cells, for visual effect
+          xgap: 2,
+          colorscale: 'Bluered',
+          hoverongaps: false,
+          showscale: false,
+          text: d.pp, // pay positions, to be used in the hover template (eg: PP1)
+          xaxis: 'x',
+          hovertemplate: '&nbsp; level %{y} &nbsp; PP%{text} <extra></extra>' // <extra> to remove 'trace1' from the hover box
+        }, {
+          // 2nd, dummy trace setting only the xaxis to the 2nd, matching x-axis
+          xaxis: "x2"
+        }
+      ];
+
+      var layout = {
+        title: { text: 'IT pay positions'},
+        hoverlabel: { bgcolor: 'lightgrey' },
+        xaxis: { 
+          tickson: "boundaries", // ticks and grid lines are drawn half a category to the left/bottom of labels.
+          ticks: '',
+          side: 'top',
+          fixedrange: true
+        },
+        xaxis2: {
+          matches: "x",
+          type: 'category', // set type explicit, to make it working for category (if not only numerical range)
+          title: "starts at .. €",
+          overlaying: "x", // required to not overwrite the 1st (real) trace
+          tickvals: d.letters,
+          ticktext: startAmountPerLevel, // mapped value for each tick val (can use html for layout, when desired)
+          tickfont: { size: 9},
+          showgrid: false,  // ps: replace this w gridwidth 10, which also gives a nice effect: a pilar in the middle
+          //gridwidth: 10
+        },
+        yaxis: { 
+          type: 'category',
+          tickson: "boundaries",
+          ticks: "",
+          title: { text: 'level'},
+          side: 'right',
+          anchor: 'free',
+          position: 1,
+          shift: 20,  // xaxis does not have the shift attribute
+          fixedrange: true
+        }
+      };
+
+      Plotly.newPlot('myDiv', data, layout);
+    </script>
+  </body>
+</html>
