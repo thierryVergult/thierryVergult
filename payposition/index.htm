@@ -12,8 +12,8 @@
     <script>
       const param = { 
               startkolomPerLevel: [1, 2, 3, 4, 5, 7, 9, 11],
-              startAmountPerLevel: [1000.01, 2000.02,  3000.03,  4000.04,  5000.05,  6000.06,  7000.07,
-                                     8000.08, 9000.09, 10000.10, 11000.11, 12000.12, 13000.13, 14000.14],
+              startAmountPerLetter: [1000.01, 2000.02,  3000.03,  4000.04,  5000.05,  6000.06,  7000.07,
+                                     8000.08, 9000.09, 10000.10, 11000.11, 12000.12, 13000.13, 14000.14+0],
               payPositions: 4,
               pTitle: 'IT Pay Positions'
             };
@@ -43,7 +43,7 @@
           // and fill now the real values : color scale value & pay position
           for ( var p = 0; p < param.payPositions; p++) {
             let colNr = param.startkolomPerLevel[i] + p -1;
-            col[ colNr] = colNr;
+            col[ colNr] = param.startAmountPerLetter[colNr];;
             ppo[ colNr] = p+1;
           }
           
@@ -67,19 +67,39 @@
           xgap: 2,
           colorscale: 'Bluered',
           hoverongaps: false,
-          showscale: false,
+          showscale: true,
+          colorbar: { 
+            orientation: 'h',
+            tickmode: 'array',
+            tickvals: param.startAmountPerLetter,
+            ticktext: param.startAmountPerLetter,
+            ticklabelposition: 'outside right',
+            xpad: 0, // to fully align with the full length of all columns
+            ypad: 10,
+            ticks: 'inside',
+            tickcolor: 'white',
+            thickness: 20,
+            outlinewidth: 0,
+            tickwidth: 2,
+            ticklen: 4,
+            tickfont: { size: 7},
+            y: 0,
+            yanchor: 'top'
+            },
+          zmin: param.startAmountPerLetter[0],
+          zmax: Number( param.startAmountPerLetter.slice(-1)) + 1000,
           text: d.pp, // pay positions, to be used in the hover template (eg: PP1)
           hovertemplate: '&nbsp; level %{y} &nbsp; PP%{text} <extra></extra>' // <extra> to remove 'trace1' from the hover box
         }, {
           // 2nd, dummy trace setting only the xaxis to the 2nd, matching x-axis
-          xaxis: "x2",
+          // xaxis: "x2",
           yaxis: 'y2'
         }
       ];
 
       var layout = {
         title: { text: param.pTitle},
-        hoverlabel: { bgcolor: 'lightgrey' },
+        hoverlabel: { bgcolor: 'lightgrey'},
         xaxis: { 
           tickson: "boundaries", // ticks and grid lines are drawn half a category to the left/bottom of labels.
           ticks: '',
@@ -92,7 +112,7 @@
           title: "starts at .. €",
           overlaying: "x", // required to not overwrite the 1st (real) trace
           tickvals: d.letters,
-          ticktext: param.startAmountPerLevel, // mapped value for each tick val (can use html for layout, when desired)
+          ticktext: param.startAmountPerLetter, // mapped value for each tick val (can use html for layout, when desired)
           tickfont: { size: 9},
           showgrid: false,  // ps: replace this w gridwidth 10, which also gives a nice effect: a pilar in the middle
           //gridwidth: 10
