@@ -1,0 +1,24 @@
+<script>
+  function handleBloggerResponse(response) {
+            
+    var feed = response.items;
+    //console.log( 'blog feeds found: ' + feed.length);
+            
+    // create a top 3 list.
+    document.getElementById("idBlogTitles").innerHTML = '<ul>';   
+    for ( i = 0 ; i < 3; i++) {
+      document.getElementById("idBlogTitles").innerHTML += "<li>" + feed[i].title;
+    }
+    document.getElementById("idBlogTitles").innerHTML += '</ul>';       
+  }
+</script>
+
+<div class='header'>blog</div>
+<div class='article'>
+  From the time before social networks, here some <a href="https://oraclehrms.blogspot.com" target="_blank">blog posts</a>.
+  <div id="idBlogTitles"></div>
+</div>
+
+<!-- my blog id is 5750484 (log in into blogger, and see the id in the url ) 
+     the api key is generated in console.developers.google.com -->
+<script src="https://www.googleapis.com/blogger/v3/blogs/5750484/posts?callback=handleBloggerResponse&key=AIzaSyDqfppxCtpfDu-e8RVkcR4KF6Nt_6SU548"></script>
