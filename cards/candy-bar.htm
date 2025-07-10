@@ -1,0 +1,155 @@
+<link rel="stylesheet" href="./assets/candy-bar.css"/>
+
+        <style>
+          input[name='candy-sub-cat']:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -2px;
+            left: -1px;
+            position: relative;
+            background-color: #d1d3d1;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid white;
+            cursor: pointer;
+          }
+
+          input[name='candy-sub-cat']:checked:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 5px;
+            top: -2px;
+            left: -1px;
+            position: relative;
+            background-color: var(--main-color);
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid white;
+          }
+        </style>
+
+        <div class='header'>candy bar
+          <div style='float:right;'>sub-categories
+            <label><input type="radio" id="candy-face3" name="candy-faces" value="3" onclick="opayra.recreateScene(3);">3</label>
+            <label><input type="radio" id="candy-face3" name="candy-faces" value="4" onclick="opayra.recreateScene(4);" checked>4</label>
+          </div>
+        </div>
+        <div class='article'>
+          
+          <script>
+            //opayra = {};  // enforce error
+            opayra.in = {};
+      
+            opayra.algo = {};
+            opayra.algo.yMax = 4;  // to do: fix usage in camera bullseye
+            opayra.algo.X = 0; // to do, including camera, changing this one is now doing nothing. Need to understand, but is potentially very nice
+            opayra.algo.facesMax = 4;
+      
+            opayra.config = {}
+            opayra.config.debug = false;
+            opayra.config.debugTextureBarNr = 2;
+            opayra.config.tooltipPosition = 'pointerNo';
+            opayra.config.tooltipShowTotalOfBar = true;
+            
+            opayra.in.title = 'employees by department';
+            opayra.in.barLabel = ['sal', 'off', 'r&d', 'prd'];
+            opayra.in.barLabelLong = ['sales', 'back office', 'r&d', 'production'];
+      
+            opayra.in.face = {};
+            opayra.in.face.color = [];
+            opayra.in.face.color[2] = [ 'lightgreen', 'lightblue'];
+      
+            opayra.in.face.catLabel = [];
+            opayra.in.face.catLabel[0] = ['male', 'female'];
+            opayra.in.face.catLabel[1] = ['home', 'office'];
+            opayra.in.face.catLabel[2] = ['-30', '30+'];
+            opayra.in.face.catLabel[3] = ['A', 'B', 'C', 'C+'];
+      
+            opayra.in.face.category = [];
+            opayra.in.face.category[0] = 'gender';  // used in tooltip text
+            opayra.in.face.category[1] = 'workplace';  // used in tooltip text
+            opayra.in.face.category[2] = 'age group';  // used in tooltip text
+            opayra.in.face.category[3] = 'category';  // used in tooltip text
+      
+            opayra.in.yAxValues = [ 100, 200, 300]; // see if the d3 scale library can do things here
+      
+            opayra.val = {};
+            opayra.val = [];
+      
+            opayra.val[0] = [];
+            opayra.val[0][0] = [40, 170];
+            opayra.val[0][1] = [210];
+            opayra.val[0][2] = [100, 110];
+            opayra.val[0][3] = [150, 60];
+            opayra.val[0][4] = [150, 60];
+      
+            opayra.val[1] = [];
+            opayra.val[1][0] = [100, 100];
+            opayra.val[1][1] = [150, 50];
+            opayra.val[1][2] = [20, 180];
+            opayra.val[1][3] = [150, 50];
+            opayra.val[1][4] = [150, 50];
+      
+            opayra.val[2] = [];
+            opayra.val[2][0] = [60, 260];
+            opayra.val[2][1] = [210,110];
+            opayra.val[2][2] = [150, 170];
+            opayra.val[2][3] = [50, 50, 100, 120];
+            opayra.val[2][4] = [50, 50, 100, 120];
+            
+            opayra.val[3] = [];
+            opayra.val[3][0] = [100, 200];
+            opayra.val[3][1] = [180, 120];
+            opayra.val[3][2] = [50, 250];
+            opayra.val[3][3] = [50, 50, 100, 100];
+            opayra.val[3][4] = [50, 50, 100, 100];
+            
+            opayra.col = ['steelblue', 'red', 'green', 'orange', 'yellow'];
+            
+          </script>
+          <p>An example of a 3d multi-categorical bar chart</p>
+          <div class="cat-bar-graph">
+            <div class="cat-bar-graph-header">
+              <span id="candy-bar-graph-header-title">title</span>
+              
+              <div class="cat-bar-graph-header-subcategories">
+                <label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { faceNr: 0});">&nbsp;by gender</label>
+                <label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { faceNr: 1});">&nbsp;by workplace</label>
+                <label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { faceNr: 2});">&nbsp;by age group</label>
+                <label><input type="radio" id="candy-sub-cat4" name="candy-sub-cat" value="candy-sub-cat4" onclick="opayra.rotateBarsRadio( { faceNr: 3});">&nbsp;by category</label>
+              </div>
+              
+            </div>
+
+            <div class='candy-bar'>
+              <canvas id="opayra-caty-bar-chart"></canvas>
+            </div>
+
+            <ul style='font-size: smaller;'>
+              <li>You can select to see 3 or 4 sub-categories on a candy bar
+              <li>You can choose the sub-category you want to see in front
+              <li>click on a pane to see the actual numbers
+            </ul>
+          </div>
+
+          <script>
+      
+            var canvas = document.getElementById("opayra-caty-bar-chart");
+            var engine = new BABYLON.Engine( canvas, true);
+            var scene = createScene(canvas, engine);
+      
+            engine.runRenderLoop(function () {
+              scene.render();
+            });
+      
+            window.addEventListener("resize", function () {
+              engine.resize();
+            });
+            
+          </script>
+        </div>
+
+        <i><a href="https://www.babylonjs.com" target='_blank' style='font-weight: normal;'>powered by babylon.js</a></i>

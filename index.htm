@@ -12,10 +12,9 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     
     <script>
-      function loadHtmlCard( cardHtml) {
-        const script = document.currentScript,
-              card = script.parentElement;
-        cardHtml = cardHtml || 'cards/' + card.id + '.htm'      
+      function loadHtmlCard( card) {
+        cardHtml = 'cards/' + card.id + '.htm';
+
         fetch( cardHtml)
           .then( response => response.text())
           .then( html => {
@@ -41,8 +40,15 @@
           });
       }
     </script>
-
+    
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/6.1.1/d3.min.js"></script>
+    <script src="https://thierryvergult.github.io/CandyPie/candy-pie-babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
+    <script src="./assets/meshwriter.min.js"></script>
+    <script src="./assets/opayra.babylon.js"></script>
+    <script src="./assets/candy-bar.js"></script>
     
     <style>
       /* global css variable */
@@ -101,529 +107,40 @@
   <body>
     <div class='container'>
       
-      <div class='card' id='welcome'><script>loadHtmlCard();</script></div>
-
-      <div class='card' id='admin'><script>loadHtmlCard()</script></div>
-      
-      <div class='card' id='now'><script>loadHtmlCard()</script></div>
-      
-      <div class='card' id='blog'><script>loadHtmlCard()</script></div>
-      
-      <div class='card' id='headcount'>
-        <div class='header'>headcount visualisation</div>
-        <div class='article'>
-          <div>
-            <img src="./assets/in_out.jpg" style="width:100%;">
-          </div>
-        
-        </div>
-      </div>
-
-      <div class='card' id='payslip'>
-        <style>
-          input[name='trace']:checked:after {
-            width: 15px;
-            height: 15px;
-            top: -6px;
-            left: -8px;
-            position: relative;
-            background-color: var( --main-color);
-            content: '';
-            display: inline-block;
-            visibility: visible;
-            border: 4px solid white;
-          }
-
-          input[value='sunburst']:after {
-            border-radius: 15px;
-          }
-        </style>
-
-        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-
-        <div class='header'>payslip visualisation</div>
-        <div class='article'>
-          <label for="sunburst"></label><input type="radio" name="trace" value="sunburst" onclick="show_payslip(value);" checked="checked">sunburst</label>
-          <label for="treemap"> </label><input type="radio" name="trace" value="treemap"  onclick="show_payslip(value);">treemap</label>
-
-          <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
-        </div>
-
-        <script>
-          function show_payslip( traceType) {
-            //console.log( traceType);
-            data[0].type = traceType;
-
-            if (traceType == 'treemap') {
-              data[0].labels[0] = 'Uniform loon';
-            }
-            Plotly.newPlot( 'payBurst', data, layout, config);
-          }
-
-          var data = [{
-            type: "sunburst",
-            ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
-            labels: [ "Uniform<br>loon", "netto", "Inhoudingen", "Maandloon", "Gewerkte<br>uren", "zvw", "loonheffing", " "],
-            parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
-            values:  [2000, 1144.83, 855.17, 1500, 500, 109.00, 746.17, 1144.83],
-            outsidetextfont: {size: 20, color: "#377eb8"},
-            leaf: {opacity: 0.7},
-            marker: {
-                      line: {width: 6},
-                      colors: [ "#009FC2","#91cd97","#f25752"]
-                    },
-            branchvalues: 'total',
-            textposition: 'middle center',
-            sort: false, // hey hey, this is mine
-            rotation: 90, // hey hey
-            root: { color: "#009FC2"} // hey
-          }];
-          
-          var layout = {
-            margin: {l: 0, r: 0, b: 0, t: 0},
-            width: 320,
-            height: 320
-          };
-
-          var config = {
-            modeBarButtonsToRemove: [ 'toggleHover']
-          }
-          
-          var traceType = document.querySelector('input[name="trace"]:checked').value;
-          show_payslip( traceType);
-
-        </script>
-      </div>
-
-      <div class='card' id='africa'>
-          <link rel="stylesheet" href="./assets/map.css">
-  
-          <script src="//cdnjs.cloudflare.com/ajax/libs/d3/6.1.1/d3.min.js"></script>
-          <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-
-        <div class='header'>payroll in africa</div>
-        <div class='article'>
-          <div id="map"></div>
-          <script src="./assets/map.js"></script>
-        </div>
-      </div>
-      
-      <div class='card' id='apex'>
-        <div class='header'>apex on apps</div>
-        <div class='article'>
-          <a href="http://sites.google.com/a/popay.be/apex-on-apps/integration" target="_blank">More info</a>
-          to integrate apex, aka
-          <a href="http://apex.oracle.com" target="_blank">Oracle application express</a>, with Oracle's eBusiness suite.
-        </div>
-      </div>
-
-      <div class='card'>
-        <div class='header'>documentool</div>
-        <div class='article'>
-          <a href="http://www.documentool.com" target="_blank">Documentool</a> generates your Oracle eBusiness suite Hr &amp; Payroll setup documentation.
-          <p></p>
-          <img src="./assets/documentoolLoop.gif" width="100%">
-        </div>
-      </div>
-
-      <div class='card' id='techno'>
-        <div class='header'>techno</div>
-        <div class='article'>
-          <ul class="fa-ul">
-            <li><i class="fa-li fa fa-check-square-o"></i>oracle database</li>
-            <li><i class="fa-li fa fa-check-square-o"></i>html &amp; css</li>
-            <li><i class="fa-li fa fa-check-square-o"></i>javascript</li>
-            <li><i class="fa-li fa fa-check-square-o"></i>sql &amp; plsql</li>
-            <li><i class="fa-li fa fa-check-square-o"></i>oracle application express (apex)</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class='card' id='knaak'>
-        <div class='header'>nl tax - knaak
-          <span id="taxYear" class="note-right" onclick="flipYear()">1999</span>
-        </div>
-        <div class='article'>
-          <p>Bereken loonheffing &amp; sv premies</p>
-          <ul>
-            <li>witte maandtabel
-            <li>jonger dan de AOW leeftijd
-            <li>woonland Nederland
-          </ul>
-          <br>
-          <p>uniform loon
-            <input type="number" id="brutoLoon" name="brutoLoon" min="0" max="999999" onchange="nlTaxHtml()">
-            <br><br>
-            <ul>
-              <li>loonheffing</li>
-              <ul>
-                <li id="tax01"><i class="fa fa-question"></i>
-                <li id="tax02"><i class="fa fa-question"></i>
-              </ul>
-              <li>sv bedragen
-              <ul>
-                <li id="zvwl"><i class="fa fa-question"></i>
-                <li>werkgeverslasten &nbsp; &nbsp; <small><small id="id-sv-er-pct"></small></small>
-                <ul>
-                  <li id="wgl-wab-laag"><i class="fa fa-question"></i>
-                  <li id="wgl"><i class="fa fa-question"></i>
-                  </ul>
-                </ul>
-            </ul>
-          </p>
-
-          <br>
-          <i>sql-webservice on a public google sheet.</i>
-          
-          <script>
-            // set tax year, based upon current year
-            document.getElementById("taxYear").innerHTML = new Date().getFullYear();
-
-            // query the nl calc year values
-
-            opayra = {};
-
-            var queryString = encodeURIComponent('SELECT A, B, C, D, E, F, G ');
-            var url = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:csv&range=A2:G9' // 2 to 9 : so ok for 8 years
-                    + '&sheet=param' 
-                    + '&tq=' + queryString;
-      
-            console.log( 'url to google sheet with param sql:'+ url);
-      
-            fetch( url)
-            .then( response => response.text())
-            .then( function (csvData) {
-              console.log( 'param data from google sheet below');
-              console.log( csvData);
-              
-              opayra.csvParam = csvData.split("\n");
-
-              opayra.y = [];
-
-              for (i=0 ; i < opayra.csvParam.length; i++) {
-                var oneYear = opayra.csvParam[i].split(',');
-                //console.log( oneYear);
-
-                var y0 = parseInt( oneYear[0].replace( /"/g, ''));
-                //console.log( y0);
-
-                opayra.y[y0] = {};
-
-                opayra.y[y0].zvw_ee = parseFloat( oneYear[1].replace( /"/g, ''));
-                opayra.y[y0].sv_er = parseFloat( oneYear[2].replace( /"/g, ''));
-                opayra.y[y0].sv_max = parseFloat( oneYear[3].replace( /"/g, ''));
-                opayra.y[y0].delta_wab = parseInt( oneYear[4].replace( /"/g, ''));
-                opayra.y[y0].tax_max_in_tab = parseInt( oneYear[5].replace( /"/g, ''));
-                opayra.y[y0].pct_tax_over_max = parseFloat( oneYear[6].replace( /"/g, ''));
-
-              }
-
-            });
-            
-            function flipYear() {
-              var taxY = Number( document.getElementById("taxYear").innerText);
-              
-              const years = [ 2022, 2023];
-              
-              taxY = ( taxY == years[0] ? years[1] : years[0]);
-              
-              document.getElementById("taxYear").innerHTML = taxY;
-
-              nlTaxHtml();
-            }
-
-            function euro2id( id, txt, amount, plus) {
-              var extra = '';
-              if (plus) {
-                extra = '&nbsp; <small>&EqualTilde;</small>';
-              }
-
-              document.getElementById(id).innerHTML = txt + ' : &euro;' + amount.toFixed(2) + extra;
-            }
-
-            function nlTaxHtml() {
-              var brutoLoon = Number( document.getElementById("brutoLoon").value);
-              var taxY = Number( document.getElementById("taxYear").innerText);
-
-              console.log( 'bruto=' + brutoLoon + ' year=' + taxY);
-
-              nlTax( brutoLoon, taxY);
-            }
-
-            function nlTax( brutoLoon, year) {
-              
-              var queryString = encodeURIComponent('SELECT C, D where A <= ' + brutoLoon + ' and B >= ' + brutoLoon);
-              var url = 'https://docs.google.com/spreadsheets/d/195Am8WL7nybm4mUgUSVbG8kYB-Ob6kts5T3iVj-YQAQ/gviz/tq?tqx=out:csv&range=A2:D3000' 
-                      + '&sheet=' + year 
-                      + '&tq=' + queryString;
-      
-              console.log( 'url to google sheet with sql:'+ url);
-      
-              fetch( url)
-              .then( response => response.text())
-              .then( function (data) {
-      
-                console.log( '1 line csv from google sheet: ' + data);
-                var taxValues = data.split(',');
-                
-                var tax_zonder_lhk = parseFloat( taxValues[0].replace( /"/g, ''));
-                var tax_met_lhk = parseFloat( taxValues[1].replace( /"/g, ''));
-                //console.log( tax_zonder_lhk + ' - ' + tax_met_lhk + ' : delta=' + (tax_zonder_lhk - tax_met_lhk));
-
-                var taxPlus = false;
-
-                const taxMax = opayra.y[year].tax_max_in_tab;
-                const taxPctOverMax = opayra.y[year].pct_tax_over_max / 100;
-
-                if ( brutoLoon > taxMax) {
-                  tax_zonder_lhk = tax_zonder_lhk + (brutoLoon - taxMax) * taxPctOverMax;
-                  tax_met_lhk = tax_zonder_lhk;
-                  taxPlus = true;
-                }
-
-                euro2id( 'tax01', 'geen loonheffingskorting', tax_zonder_lhk, taxPlus);
-                euro2id( 'tax02', 'met loonheffingskorting', tax_met_lhk, taxPlus);
-
-                const svMaxMonthBase = opayra.y[year].sv_max;
-                const pctZvwl = opayra.y[year].zvw_ee / 100;
-                const pctWgl = opayra.y[year].sv_er / 100;
-                const deltaWabLaag = opayra.y[year].delta_wab / 100;
-
-                svLoon = brutoLoon;
-                svPlus = false;
-
-                if (brutoLoon > svMaxMonthBase) {
-                  svLoon = svMaxMonthBase;
-                  svPlus = true;
-                }
-                var zvwl = svLoon * pctZvwl;
-                var wgl = svLoon * pctWgl;
-                var wgl_wabLaag = svLoon * ( pctWgl - deltaWabLaag);
-
-                euro2id( 'zvwl', 'inhouding zvw', zvwl, svPlus);
-                euro2id( 'wgl-wab-laag', 'wab laag', wgl_wabLaag, svPlus);
-                euro2id( 'wgl', 'wab hoog', wgl, svPlus);
-
-                document.getElementById('id-sv-er-pct').innerHTML = opayra.y[year].sv_er + "%" + ( year == 2021 ? " (aug)" : "");
-      
-              });
-      
-            }
-      
-          </script>
-
-        </div>
-      </div>
-
-      <div class='card' id='candy-pie'>
-        <div class='header'>candy pie</div>
-        <div class='article'>
-                   
-          <h3>a configurable, interactive 3d pie chart in your browser</h3>
-
-          <div>
-            <script src="https://thierryvergult.github.io/CandyPie/candy-pie-babylon.js"></script>
-            <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
-
-            <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="width: 100%; touch-action: none;"></canvas>
-
-            <script>
-              let pie3d = {
-                'htmlCanvasId': 'candy-pie-babylon-canvas-id',
-                'slices': [
-                  { 'height': 10, 'arcPct': 1/5 * 100,  'color': 'indianred', 'label': 'one'},
-                  { 'height': 12, 'arcPct': 1/5 * 100,  'color': 'steelblue', 'label': 'two'},
-                  { 'height': 14, 'arcPct': 1/5 * 100,  'color': 'olive',     'label': 'three'},
-                  { 'height': 16, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
-                  { 'height': 18, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
-                ],
-                'spaceBetweenSlices': true,
-                'innerRadiusPct': 40,
-                'sliceShowLabel': true,
-                'labelFontFactor': 1.5,
-                'backgroundColor': 'lightgrey',
-                'clickScalePct': 20,
-                'verticalFactor': 1.6,
-                'secondsPerRotation': 20,
-                'rotationSlowDown': true
-              };
-              
-              candyPie.babylon( pie3d);
-            </script>
-
-          </div>
-
-          <p><a href="https://thierryvergult.github.io/CandyPie/" target="_blank"> &nbsp; <i class="fa fa-hand-pointer-o"></i> &nbsp; for more details</a></p>
-          
-          <p><a href="https://github.com/thierryVergult/CandyPie" target="_blank"> &nbsp; <i class="fa fa-github"></i> &nbsp; open source repository on github</a></p>
-
-          <p><a href="https://thierryvergult.github.io/CandyPie/playground.htm" target="_blank"> &nbsp; <i class="fa fa-play"></i> &nbsp; playground</a></p>
-          
-        </div>
-      </div>
-
-
-      <div class='card' id='candy-bar'>
-        <link rel="stylesheet" href="./assets/candy-bar.css"/>
-
-        <style>
-          input[name='candy-sub-cat']:after {
-            width: 15px;
-            height: 15px;
-            border-radius: 15px;
-            top: -2px;
-            left: -1px;
-            position: relative;
-            background-color: #d1d3d1;
-            content: '';
-            display: inline-block;
-            visibility: visible;
-            border: 2px solid white;
-            cursor: pointer;
-          }
-
-          input[name='candy-sub-cat']:checked:after {
-            width: 15px;
-            height: 15px;
-            border-radius: 5px;
-            top: -2px;
-            left: -1px;
-            position: relative;
-            background-color: var(--main-color);
-            content: '';
-            display: inline-block;
-            visibility: visible;
-            border: 2px solid white;
-          }
-        </style>
-
-        <div class='header'>candy bar
-          <div style='float:right;'>sub-categories
-            <label><input type="radio" id="candy-face3" name="candy-faces" value="3" onclick="opayra.recreateScene(3);">3</label>
-            <label><input type="radio" id="candy-face3" name="candy-faces" value="4" onclick="opayra.recreateScene(4);" checked>4</label>
-          </div>
-        </div>
-        <div class='article'>
-          <script src="./assets/meshwriter.min.js"></script>
-          <script src="./assets/opayra.babylon.js"></script>
-          <script src="./assets/candy-bar.js"></script>
-          <script>
-            //opayra = {};  // enforce error
-            opayra.in = {};
-      
-            opayra.algo = {};
-            opayra.algo.yMax = 4;  // to do: fix usage in camera bullseye
-            opayra.algo.X = 0; // to do, including camera, changing this one is now doing nothing. Need to understand, but is potentially very nice
-            opayra.algo.facesMax = 4;
-      
-            opayra.config = {}
-            opayra.config.debug = false;
-            opayra.config.debugTextureBarNr = 2;
-            opayra.config.tooltipPosition = 'pointerNo';
-            opayra.config.tooltipShowTotalOfBar = true;
-            
-            opayra.in.title = 'employees by department';
-            opayra.in.barLabel = ['sal', 'off', 'r&d', 'prd'];
-            opayra.in.barLabelLong = ['sales', 'back office', 'r&d', 'production'];
-      
-            opayra.in.face = {};
-            opayra.in.face.color = [];
-            opayra.in.face.color[2] = [ 'lightgreen', 'lightblue'];
-      
-            opayra.in.face.catLabel = [];
-            opayra.in.face.catLabel[0] = ['male', 'female'];
-            opayra.in.face.catLabel[1] = ['home', 'office'];
-            opayra.in.face.catLabel[2] = ['-30', '30+'];
-            opayra.in.face.catLabel[3] = ['A', 'B', 'C', 'C+'];
-      
-            opayra.in.face.category = [];
-            opayra.in.face.category[0] = 'gender';  // used in tooltip text
-            opayra.in.face.category[1] = 'workplace';  // used in tooltip text
-            opayra.in.face.category[2] = 'age group';  // used in tooltip text
-            opayra.in.face.category[3] = 'category';  // used in tooltip text
-      
-            opayra.in.yAxValues = [ 100, 200, 300]; // see if the d3 scale library can do things here
-      
-            opayra.val = {};
-            opayra.val = [];
-      
-            opayra.val[0] = [];
-            opayra.val[0][0] = [40, 170];
-            opayra.val[0][1] = [210];
-            opayra.val[0][2] = [100, 110];
-            opayra.val[0][3] = [150, 60];
-            opayra.val[0][4] = [150, 60];
-      
-            opayra.val[1] = [];
-            opayra.val[1][0] = [100, 100];
-            opayra.val[1][1] = [150, 50];
-            opayra.val[1][2] = [20, 180];
-            opayra.val[1][3] = [150, 50];
-            opayra.val[1][4] = [150, 50];
-      
-            opayra.val[2] = [];
-            opayra.val[2][0] = [60, 260];
-            opayra.val[2][1] = [210,110];
-            opayra.val[2][2] = [150, 170];
-            opayra.val[2][3] = [50, 50, 100, 120];
-            opayra.val[2][4] = [50, 50, 100, 120];
-            
-            opayra.val[3] = [];
-            opayra.val[3][0] = [100, 200];
-            opayra.val[3][1] = [180, 120];
-            opayra.val[3][2] = [50, 250];
-            opayra.val[3][3] = [50, 50, 100, 100];
-            opayra.val[3][4] = [50, 50, 100, 100];
-            
-            opayra.col = ['steelblue', 'red', 'green', 'orange', 'yellow'];
-            
-          </script>
-          <p>An example of a 3d multi-categorical bar chart</p>
-          <div class="cat-bar-graph">
-            <div class="cat-bar-graph-header">
-              <span id="candy-bar-graph-header-title">title</span>
-              
-              <div class="cat-bar-graph-header-subcategories">
-                <label><input type="radio" id="candy-sub-cat1" name="candy-sub-cat" value="candy-sub-cat1" onclick="opayra.rotateBarsRadio( { faceNr: 0});">&nbsp;by gender</label>
-                <label><input type="radio" id="candy-sub-cat2" name="candy-sub-cat" value="candy-sub-cat2" onclick="opayra.rotateBarsRadio( { faceNr: 1});">&nbsp;by workplace</label>
-                <label><input type="radio" id="candy-sub-cat3" name="candy-sub-cat" value="candy-sub-cat3" onclick="opayra.rotateBarsRadio( { faceNr: 2});">&nbsp;by age group</label>
-                <label><input type="radio" id="candy-sub-cat4" name="candy-sub-cat" value="candy-sub-cat4" onclick="opayra.rotateBarsRadio( { faceNr: 3});">&nbsp;by category</label>
-              </div>
-              
-            </div>
-
-            <div class='candy-bar'>
-              <canvas id="opayra-caty-bar-chart"></canvas>
-            </div>
-
-            <ul style='font-size: smaller;'>
-              <li>You can select to see 3 or 4 sub-categories on a candy bar
-              <li>You can choose the sub-category you want to see in front
-              <li>click on a pane to see the actual numbers
-            </ul>
-          </div>
-
-          <script>
-      
-            var canvas = document.getElementById("opayra-caty-bar-chart");
-            var engine = new BABYLON.Engine( canvas, true);
-            var scene = createScene(canvas, engine);
-      
-            engine.runRenderLoop(function () {
-              scene.render();
-            });
-      
-            window.addEventListener("resize", function () {
-              engine.resize();
-            });
-            
-          </script>
-        </div>
-
-        <i><a href="https://www.babylonjs.com" target='_blank' style='font-weight: normal;'>powered by babylon.js</a></i>
-      </div>
+      <div class='card' id='welcome'></div>
+      <div class='card' id='admin'></div>
+      <div class='card' id='now'></div>
+      <div class='card' id='blog'></div>
+      <div class='card' id='headcount'></div>
+      <div class='card' id='payslip'></div>
+      <div class='card' id='africa'></div>
+      <div class='card' id='apex'></div>
+      <div class='card' id='documentool'></div>
+      <div class='card' id='techno'></div>
+      <div class='card' id='candy-pie'></div>
+      <div class='card' id='candy-bar'></div>
       
     </div>
     
   </body>
+
+  <script>
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach( el => {
+      // if can be removed when all cards are moved, now just checking if there is content in the static file, if so (old style), do nothing.
+      if (! el.firstChild) {
+        loadHtmlCard(el);
+      }
+    });
+    /*
+      == to do ==
+      > remove the first script tag, since copied over
+      > payslip vis: checkbox not okay
+      > apex - popay url broken
+      > add standing
+      > candy-bar: bar-picker is sometimes broken
+    */
+  </script>
+
 </html>

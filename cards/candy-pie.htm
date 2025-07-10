@@ -1,0 +1,43 @@
+<div class='header'>candy pie</div>
+        <div class='article'>
+                   
+          <h3>a configurable, interactive 3d pie chart in your browser</h3>
+
+          <div>
+            
+
+            <canvas id='candy-pie-babylon-canvas-id' class='candy-pie-babylon-canvas' style="width: 100%; touch-action: none;"></canvas>
+
+            <script>
+              let pie3d = {
+                'htmlCanvasId': 'candy-pie-babylon-canvas-id',
+                'slices': [
+                  { 'height': 10, 'arcPct': 1/5 * 100,  'color': 'indianred', 'label': 'one'},
+                  { 'height': 12, 'arcPct': 1/5 * 100,  'color': 'steelblue', 'label': 'two'},
+                  { 'height': 14, 'arcPct': 1/5 * 100,  'color': 'olive',     'label': 'three'},
+                  { 'height': 16, 'arcPct': 1/10 * 100, 'color': 'aliceblue', 'label': 'four'},
+                  { 'height': 18, 'arcPct': 3/10 * 100, 'color': '#F5DEB3',   'label': 'apples'} // color: wheat
+                ],
+                'spaceBetweenSlices': true,
+                'innerRadiusPct': 40,
+                'sliceShowLabel': true,
+                'labelFontFactor': 1.5,
+                'backgroundColor': 'lightgrey',
+                'clickScalePct': 20,
+                'verticalFactor': 1.6,
+                'secondsPerRotation': 20,
+                'rotationSlowDown': true
+              };
+              
+              candyPie.babylon( pie3d);
+            </script>
+
+          </div>
+
+          <p><a href="https://thierryvergult.github.io/CandyPie/" target="_blank"> &nbsp; <i class="fa fa-hand-pointer-o"></i> &nbsp; for more details</a></p>
+          
+          <p><a href="https://github.com/thierryVergult/CandyPie" target="_blank"> &nbsp; <i class="fa fa-github"></i> &nbsp; open source repository on github</a></p>
+
+          <p><a href="https://thierryvergult.github.io/CandyPie/playground.htm" target="_blank"> &nbsp; <i class="fa fa-play"></i> &nbsp; playground</a></p>
+          
+        </div>
