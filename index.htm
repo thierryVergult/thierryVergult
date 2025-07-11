@@ -44,6 +44,7 @@
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/6.1.1/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
     <script src="https://thierryvergult.github.io/CandyPie/candy-pie-babylon.js"></script>
     <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
     <script src="./assets/meshwriter.min.js"></script>
@@ -128,15 +129,11 @@
     const cards = document.querySelectorAll('.card');
 
     cards.forEach( el => {
-      // if can be removed when all cards are moved, now just checking if there is content in the static file, if so (old style), do nothing.
-      if (! el.firstChild) {
-        loadHtmlCard(el);
-      }
+      loadHtmlCard(el);
     });
     /*
       == to do ==
       > remove the first script tag, since copied over
-      > payslip vis: checkbox not okay
       > apex - popay url broken
       > add standing
       > candy-bar: bar-picker is sometimes broken

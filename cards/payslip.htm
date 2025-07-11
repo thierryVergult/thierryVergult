@@ -1,73 +1,73 @@
 <style>
-          input[name='trace']:checked:after {
-            width: 15px;
-            height: 15px;
-            top: -6px;
-            left: -8px;
-            position: relative;
-            background-color: var( --main-color);
-            content: '';
-            display: inline-block;
-            visibility: visible;
-            border: 4px solid white;
-          }
-
-          input[value='sunburst']:after {
-            border-radius: 15px;
-          }
+  .card > .header > .note-right.square { 
+    border-radius: 0px;
+  }
 </style>
 
-        
+<div class='header'>payslip visualisation
+  <span id="payslipType" class="note-right" onclick="payslipFlipVisType()">sunburst</span>
+</div>
+<div class='article'>
+  <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
+</div>
 
-        <div class='header'>payslip visualisation</div>
-        <div class='article'>
-          <label for="sunburst"></label><input type="radio" name="trace" value="sunburst" onclick="show_payslip(value);" checked="checked">sunburst</label>
-          <label for="treemap"> </label><input type="radio" name="trace" value="treemap"  onclick="show_payslip(value);">treemap</label>
+<script>
+  function payslipFlipVisType() {
+    const eleVisType = document.getElementById('payslipType'),
+          visTypes = [ 'sunburst', 'treemap'];
+    
+    var visType = ( eleVisType.innerText == visTypes[0] ? visTypes[1] : visTypes[0]);
 
-          <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
-        </div>
+    if (visType == 'treemap') {
+      eleVisType.classList.add('square');
+    } else {
+      eleVisType.classList.remove('square');
+    }
+    
+    eleVisType.innerHTML = visType;
 
-        <script>
-          function show_payslip( traceType) {
-            //console.log( traceType);
-            data[0].type = traceType;
+    show_payslip(visType);
+  }
+  
+  function show_payslip( traceType) {
+  
+    data[0].type = traceType;
 
-            if (traceType == 'treemap') {
-              data[0].labels[0] = 'Uniform loon';
-            }
-            Plotly.newPlot( 'payBurst', data, layout, config);
-          }
+    if (traceType == 'treemap') {
+      data[0].labels[0] = 'Uniform loon';
+    }
+    Plotly.newPlot( 'payBurst', data, layout, config);
+  }
 
-          var data = [{
-            type: "sunburst",
-            ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
-            labels: [ "Uniform<br>loon", "netto", "Inhoudingen", "Maandloon", "Gewerkte<br>uren", "zvw", "loonheffing", " "],
-            parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
-            values:  [2000, 1144.83, 855.17, 1500, 500, 109.00, 746.17, 1144.83],
-            outsidetextfont: {size: 20, color: "#377eb8"},
-            leaf: {opacity: 0.7},
-            marker: {
-                      line: {width: 6},
-                      colors: [ "#009FC2","#91cd97","#f25752"]
-                    },
-            branchvalues: 'total',
-            textposition: 'middle center',
-            sort: false, // hey hey, this is mine
-            rotation: 90, // hey hey
-            root: { color: "#009FC2"} // hey
-          }];
+  var data = [{
+    type: "sunburst",
+    ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
+    labels: [ "Uniform<br>loon", "netto", "Inhoudingen", "Maandloon", "Gewerkte<br>uren", "zvw", "loonheffing", " "],
+    parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
+    values:  [2000, 1144.83, 855.17, 1500, 500, 109.00, 746.17, 1144.83],
+    outsidetextfont: {size: 20, color: "#377eb8"},
+    leaf: {opacity: 0.7},
+    marker: {
+      line: {width: 6},
+      colors: [ "#009FC2","#91cd97","#f25752"]
+    },
+    branchvalues: 'total',
+    textposition: 'middle center',
+    sort: false, // hey hey, this is mine
+    rotation: 90, // hey hey
+    root: { color: "#009FC2"} // hey
+  }];
           
-          var layout = {
-            margin: {l: 0, r: 0, b: 0, t: 0},
-            width: 320,
-            height: 320
-          };
+  var layout = {
+    margin: {l: 0, r: 0, b: 0, t: 0},
+    width: 320,
+    height: 320
+  };
 
-          var config = {
-            modeBarButtonsToRemove: [ 'toggleHover']
-          }
+  var config = {
+    modeBarButtonsToRemove: [ 'toggleHover']
+  }
           
-          var traceType = document.querySelector('input[name="trace"]:checked').value;
-          show_payslip( traceType);
+  show_payslip( 'sunburst');
 
-        </script>
+</script>
