@@ -1,73 +1,76 @@
 <style>
-  .card > .header > .note-right.square { 
+  .card > .header > .action-right.square { 
     border-radius: 0px;
   }
 </style>
 
 <div class='header'>payslip visualisation
-  <span id="payslipType" class="note-right" onclick="payslipFlipVisType()">sunburst</span>
+  <span id="payslipType" class="action-right" onclick="payslip.flipVisType()">sunburst <i class="fa fa-refresh"></i></span>
 </div>
 <div class='article'>
   <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
 </div>
 
 <script>
-  function payslipFlipVisType() {
+  const payslip = {
+
+    data: [{
+      type: "sunburst",
+      ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
+      labels: [ "Uniform<br>loon", "netto", "Inhouding", "Salaris", "Overwerk", "loonbeslag", "loonheffing", " "],
+      parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
+      values:  [2000, 1144.83, 855.17, 1500, 500, 209.00, 646.17, 1144.83],
+      outsidetextfont: {size: 20, color: "#377eb8"},
+      leaf: {opacity: 0.7},
+      marker: {
+        line: {width: 6},
+        colors: [ "#009FC2","#91cd97","#f25752"]
+      },
+      branchvalues: 'total',
+      textposition: 'middle center',
+      sort: false, // hey hey, this is mine
+      rotation: 90, // hey hey
+      root: { color: "#009FC2"} // hey
+    }],
+
+    layout: {
+      margin: {l: 0, r: 0, b: 0, t: 0},
+      width: 320,
+      height: 320
+    },
+
+    config: {
+      modeBarButtonsToRemove: [ 'toggleHover']
+    }
+  };
+
+  payslip.flipVisType = function() {
     const eleVisType = document.getElementById('payslipType'),
           visTypes = [ 'sunburst', 'treemap'];
     
-    var visType = ( eleVisType.innerText == visTypes[0] ? visTypes[1] : visTypes[0]);
+    var newVisType = ( eleVisType.innerText.trim() == visTypes[0] ? visTypes[1] : visTypes[0]);
 
-    if (visType == 'treemap') {
+    if (newVisType == 'treemap') {
       eleVisType.classList.add('square');
     } else {
       eleVisType.classList.remove('square');
     }
     
-    eleVisType.innerHTML = visType;
+    eleVisType.innerHTML = newVisType + ' <i class="fa fa-refresh"></i>';
 
-    show_payslip(visType);
+    payslip.show(newVisType);
   }
+
+  payslip.show = function( traceType) {
   
-  function show_payslip( traceType) {
-  
-    data[0].type = traceType;
+    payslip.data[0].type = traceType;
 
     if (traceType == 'treemap') {
-      data[0].labels[0] = 'Uniform loon';
+      payslip.data[0].labels[0] = 'Uniform loon';
     }
-    Plotly.newPlot( 'payBurst', data, layout, config);
+    Plotly.newPlot( 'payBurst', payslip.data, payslip.layout, payslip.config);
   }
-
-  var data = [{
-    type: "sunburst",
-    ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
-    labels: [ "Uniform<br>loon", "netto", "Inhouding", "Salaris", "Overwerk", "loonbeslag", "loonheffing", " "],
-    parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
-    values:  [2000, 1144.83, 855.17, 1500, 500, 209.00, 646.17, 1144.83],
-    outsidetextfont: {size: 20, color: "#377eb8"},
-    leaf: {opacity: 0.7},
-    marker: {
-      line: {width: 6},
-      colors: [ "#009FC2","#91cd97","#f25752"]
-    },
-    branchvalues: 'total',
-    textposition: 'middle center',
-    sort: false, // hey hey, this is mine
-    rotation: 90, // hey hey
-    root: { color: "#009FC2"} // hey
-  }];
-          
-  var layout = {
-    margin: {l: 0, r: 0, b: 0, t: 0},
-    width: 320,
-    height: 320
-  };
-
-  var config = {
-    modeBarButtonsToRemove: [ 'toggleHover']
-  }
-          
-  show_payslip( 'sunburst');
+  
+  payslip.show( 'sunburst');
 
 </script>
