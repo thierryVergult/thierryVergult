@@ -8,69 +8,97 @@
   <span id="payslipType" class="action-right" onclick="payslip.flipVisType()">sunburst <i class="fa fa-refresh"></i></span>
 </div>
 <div class='article'>
-  <div id='payBurst' style="width: 360px; margin: 0 auto;"></div>
+  <div id='payslipId' style="width: 360px; height: 360px; margin: 0 auto;"></div>
+  <p>Previously with <a href='https://plotly.com/javascript/' target='_blank'>Plotly</a>, now using <a href='https://echarts.apache.org/en/index.html' target='_blank'>eCharts</a></p>
 </div>
 
-<script>
-  const payslip = {
+<script type="text/javascript">
+      
+      let payslip = {};
 
-    data: [{
-      type: "sunburst",
-      ids: [ "earnings", "net", "deductions", "earn01", "earn02", "deduct01", "deduct02", "net00"],
-      labels: [ "Uniform<br>loon", "netto", "Inhouding", "Salaris", "Overwerk", "loonbeslag", "loonheffing", " "],
-      parents: [ "", "", "", "earnings", "earnings", "deductions", "deductions", "net"],
-      values:  [2000, 1144.83, 855.17, 1500, 500, 209.00, 646.17, 1144.83],
-      outsidetextfont: {size: 20, color: "#377eb8"},
-      leaf: {opacity: 0.7},
-      marker: {
-        line: {width: 6},
-        colors: [ "#009FC2","#91cd97","#f25752"]
-      },
-      branchvalues: 'total',
-      textposition: 'middle center',
-      sort: false, // hey hey, this is mine
-      rotation: 90, // hey hey
-      root: { color: "#009FC2"} // hey
-    }],
+      payslip.currency = '€';
 
-    layout: {
-      margin: {l: 0, r: 0, b: 0, t: 0},
-      width: 320,
-      height: 320
-    },
+      payslip.data = [
+        {
+          name: 'uniform\nloon', // newline (/n) should be inserted via a data post processing, replacing 'all' spaces
+          children: [
+            { name: 'salaris', value: 1500.00},
+            { name: 'overwerk', value: 500}
+          ]
+        },
+        {
+          name: 'inhoudingen',
+          children: [
+            { name: 'loonheffing', value: 646.17 },
+            { name: 'pensioen\ninhouding', value: 209 }
+          ]
+        },
+        {
+          name: 'netto',
+          children: [
+            { name: 'netto', value: 1144.83 }
+          ],
+        }
+      ];
 
-    config: {
-      modeBarButtonsToRemove: [ 'toggleHover']
-    }
-  };
+      payslip.chart = echarts.init( document.getElementById('payslipId'));
+      
+      payslip.option = {
+        
+        series: [
+          {
+            type: 'sunburst', // 'treemap'
+            data: payslip.data,
+            nodeClick: false,
+            emphasis: { focus: 'none' },
+            itemStyle: {
+              borderWidth: 4,
+              borderRadius: '5%' // has no effect in Treemap 
+            },
+            cursor: 'help',
+            // sunburst specific
+            startAngle: -90,
+            sort: null, // use squareRatio to mimic no sorting for treemap, see later
+            levels: [
+              {},
+              {
+                r: '35%',
+                label: { rotate: 'horizontal'}
+              },
+              {
+                r0: '35%', 
+                r: '90%'
+              }],
+            // treemap specific
+            squareRatio: 1, // to get the items in the treemap somehow sorted (earnings left, deductions & net right). Dirty.
+            breadcrumb: { show: false}
+            // by the way, also no nice animation for treemap, works fine for sunburst
+          }
+        ],
+        color: [ "#009FC2", "#f25752", "#91cd97"],  // base color of earnings, deductions and green for net
+        tooltip: {
+          trigger: 'item',
+          valueFormatter: (value) => payslip.currency + value.toFixed(2)
+        }
+      };
 
-  payslip.flipVisType = function() {
-    const eleVisType = document.getElementById('payslipType'),
-          visTypes = [ 'sunburst', 'treemap'];
-    
-    var newVisType = ( eleVisType.innerText.trim() == visTypes[0] ? visTypes[1] : visTypes[0]);
+      payslip.chart.setOption( payslip.option);
 
-    if (newVisType == 'treemap') {
-      eleVisType.classList.add('square');
-    } else {
-      eleVisType.classList.remove('square');
-    }
-    
-    eleVisType.innerHTML = newVisType + ' <i class="fa fa-refresh"></i>';
+      payslip.flipVisType = function() {
+        const nowVisType = payslip.option.series[0].type;
+        const newVisType = nowVisType == 'treemap' ? 'sunburst' : 'treemap';
+        payslip.option.series[0].type = newVisType;
 
-    payslip.show(newVisType);
-  }
+        const eleVisType = document.getElementById('payslipType');
 
-  payslip.show = function( traceType) {
-  
-    payslip.data[0].type = traceType;
-
-    if (traceType == 'treemap') {
-      payslip.data[0].labels[0] = 'Uniform loon';
-    }
-    Plotly.newPlot( 'payBurst', payslip.data, payslip.layout, payslip.config);
-  }
-  
-  payslip.show( 'sunburst');
-
-</script>
+        if (newVisType == 'treemap') {
+          eleVisType.classList.add('square');
+        } else {
+          eleVisType.classList.remove('square');
+        }
+        
+        eleVisType.innerHTML = newVisType + ' <i class="fa fa-refresh"></i>';
+        
+        payslip.chart.setOption( payslip.option);
+      }
+    </script>
