@@ -1,6 +1,96 @@
 <div class='header'>headcount visualisation</div>
 <div class='article'>
-  <div>
-    <img src="./assets/in_out.jpg" style="width:100%;">
-  </div>
+  <div id='inOutId' style="width: 360px; height: 360px;"></div>
 </div>
+
+<script type="text/javascript">
+      
+  let inOut = {};
+
+  inOut.chart = echarts.init( document.getElementById('inOutId'));
+      
+  inOut.option = {
+    color: [ '#91cd97', '#f25752', 'grey'], // used by in - out - people series
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow'},
+      valueFormatter: (value) => Math.abs( value)
+    },
+    legend: { data: [ 'in', 'out', 'people']},
+    yAxis: [
+      {
+        name: 'in / out',
+        nameLocation: 'middle',
+        type: 'value',
+        axisLabel: { formatter: val => Math.abs(val)}
+      },
+      {
+        name: 'headcount',
+        nameLocation: 'middle',
+        nameRotate: 270,
+        type: 'value',
+        min: function (value) {
+          return value.min - (value.min % 20) - 20; // magic number
+        },
+        max: function (value) {
+          return value.max - (value.max % 20) + 20; // magic number
+        },
+        splitLine: { show: false}
+      }
+    ],
+    xAxis: [
+      {
+        type: 'category',
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+      }
+    ],
+    series: [
+      {
+        name: 'in',
+        type: 'bar',
+        stack: 'Total',
+        label: { 
+          show: true,
+          formatter: function( param) {
+            return param.data == 0 ? '': param.data;
+          }
+        },
+        emphasis: { focus: 'series'},
+        itemStyle: { 
+          borderWidth: 1, 
+          borderColor: 'white', 
+          borderRadius: [8,8,0,0]
+        },
+        data: [30, 20, 10, 0, 30, 32, 20]
+      },
+      {
+        name: 'out',
+        type: 'bar',
+        stack: 'Total',
+        label: {
+          show: true,
+          formatter: function( param) {
+            return param.data == 0 ? '': Math.abs( param.data);
+          }
+        },
+        emphasis: { focus: 'series'},
+        itemStyle: { 
+          borderWidth: 1, 
+          borderColor: 'white', 
+          borderRadius: [0,0,8,8]
+        },
+        data: [-15, -10, -20, -15, -10, 0, -20]
+      },
+      {
+        name: 'people',
+        type: 'line',
+        smooth: true,
+        yAxisIndex: 1,
+        data: /* 500 */ [515, 525, 515, 500, 520, 552, 552]
+      }
+    ]
+  };
+
+  inOut.chart.setOption( inOut.option);
+
+</script>
