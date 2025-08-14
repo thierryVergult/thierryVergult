@@ -1,0 +1,145 @@
+<div class='header'>premier league 2024-2025 table</div>
+<div class='article chart'>
+  <div id='standId' style="width: 360px; height: 720px; margin: 0 auto;"></div>
+</div>
+
+<script type="text/javascript">
+      
+  let stand = {};
+
+  stand.chart = echarts.init( document.getElementById('standId'));
+      
+  stand.option = {
+    color: [ '#009FC2', '#91cd97', 'lightgrey', 'red', 'grey', 'black', 'red'],
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        // setting it to cross, to get a lot for free, but need to hide the horizontal one
+        type: 'cross',
+        label: { precision: 0}, // so it flips to the integers
+        // lineStyle seems to operate only on the defaulted line (y axis, the categories)
+        // so hiding only the horizontal cross line
+        lineStyle: { width: 0}
+      },
+      formatter: function(p) {
+        //console.log(p);
+        const d = p[0].data;
+        return '<b>' + d[0] + '</b>'
+            + '<br>' + '<span style="color:' + stand.option.color[0] + '">&#9711;</span> &nbsp;'  + d[1] + ' points ( won ' + d[4] + ' games' + ')'
+            + '<br>' + '<span style="color:' + stand.option.color[1] + '">&#9711;</span> &nbsp;'  + d[2] + ' draws'
+            + '<br>' + '<span style="color:' + stand.option.color[2] + '">&#x25CB;</span> &nbsp;' + d[5] + ' games lost'
+            + '<br>' + d[7] + ' goals scored'
+            + '<br>' + d[8] + ' goals against';
+      }
+    },
+    legend: {
+      data: [ 'xwon', 'xdraw', 'xlost', 'xmore', 'xgoals made', 'xgoals against'],
+      selected: {
+        'goals made': false,
+        'goals against': false
+      }
+    },
+    dataset: {
+      source: {
+        'team': [  'Liverpool','Arsenal','Man City','Chelsea','Newcastle','Aston Villa','Notts Forest','Brighton','Bournemouth','Brentford','Fulham','Crystal Palace','Everton','West Ham','Man Utd','Wolves','Tottenham','Leicester','Ipswich','Southampton' ],
+        'win-p': [ 75,60,63,60,60,57,57,48,45,48,45,39,33,33,33,36,33,18,12,6],
+        'draw': [ 9,14,8,9,6,9,8,13,11,8,9,14,15,10,9,6,5,7,10,6 ],
+        'lost-p': [ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ],
+        'win-g': [ 25,20,21,20,20,19,19,16,15,16,15,13,11,11,11,12,11,6,4,2 ],
+        'lost-g': [ 4,4,9,9,12,10,11,9,12,14,14,11,12,17,18,20,22,25,24,30 ],
+        'more-p': [ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ],
+        'goals+': [86,69,72,64,68,58,58,66,58,66,54,51,42,46,44,54,64,33,36,26 ],
+        'goals-': [41,34,44,43,47,51,46,59,46,57,54,51,44,62,54,69,65,80,82,86 ],
+        'tot-p': [84,74,71,69,66,66,65,61,56,56,54,53,48,43,42,42,38,25,22,12 ],
+        'tot-g': [38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38 ],
+        'tot++': [84,74,71,69,66,66,65,61,56,56,54,53,48,43,42,42,38,25,22,12 ],
+      }
+    },
+    xAxis: {
+      type: 'value'
+    },
+    yAxis: [
+      {
+        type: 'category',
+        inverse: true
+      }
+    ],
+    series: [
+      {
+        name: 'won',
+        type: 'bar',
+        stack: 'Total',
+        label: {
+          show: true,
+          formatter: function( param) {
+            //console.log( param)
+            const wPoints = param.data[1],
+                  wGames  = param.data[4];
+            return wPoints == 0 ? '' : wGames < 10 ? wGames : wGames + ' games';
+          }
+        },
+        silent: true
+        },
+        {
+        name: 'draw',
+        type: 'bar',
+        stack: 'Total',
+        label: {
+            show: true,
+            formatter: function( param) {
+            return param.data[2] == 0 ? '': param.data[2];
+            }
+        },
+        silent: true
+        },
+        {
+        name: 'lost',
+        type: 'bar',
+        stack: 'Total',
+        emphasis: { focus: 'series'},
+        },
+        {
+        name: 'more',
+        type: 'bar',
+        stack: 'Total',
+        emphasis: { focus: 'series'},
+        encode: { x: 6},
+        label: {
+            show: true,
+            formatter: function( param) {
+            return param.data[6] == 0 ? '': param.data[6];
+            }
+        },
+        },
+        {
+        name: 'total points',
+        type: 'scatter',
+        encode: { x: 9},
+        label: {
+            show: true,
+            position: 'right',
+            distance: 10,
+            fontWeight: 'bold'
+        },
+        symbolSize: 0
+        },
+        {
+        name: 'goals made',
+        type: 'line',
+        encode: { x: 7},
+        //label: { show: true},
+        smooth: true
+        },
+        {
+        name: 'goals against',
+        type: 'line',
+        encode: { x: 8},
+        //label: { show: true},
+        smooth: true
+        }
+    ]
+    };
+
+  stand.chart.setOption( stand.option);
+
+</script>
